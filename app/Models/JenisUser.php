@@ -12,5 +12,8 @@ class JenisUser extends Model
     protected $primaryKey = 'id_jenis_user';
     protected $fillable = ['jenis_user'];
 
-    public function users() { return $this->hasMany(User::class, 'id_jenis_user'); }
+    public function users()
+    {
+        return $this->hasMany(User::class, 'id_jenis_user');
+    }
 }

@@ -15,10 +15,10 @@ class JenisUserSeeder extends Seeder
     {
         if (DB::table('jenis_users')->get()->count() == 0) {
             DB::table('jenis_users')->insert([
-                ['id_jenis_user' => 1, 'nama' => 'Admin'],
-            ['id_jenis_user' => 2, 'nama' => 'Guru'],
-            ['id_jenis_user' => 3, 'nama' => 'Donatur'],
-            ['id_jenis_user' => 4, 'nama' => 'Santri'],
+            ['id_jenis_user' => 1, 'jenis_user' => 'Admin'],
+            ['id_jenis_user' => 2, 'jenis_user' => 'Guru'],
+            ['id_jenis_user' => 3, 'jenis_user' => 'Donatur'],
+            ['id_jenis_user' => 4, 'jenis_user' => 'Santri'],
             ]);
         }
     }
