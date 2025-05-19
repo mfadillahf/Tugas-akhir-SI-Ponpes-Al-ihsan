@@ -56,15 +56,22 @@
         <div class="card">
             <div class="card-body login-card-body">
             <p class="login-box-msg">Silakan Login</p>
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            
             <form action="{{ route('login.post') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email" />
-                <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                    <input type="text" name="username" class="form-control" placeholder="Username" required />
+                    <div class="input-group-text"><span class="bi bi-person"></span></div>
                 </div>
                 <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Password" />
-                <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required />
+                    <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
                 </div>
                 <!--begin::Row-->
                 <div class="row">
