@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Santri extends Model
 {
      use HasFactory;
-    protected $table = 'santri';
+    protected $table = 'santris';
     protected $primaryKey = 'id_santri';
     protected $fillable = ['id_user', 'id_kelas', 'nama_lengkap', 'nama_panggil', 'tanggal_lahir', 'alamat', 'no_telepon', 'email', 'jenis_kelamin', 'status', 'pendidikan_asal', 'nama_ayah', 'pekerjaan_ayah', 'no_hp_ayah', 'nama_ibu', 'pekerjaan_ibu', 'no_hp_ibu'];
 

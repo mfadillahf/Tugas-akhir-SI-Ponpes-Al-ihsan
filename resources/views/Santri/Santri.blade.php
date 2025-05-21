@@ -17,7 +17,7 @@ Santri
                 <div class="col-sm-6"><h3 class="mb-0">Data Santri</h3></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Santri</li>
                     </ol>
                 </div>
@@ -31,90 +31,80 @@ Santri
             <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
+
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
                 <!--begin::Row-->
                 <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                    <div class="card-header"><h3 class="card-title">Santri</h3></div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Task</th>
-                                <th>Progress</th>
-                                <th style="width: 40px">Label</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="align-middle">
-                                <td>1.</td>
-                                <td>Update software</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div
-                                        class="progress-bar progress-bar-danger"
-                                        style="width: 55%"
-                                    ></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-danger">55%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>2.</td>
-                                <td>Clean database</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-warning">70%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>3.</td>
-                                <td>Cron job running</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-primary">30%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>4.</td>
-                                <td>Fix and squish bugs</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-success">90%</span></td>
-                                </tr>
-                            </tbody>
-                            </table>
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="card-title mb-0 me-auto">Santri</h3>
+                            <a href="{{ route('santri.create') }}" class="btn btn-primary btn-sm">+ Tambah Santri</a>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>No HP</th>
+                                        <th>Kelas</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- @forelse ($santri as $key => $s)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $s->nama_lengkap }}</td>
+                                            <td>{{ $s->email }}</td>
+                                            <td>{{ $s->no_telepon }}</td>
+                                            <td>{{ $s->kelas->nama_kelas ?? '-' }}</td>
+                                            <td>{{ $s->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                            <td>
+                                                @if($s->status == 'aktif')
+                                                    <span class="badge bg-success">Aktif</span>
+                                                @elseif($s->status == 'nonaktif')
+                                                    <span class="badge bg-secondary">Nonaktif</span>
+                                                @else
+                                                    <span class="badge bg-warning">-</span>
+                                                @endif --}}
+                                            </td>
+                                            <td>
+                                                {{-- <a href="{{ route('santri.edit', $s->id_santri) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('santri.destroy', $s->id_santri) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                                </form> --}}
+                                            </td>
+                                        </tr>
+                                    {{-- @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">Data santri belum tersedia.</td>
+                                        </tr>
+                                    @endforelse --}}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer clearfix">
+                            {{-- Kalau kamu pakai pagination: --}}
+                            {{-- {{ $santri->links() }} --}}
                         </div>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-end">
-                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                    </div>
-                    </div>
-
                 </div>
-                </div>
-                <!--end::Row-->
             </div>
-            <!--end::Container-->
-            </div>
-            <!--end::App Content-->
-        </main>
-        <!--end::App Main-->
+        </div>
+    </div>
+</main>
 @endsection
