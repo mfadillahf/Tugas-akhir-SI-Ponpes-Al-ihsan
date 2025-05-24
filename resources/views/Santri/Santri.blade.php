@@ -62,8 +62,8 @@ Santri
                                                 <td>{{ $s->kelas->nama_kelas ?? '-' }}</td>
                                                 <td>{{ $s->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                                 <td>
-                                                    @if($s->status == 'aktif')
-                                                        <span class="badge bg-success">Aktif</span>
+                                                    @if($s->status == 'santri')
+                                                        <span class="badge bg-success">Santri</span>
                                                     @elseif($s->status == 'calon')
                                                         <span class="badge bg-secondary">Calon</span>
                                                     @else
@@ -104,6 +104,7 @@ Santri
     </div>
 </main>
 
+{{-- modal detail santri --}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">

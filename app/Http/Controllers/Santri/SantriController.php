@@ -15,13 +15,13 @@ class SantriController extends Controller
     public function index()
     {
         $santri = Santri::with(['user', 'kelas'])->paginate(10);
-        return view('santri.santri', compact('santri'));
+        return view('Santri.Santri', compact('santri'));
     }
 
     public function create()
     {
         $kelas = Kelas::all();
-        return view('santri.santricreate', compact('kelas'));
+        return view('Santri.SantriCreate', compact('kelas'));
     }
 
     public function store(Request $request)
@@ -33,8 +33,8 @@ class SantriController extends Controller
             'nama_panggil' => 'required',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required',
-            'no_telepon' => 'nullable',
-            'email' => 'nullable|email|unique:santris,email',
+            'no_telepon' => 'required',
+            'email' => 'required|email|unique:santris,email',
             'jenis_kelamin' => 'required',
             'pendidikan_asal' => 'required',
             'nama_ayah' => 'required',
@@ -43,7 +43,8 @@ class SantriController extends Controller
             'nama_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
             'no_hp_ibu' => 'required',
-            'id_kelas' => 'required|exists:kelas,id_kelas',
+            'id_kelas' => 'nullable|exists:kelas,id_kelas',
+            'status' => 'required|in:calon,santri',
         ]);
 
         DB::beginTransaction();
@@ -65,7 +66,7 @@ class SantriController extends Controller
                 'no_telepon' => $request->no_telepon,
                 'email' => $request->email,
                 'jenis_kelamin' => $request->jenis_kelamin,
-                'status' => 'aktif',
+                'status' => $request->status,
                 'pendidikan_asal' => $request->pendidikan_asal,
                 'nama_ayah' => $request->nama_ayah,
                 'pekerjaan_ayah' => $request->pekerjaan_ayah,
@@ -76,7 +77,7 @@ class SantriController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('santri.index')->with('success', 'Santri berhasil ditambahkan.');
+            return redirect()->route('Santri.index')->with('success', 'Santri berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal menambahkan santri: ' . $e->getMessage()]);
@@ -87,7 +88,7 @@ class SantriController extends Controller
     {
         $santri = Santri::with('user')->findOrFail($id);
         $kelas = Kelas::all();
-        return view('santri.santriedit', compact('santri', 'kelas'));
+        return view('Santri.SantriEdit', compact('santri', 'kelas'));
     }
 
     public function update(Request $request, $id)
@@ -112,6 +113,7 @@ class SantriController extends Controller
             'pekerjaan_ibu' => 'required',
             'no_hp_ibu' => 'required',
             'id_kelas' => 'required|exists:kelas,id_kelas',
+            'status' => 'required|in:calon,santri',
         ]);
 
         DB::beginTransaction();
@@ -131,6 +133,7 @@ class SantriController extends Controller
                 'no_telepon' => $request->no_telepon,
                 'email' => $request->email,
                 'jenis_kelamin' => $request->jenis_kelamin,
+                'status' => $request->status,
                 'pendidikan_asal' => $request->pendidikan_asal,
                 'nama_ayah' => $request->nama_ayah,
                 'pekerjaan_ayah' => $request->pekerjaan_ayah,
@@ -138,10 +141,11 @@ class SantriController extends Controller
                 'nama_ibu' => $request->nama_ibu,
                 'pekerjaan_ibu' => $request->pekerjaan_ibu,
                 'no_hp_ibu' => $request->no_hp_ibu,
+
             ]);
 
             DB::commit();
-            return redirect()->route('santri.index')->with('success', 'Santri berhasil diupdate.');
+            return redirect()->route('Santri.index')->with('success', 'Santri berhasil diupdate.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal update santri: ' . $e->getMessage()]);
@@ -153,13 +157,13 @@ class SantriController extends Controller
         try {
             $santri = Santri::findOrFail($id);
             $santri->user()->delete(); // otomatis delete santri karena foreign key cascade
-            return redirect()->route('santri.index')->with('success', 'Santri berhasil dihapus.');
+            return redirect()->route('Santri.index')->with('success', 'Santri berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus santri: ' . $e->getMessage()]);
         }
     }
 
-
+// menampilkan detail santri
     public function showDetail($id)
     {
         $santri = Santri::with('kelas')->findOrFail($id);

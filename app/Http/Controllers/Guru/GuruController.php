@@ -2,69 +2,135 @@
 
 namespace App\Http\Controllers\Guru;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Guru;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
 {
-        public function index()
+       public function index()
     {
-        // $guru = Guru::with('user')->get();
-        return view('Guru.Guru');
+        $guru = Guru::with('user')->paginate(10);
+        return view('Guru.Guru', compact('guru'));
     }
 
-    public function create() {
-        $users = User::role('guru')->get();
-        return view('admin.guru.create', compact('users'));
+    public function create()
+    {
+        return view('Guru.GuruCreate');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_user' => 'required|exists:users,id',
+            'username' => 'required|unique:users,username',
+            'password' => 'required|confirmed|min:6',
             'nama' => 'required',
             'no_telepon' => 'required',
-            'email' => 'required|email',
-            'nip' => 'nullable',
+            'email' => 'nullable|email|unique:gurus,email',
+            'nip' => 'nullable|unique:gurus,nip',
             'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required',
+            'jenis_kelamin' => 'required|in:L,P',
         ]);
 
-        Guru::create($request->all());
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil ditambahkan.');
+        DB::beginTransaction();
+
+        try {
+            $user = User::create([
+                'id_jenis_user' => 2, //  guru
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+            ]);
+
+            Guru::create([
+                'id_user' => $user->id_user,
+                'nama' => $request->nama,
+                'no_telepon' => $request->no_telepon,
+                'email' => $request->email,
+                'nip' => $request->nip,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+            ]);
+
+            DB::commit();
+            return redirect()->route('Guru.index')->with('success', 'Guru berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal menambahkan guru: ' . $e->getMessage()]);
+        }
     }
 
     public function edit($id)
     {
-        $guru = Guru::findOrFail($id);
-        $users = User::role('guru')->get();
-        return view('Guru.GuruEdit', compact('guru', 'users'));
+        $guru = Guru::with('user')->findOrFail($id);
+        return view('Guru.GuruEdit', compact('guru'));
     }
 
     public function update(Request $request, $id)
     {
+        $guru = Guru::with('user')->findOrFail($id);
+
         $request->validate([
-            'id_user' => 'required|exists:users,id',
+            'username' => 'required|unique:users,username,' . $guru->user->id_user . ',id_user',
+            'password' => 'nullable|confirmed|min:6',
             'nama' => 'required',
             'no_telepon' => 'required',
-            'email' => 'required|email',
-            'nip' => 'nullable',
+            'email' => 'nullable|email|unique:gurus,email,' . $id . ',id_guru',
+            'nip' => 'nullable|unique:gurus,nip,' . $id . ',id_guru',
             'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required',
+            'jenis_kelamin' => 'required|in:L,P',
         ]);
 
-        $guru = Guru::findOrFail($id);
-        $guru->update($request->all());
+        DB::beginTransaction();
 
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil diupdate.');
+        try {
+            $guru->user->update([
+                'username' => $request->username,
+                'password' => $request->filled('password') ? Hash::make($request->password) : $guru->user->password,
+            ]);
+
+            $guru->update([
+                'nama' => $request->nama,
+                'no_telepon' => $request->no_telepon,
+                'email' => $request->email,
+                'nip' => $request->nip,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+            ]);
+
+            DB::commit();
+            return redirect()->route('Guru.index')->with('success', 'Guru berhasil diupdate.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal update guru: ' . $e->getMessage()]);
+        }
     }
 
     public function destroy($id)
     {
-        $guru = Guru::findOrFail($id);
-        $guru->delete();
-        return redirect()->route('guru.index')->with('success', 'Data guru berhasil dihapus.');
+        try {
+            $guru = Guru::findOrFail($id);
+            $guru->user()->delete(); // cascade
+            return redirect()->route('Guru.index')->with('success', 'Guru berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal menghapus guru: ' . $e->getMessage()]);
+        }
+    }
+
+    // menampilkan detail guru
+    public function showDetail($id)
+    {
+        $guru = Guru::with('user')->findOrFail($id);
+
+        return response()->json([
+            'nama'     => $guru->nama,
+            'no_telepon'       => $guru->no_telepon,
+            'email'            => $guru->email,
+            'nip'              => $guru->nip,
+            'tanggal_lahir'    => $guru->tanggal_lahir,
+            'jenis_kelamin'    => $guru->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan',
+        ]);
     }
 }

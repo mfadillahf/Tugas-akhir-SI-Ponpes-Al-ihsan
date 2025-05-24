@@ -1,120 +1,143 @@
 @extends('layouts.App')
 
 @section('title')
-Kepengurusan
+Guru
 @endsection
 
 @section('content')
-
-        <!--begin::App Main-->
-        <main class="app-main">
-            <!--begin::App Content Header-->
-            <div class="app-content-header">
-            <!--begin::Container-->
-            <div class="container-fluid">
-                <!--begin::Row-->
-                <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Data Pengurus</h3></div>
+<main class="app-main">
+    <!-- Content Header -->
+    <div class="app-content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6"><h3 class="mb-0">Data Kepengurusan</h3></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Kepengurusan</li>
+                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Kepengurusan</li>
                     </ol>
                 </div>
-                </div>
-                <!--end::Row-->
             </div>
-            <!--end::Container-->
-            </div>
-            <!--end::App Content Header-->
-            <!--begin::App Content-->
-            <div class="app-content">
-            <!--begin::Container-->
-            <div class="container-fluid">
-                <!--begin::Row-->
-                <div class="row">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="app-content">
+        <div class="container-fluid">
+
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
+            <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                    <div class="card-header"><h3 class="card-title">Kepengurusan</h3></div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Task</th>
-                                <th>Progress</th>
-                                <th style="width: 40px">Label</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="align-middle">
-                                <td>1.</td>
-                                <td>Update software</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div
-                                        class="progress-bar progress-bar-danger"
-                                        style="width: 55%"
-                                    ></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-danger">55%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>2.</td>
-                                <td>Clean database</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-warning">70%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>3.</td>
-                                <td>Cron job running</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-primary">30%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>4.</td>
-                                <td>Fix and squish bugs</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-success">90%</span></td>
-                                </tr>
-                            </tbody>
-                            </table>
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="card-title mb-0 me-auto">Kepengurusan</h3>
+                            <a href="{{ route('kepengurusan.create') }}" class="btn btn-primary btn-sm">+ Tambah Kepengurusan</a>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            <th>Mulai</th>
+                                            <th>Akhir</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($kepengurusan as $key => $k)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $k->nama }}</td>
+                                                <td>{{ $k->jabatan }}</td>
+                                                <td>{{ $k->mulai }}</td>
+                                                <td>{{ $k->akhir }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                                        Detail
+                                                    </button>
+                                                    <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus Kepengurusan ini?')">Hapus</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer clearfix">
+                            {{ $kepengurusan->links() }}
                         </div>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-end">
-                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                    </div>
-                    </div>
+                </div>
+            </div>
 
-                </div>
-                </div>
-                <!--end::Row-->
+        </div>
+    </div>
+</main>
+
+{{-- modal detail kepengurusan --}}
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Detail Kepengurusan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!--end::Container-->
+            <div class="modal-body" id="modalBody">
+                
             </div>
-            <!--end::App Content-->
-        </main>
-        <!--end::App Main-->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+        var kepengurusanId = $(this).data('id');
+        console.log('Tombol diklik, ID:', kepengurusanId);
+
+        $.ajax({
+            url: '/kepengurusan/' + kepengurusanId + '/detail',
+            type: 'GET',
+            success: function(response) {
+                console.log('Response dari server:', response);
+
+                var modalContent = `
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr><th>Nama</th><td>${response.nama}</td></tr>
+                            <tr><th>Jabatan</th><td>${response.jabatan}</td></tr>
+                            <tr><th>Mulai Jabatan</th><td>${response.mulai}</td></tr>
+                            <tr><th>Akhir Jabatan</th><td>${response.akhir}</td></tr>
+                        </tbody>
+                    </table>
+                `;
+                $('#modalBody').html(modalContent);
+            },
+            error: function() {
+                alert('Gagal mengambil data detail kepengurusan.');
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

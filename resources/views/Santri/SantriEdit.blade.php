@@ -133,6 +133,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select class="form-select" name="status" required>
+                                <option value="" disabled>-- Pilih Status --</option>
                                 <option value="calon" {{ old('status', $santri->status) == 'calon' ? 'selected' : '' }}>Calon</option>
                                 <option value="santri" {{ old('status', $santri->status) == 'santri' ? 'selected' : '' }}>Santri</option>
                             </select>

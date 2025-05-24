@@ -32,9 +32,11 @@ Route::middleware(['auth'])->group(function () {
 
     // guru
     Route::resource('guru', GuruController::class);
+    Route::get('guru/{id}/detail', [GuruController::class, 'showDetail'])->name('guru.showDetail');
 
     // kepengurusan
     Route::resource('kepengurusan', KepengurusanController::class);
+    Route::get('kepengurusan/{id}/detail', [KepengurusanController::class, 'showDetail'])->name('kepengurusan.showDetail');
 
     // donatur
     Route::resource('donatur', DonaturController::class);
