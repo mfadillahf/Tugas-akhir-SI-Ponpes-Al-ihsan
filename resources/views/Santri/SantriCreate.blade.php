@@ -34,10 +34,37 @@
                     </div>
                 @endif
 
-                <form class="needs-validation" action="{{ route('santri.create') }}" method="POST">
-                    @csrf
-
+                <form class="needs-validation" action="{{ route('santri.store') }}" method="POST">
+                 @csrf
+                    {{-- Username dan Password --}}
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" value="{{ old('username') }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" name="password_confirmation" required>
+                        </div>
+
+                        {{-- Pilih Kelas --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="id_kelas" class="form-label">Kelas</label>
+                            <select class="form-select" name="id_kelas" required>
+                                <option value="" disabled selected>-- Pilih Kelas --</option>
+                                @foreach($kelas as $k)
+                                    <option value="{{ $k->id_kelas }}" {{ old('id_kelas') == $k->id_kelas ? 'selected' : '' }}>
+                                        {{ $k->nama_kelas }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Form Santri --}}
                         <div class="col-md-6 mb-3">
                             <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-control" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
@@ -46,7 +73,6 @@
                             <label for="nama_panggil" class="form-label">Nama Panggil</label>
                             <input type="text" class="form-control" name="nama_panggil" value="{{ old('nama_panggil') }}" required>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
@@ -58,11 +84,11 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="no_telepon" class="form-label">No Telepon</label>
-                            <input type="text" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}" required>
+                            <input type="text" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                            <input type="email" class="form-control" name="email" value="{{ old('email') }}">
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -86,7 +112,6 @@
                             <label for="pekerjaan_ayah" class="form-label">Pekerjaan Ayah</label>
                             <input type="text" class="form-control" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah') }}" required>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="no_hp_ayah" class="form-label">No HP Ayah</label>
                             <input type="text" class="form-control" name="no_hp_ayah" value="{{ old('no_hp_ayah') }}" required>
@@ -95,7 +120,6 @@
                             <label for="nama_ibu" class="form-label">Nama Ibu</label>
                             <input type="text" class="form-control" name="nama_ibu" value="{{ old('nama_ibu') }}" required>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu</label>
                             <input type="text" class="form-control" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu') }}" required>
@@ -104,18 +128,10 @@
                             <label for="no_hp_ibu" class="form-label">No HP Ibu</label>
                             <input type="text" class="form-control" name="no_hp_ibu" value="{{ old('no_hp_ibu') }}" required>
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-select" name="status" required>
-                                <option value="" disabled {{ old('status') ? '' : 'selected' }}>-- Pilih Status --</option>
-                                <option value="calon" {{ old('status') == 'calon' ? 'selected' : '' }}>Calon</option>
-                                <option value="santri" {{ old('status') == 'santri' ? 'selected' : '' }}>Santri</option>
-                            </select>
-                        </div>
                     </div>
+
                     <div class="d-flex justify-content-end gap-2 mt-3">
-                        <a href="{{ route('santri') }}" class="btn btn-secondary">← Kembali</a>
+                        <a href="{{ route('santri.index') }}" class="btn btn-secondary">← Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

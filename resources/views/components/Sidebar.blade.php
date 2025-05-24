@@ -2,7 +2,7 @@
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">
       <!--begin::Brand Link-->
-      <a href="./index.html" class="brand-link">
+      <a href="/admin/dashboard" class="brand-link">
         <!--begin::Brand Image-->
         <img
           src="{{asset('/')}}AdminLTE/dist/assets/img/AdminLTELogo.png"
@@ -28,7 +28,7 @@
           data-accordion="false">
 
           <li class="nav-item menu-open">
-            <a href="/" class="nav-link">
+            <a href="/admin/dashboard" class="nav-link">
               <i class="nav-icon bi bi-speedometer"></i>
               <p>
                 Dashboard
@@ -48,14 +48,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('santri') }}" class="nav-link">
+                <a href="{{ route('santri.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-circle"></i>
                   <p>Santri</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="{{ route('kepengurusan') }}" class="nav-link">
+                <a href="{{ route('kepengurusan.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-circle"></i>
                   <p>
                     Kepengurusan
@@ -64,14 +64,14 @@
               </li>
 
               <li class="nav-item">
-                <a href="{{ route('guru') }}" class="nav-link">
+                <a href="{{ route('guru.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-circle"></i>
                   <p>Guru</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="{{ route('donatur') }}" class="nav-link">
+                <a href="{{ route('donatur.index') }}" class="nav-link">
                   <i class="nav-icon bi bi-circle"></i>
                   <p>Donatur</p>
                 </a>
@@ -81,7 +81,16 @@
 
           <li class="nav-header">Akademik</li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <li class="nav-item">
+            <a href="{{ route('kelas.index') }}" class="nav-link">
+              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <p>
+                Kelas
+              </p>
+            </a>
+          </li>
+
+            <a href="{{ route('mapel.index') }}" class="nav-link">
               <i class="nav-icon bi bi-box-seam-fill"></i>
               <p>
                 Mapel
@@ -108,7 +117,7 @@
 
           <li class="nav-header">Keuangan</li>
           <li class="nav-item">
-            <a href="{{ route('infaq') }}" class="nav-link">
+            <a href="{{ route('infaq.index') }}" class="nav-link">
               <i class="nav-icon bi bi-box-seam-fill"></i>
               <p>
                 Infaq

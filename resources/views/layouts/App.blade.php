@@ -152,6 +152,9 @@
             integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
             crossorigin="anonymous"
           ></script>
+          
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          @stack('scripts')
         </body>
         <!--end::Body-->
       </html>

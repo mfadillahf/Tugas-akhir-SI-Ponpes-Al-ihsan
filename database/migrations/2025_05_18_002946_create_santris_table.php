@@ -22,7 +22,7 @@ return new class extends Migration
             $table->char('no_telepon', 14)->nullable();
             $table->char('email', 50)->nullable();
             $table->char('jenis_kelamin', 10);
-            $table->char('status', 10)->default('calon');;
+            $table->char('status', 10)->default('calon');
             $table->char('pendidikan_asal', 50);
             $table->char('nama_ayah', 50);
             $table->char('pekerjaan_ayah', 30);

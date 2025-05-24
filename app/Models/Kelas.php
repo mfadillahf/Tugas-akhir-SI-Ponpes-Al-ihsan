@@ -13,4 +13,11 @@ class Kelas extends Model
     protected $fillable = ['nama_kelas'];
 
     public function santri() { return $this->hasMany(santri::class, 'id_kelas'); }
+
+    public function getRouteKeyName()
+    {
+        return 'id_kelas';
+    }
+
+    
 }

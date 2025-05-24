@@ -1,15 +1,18 @@
 <?php
 
 
+use App\Http\Controllers\Akademik\KelasController;
+use App\Http\Controllers\Akademik\MapelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Santri\santriController;
-use App\Http\Controllers\Guru\guruController;
-use App\Http\Controllers\Donatur\donaturController;
-use App\Http\Controllers\Infaq\infaqController;
-use App\Http\Controllers\Kepengurusan\kepengurusanController;
-use App\Http\Controllers\Sistem\beritaController;
-use App\Http\Controllers\Sistem\galeriController;
+use App\Http\Controllers\Santri\SantriController;
+use App\Http\Controllers\Guru\GuruController;
+use App\Http\Controllers\Donatur\DonaturController;
+use App\Http\Controllers\Infaq\InfaqController;
+use App\Http\Controllers\Kepengurusan\KepengurusanController;
+use App\Http\Controllers\Sistem\BeritaController;
+use App\Http\Controllers\Sistem\GaleriController;
+
 
 
 Route::get('/', function () {
@@ -23,16 +26,33 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/santri', [santriController::class, 'index'])->name('santri');
-    Route::get('/santri/create', [santriController::class, 'create'])->name('santri.create');
+    // santri
+    Route::resource('santri', SantriController::class);
+    Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
 
+    // guru
+    Route::resource('guru', GuruController::class);
+
+    // kepengurusan
+    Route::resource('kepengurusan', KepengurusanController::class);
+
+    // donatur
+    Route::resource('donatur', DonaturController::class);
+
+    // akademik
+    Route::resource('kelas', KelasController::class)->parameters([
+    'kelas' => 'kelas'
+    ]);;
     
-    Route::get('/guru', [guruController::class, 'index'])->name('guru');
-    Route::get('/kepengurusan', [kepengurusanController::class, 'index'])->name('kepengurusan');
-    Route::get('/donatur', [donaturController::class, 'index'])->name('donatur');
-    Route::get('/infaq', [infaqController::class, 'index'])->name('infaq');
-    // Route::get('/berita', [beritaController::class, 'index'])->name('berita');
-    // Route::get('/galeri', [galeriController::class, 'index'])->name('galeri');
+    // mapel
+    Route::resource('mapel', MapelController::class);
+
+    // infaq
+    Route::resource('infaq', InfaqController::class);
+
+    // Route::resource('berita', BeritaController::class);
+    
+    // Route::resource('galeri', GaleriController::class);
 
     Route::get('/admin/dashboard', function () {
         return view('welcome');
