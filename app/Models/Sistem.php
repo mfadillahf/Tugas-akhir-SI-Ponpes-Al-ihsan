@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Sistem extends Model
 {
     use HasFactory;
-    protected $table = 'sistem';
+    protected $table = 'sistems';
     protected $primaryKey = 'id';
     protected $fillable = ['judul', 'deskripsi', 'no_telp', 'alamat', 'email'];
 }

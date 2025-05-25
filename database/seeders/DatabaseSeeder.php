@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             JenisUserSeeder::class,
             RolePermissionSeeder::class,
             UserSeeder::class,
+            JenisAgendaSeeder::class,
         ]);
     }
 }

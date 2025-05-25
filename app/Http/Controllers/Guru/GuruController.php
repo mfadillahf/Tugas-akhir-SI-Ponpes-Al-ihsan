@@ -28,7 +28,7 @@ class GuruController extends Controller
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed|min:6',
             'nama' => 'required',
-            'no_telepon' => 'required',
+            'no_telepon' => 'required|string|max:14|regex:/^08\d{8,13}$/',
             'email' => 'nullable|email|unique:gurus,email',
             'nip' => 'nullable|unique:gurus,nip',
             'tanggal_lahir' => 'required|date',
@@ -55,7 +55,7 @@ class GuruController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('Guru.index')->with('success', 'Guru berhasil ditambahkan.');
+            return redirect()->route('guru.index')->with('success', 'Guru berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal menambahkan guru: ' . $e->getMessage()]);
@@ -76,7 +76,7 @@ class GuruController extends Controller
             'username' => 'required|unique:users,username,' . $guru->user->id_user . ',id_user',
             'password' => 'nullable|confirmed|min:6',
             'nama' => 'required',
-            'no_telepon' => 'required',
+            'no_telepon' => 'required|string|max:14|regex:/^08\d{8,13}$/',
             'email' => 'nullable|email|unique:gurus,email,' . $id . ',id_guru',
             'nip' => 'nullable|unique:gurus,nip,' . $id . ',id_guru',
             'tanggal_lahir' => 'required|date',
@@ -101,7 +101,7 @@ class GuruController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('Guru.index')->with('success', 'Guru berhasil diupdate.');
+            return redirect()->route('guru.index')->with('success', 'Guru berhasil diupdate.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal update guru: ' . $e->getMessage()]);
@@ -113,7 +113,7 @@ class GuruController extends Controller
         try {
             $guru = Guru::findOrFail($id);
             $guru->user()->delete(); // cascade
-            return redirect()->route('Guru.index')->with('success', 'Guru berhasil dihapus.');
+            return redirect()->route('guru.index')->with('success', 'Guru berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus guru: ' . $e->getMessage()]);
         }

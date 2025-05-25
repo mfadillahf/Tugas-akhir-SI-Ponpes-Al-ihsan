@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Donatur extends Model
 {
     use HasFactory;
-    protected $table = 'donatur';
+    protected $table = 'donaturs';
     protected $primaryKey = 'id_donatur';
     protected $fillable = ['id_user', 'nama', 'alamat', 'no_telepon', 'email'];
 

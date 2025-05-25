@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Galeri extends Model
 {
     use HasFactory;
-    protected $table = 'galeri';
+    protected $table = 'galeris';
     protected $primaryKey = 'id_galeri';
     protected $fillable = ['deskripsi', 'foto', 'tanggal'];
 }

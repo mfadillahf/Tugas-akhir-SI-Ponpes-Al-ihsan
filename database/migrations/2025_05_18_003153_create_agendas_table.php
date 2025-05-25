@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('id_agenda');
             $table->unsignedBigInteger('id_jenis_agenda');
             $table->char('judul', 50);
-            $table->date('tanggal');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_akhir');
             $table->string('deskripsi', 255)->nullable();
             $table->timestamps();
 

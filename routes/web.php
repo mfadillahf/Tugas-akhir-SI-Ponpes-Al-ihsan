@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // donatur
     Route::resource('donatur', DonaturController::class);
+    Route::get('donatur/{id}/detail', [DonaturController::class, 'showDetail'])->name('donatur.showDetail');
 
     // akademik
     Route::resource('kelas', KelasController::class)->parameters([
