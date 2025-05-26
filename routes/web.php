@@ -49,13 +49,19 @@ Route::middleware(['auth'])->group(function () {
     
     // mapel
     Route::resource('mapel', MapelController::class);
+    Route::get('mapel/{id}/detail', [MapelController::class, 'showDetail'])->name('mapel.showDetail');
 
     // infaq
     Route::resource('infaq', InfaqController::class);
 
-    // Route::resource('berita', BeritaController::class);
+    // sistem
+    Route::resource('berita', BeritaController::class);
+    Route::get('berita/{id}/detail', [BeritaController::class, 'showDetail'])->name('berita.showDetail');
     
-    // Route::resource('galeri', GaleriController::class);
+    Route::resource('galeri', GaleriController::class);
+    Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
+
+    
 
     Route::get('/admin/dashboard', function () {
         return view('welcome');

@@ -1,7 +1,7 @@
 @extends('layouts.App')
 
 @section('title')
-Santri
+Mapel
 @endsection
 
 @section('content')
@@ -42,7 +42,7 @@ Santri
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
                             <h3 class="card-title mb-0 me-auto">Mapel</h3>
-                            <a href="#" class="btn btn-primary btn-sm">+ Tambah Mapel</a>
+                        <a href="{{ route('mapel.create') }}" class="btn btn-primary btn-sm">+ Tambah Mapel</a>
                         </div>
 
                         <div class="card-body">
@@ -58,29 +58,36 @@ Santri
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {{-- @foreach($mapels as $m)
-                                    <tr>
-                                        <td>{{ $m->mapel }}</td>
-                                        <td>{{ $m->guru->nama ?? '-' }}</td>
-                                        <td>{{ $m->deskripsi }}</td>
-                                        <td>
-                                            <a href="{{ route('mapel.edit', $m->id_mapel) }}">Edit</a>
-                                            <form action="{{ route('mapel.destroy', $m->id_mapel) }}" method="POST" style="display:inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button onclick="return confirm('Yakin ingin hapus?')">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
+                                @forelse ($mapel as $key => $m)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $m->mapel }}</td>
+                                                <td>{{ $m->guru->nama ?? '-' }}</td>
+                                                <td>{{ $m->Deskripsi }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $m->id_mapel }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                                        Detail
+                                                    </button>
+                                                    <a href="{{ route('mapel.edit', $m->id_mapel) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('mapel.destroy', $m->id_mapel) }}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus mapel ini?')">Hapus</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">Data mapel belum tersedia.</td>
+                                            </tr>
+                                        @endforelse
                                 </tbody>
                                 </table>
                             </div>
                         </div>
 
                         <div class="card-footer clearfix">
-                            {{-- Kalau kamu pakai pagination: --}}
-                            {{-- {{ $mapel->links() }} --}}
+                            {{ $mapel->links() }}
                         </div>
                     </div>
                 </div>
@@ -88,4 +95,62 @@ Santri
         </div>
     </div>
 </main>
+
+{{-- modal detail mapel --}}
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Detail donatur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+        var mapelId = $(this).data('id');
+        console.log('Tombol diklik, ID:', mapelId);
+
+        $.ajax({
+            url: '/mapel/' + mapelId + '/detail',
+            type: 'GET',
+            success: function(response) {
+                console.log('Response dari server:', response);
+
+                var modalContent = `
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Mapel</th>
+                                <td>${response.mapel}</td>
+                            </tr>
+                            <tr>
+                                <th>Guru</th>
+                                <td>${response.guru.nama ?? '-'}</td>
+                            </tr>
+                            <tr>
+                                <th>Deskripsi</th>
+                                <td>${response.deskripsi}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                $('#modalBody').html(modalContent);
+            },
+            error: function() {
+                alert('Gagal mengambil data detail mapel.');
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

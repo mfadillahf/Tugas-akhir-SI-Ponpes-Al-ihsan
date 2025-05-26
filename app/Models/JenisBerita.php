@@ -12,6 +12,6 @@ class JenisBerita extends Model
     protected $primaryKey = 'id_jenis_berita';
     protected $fillable = ['kategori'];
 
-    public function berita() { return $this->hasMany(berita::class, 'id_jenis_berita'); }
+    public function berita() { return $this->hasMany(Berita::class, 'id_jenis_berita'); }
 
 }
