@@ -58,20 +58,20 @@ Berita
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {{-- @forelse ($berita as $key => $ga)
+                                @forelse ($berita as $key => $be)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $ga->deskripsi }}</td>
+                                                <td>{{ $be->isi }}</td>
                                                 <td>
-                                                    <img src="{{ asset('storage/berita/' . $ga->foto) }}" alt="Foto berita" style="max-width: 150px;">
+                                                    <img src="{{ asset('storage/berita/' . $be->foto) }}" alt="Foto berita" style="max-width: 150px;">
                                                 </td>
-                                                <td>{{ $ga->tanggal}}</td>
+                                                <td>{{ $be->tanggal}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $ga->id_berita }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $be->id_berita }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                                                         Detail
                                                     </button>
-                                                    <a href="{{ route('berita.edit', $ga->id_berita) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('berita.destroy', $ga->id_berita) }}" method="POST" style="display:inline-block;">
+                                                    <a href="{{ route('berita.edit', $be->id_berita) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('berita.destroy', $be->id_berita) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus berita ini?')">Hapus</button>
@@ -82,7 +82,7 @@ Berita
                                             <tr>
                                                 <td colspan="7" class="text-center">Data berita belum tersedia.</td>
                                             </tr>
-                                        @endforelse --}}
+                                        @endforelse
                                 </tbody>
                                 </table>
                             </div>
@@ -132,8 +132,18 @@ Berita
                     <table class="table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <th>Deskripsi</th>
-                                <td>${response.deskripsi}</td>
+                                <th>Judul</th>
+                                <td>${response.judul}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Jenis Berita</th>
+                                <td>${response.kategori}</td>
+                            </tr>
+
+                            <tr>
+                                <th>isi</th>
+                                <td>${response.isi}</td>
                             </tr>
                             <tr>
                                 <th>Foto</th>
@@ -143,6 +153,13 @@ Berita
                                 <th>Tanggal</th>
                                 <td>${response.tanggal}</td>
                             </tr>
+
+                            <tr>
+                                <th>Penulis</th>
+                                <td>${response.penulis}</td>
+                            </tr>
+
+                            
                         </tbody>
                 `;
                 $('#modalBody').html(modalContent);

@@ -35,7 +35,8 @@
               </p>
             </a>
           </li>
-
+        
+        @role('admin')
           <li class="nav-header">Administrasi</li>
           <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
@@ -143,6 +144,35 @@
               </p>
             </a>
           </li>
+        @endrole
+
+        @role('guru')
+          <li class="nav-header">Guru</li>
+          <li class="nav-item">
+            <a href="{{ route('kelas.index') }}" class="nav-link">
+              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <p>
+                Kelas
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('mapel.index') }}" class="nav-link">
+              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <p>
+                Mapel
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('santri.index') }}" class="nav-link">
+              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <p>
+                Santri
+              </p>
+            </a>
+          </li>
+        @endrole
 
 
         </ul>

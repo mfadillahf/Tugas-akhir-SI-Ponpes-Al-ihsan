@@ -14,4 +14,5 @@ class Berita extends Model
 
     public function jenisBerita() { return $this->belongsTo(JenisBerita::class, 'id_jenis_berita'); }
     public function user() { return $this->belongsTo(User::class, 'id_user'); }
+    
 }

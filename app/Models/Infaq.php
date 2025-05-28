@@ -12,5 +12,5 @@ class Infaq extends Model
     protected $primaryKey = 'id_infaq';
     protected $fillable = ['id_donatur', 'nominal', 'tanggal', 'keterangan'];
 
-    public function donatur() { return $this->belongsTo(donatur::class, 'id_donatur'); }
+    public function donatur() { return $this->belongsTo(Donatur::class, 'id_donatur'); }
 }

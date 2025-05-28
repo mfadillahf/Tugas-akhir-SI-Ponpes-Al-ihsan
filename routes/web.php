@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Agenda\AgendaController;
 use App\Http\Controllers\Akademik\KelasController;
 use App\Http\Controllers\Akademik\MapelController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Infaq\InfaqController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
 use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
+
 
 
 
@@ -31,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
 
     // guru
-    Route::resource('guru', GuruController::class);
+    Route::resource('guru', GuruController::class)->except(['show']);
     Route::get('guru/{id}/detail', [GuruController::class, 'showDetail'])->name('guru.showDetail');
 
     // kepengurusan
@@ -51,6 +53,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mapel', MapelController::class);
     Route::get('mapel/{id}/detail', [MapelController::class, 'showDetail'])->name('mapel.showDetail');
 
+    // agenda
+    Route::resource('agenda', AgendaController::class);
+
     // infaq
     Route::resource('infaq', InfaqController::class);
 
@@ -66,4 +71,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('welcome');
     })->name('dashboard.admin');
+
+    // Route::get('/santri/dashboard', function () {
+    //     return view('welcome');
+    // })->name('dashboard.santri');
+
+    Route::get('/guru/dashboard', function () {
+        return view('DashboardGuru');
+    })->name('dashboard.guru');
 });

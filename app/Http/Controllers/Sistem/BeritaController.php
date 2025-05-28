@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Sistem;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\JenisBerita;
-use App\Models\Berita;
 use App\Models\User;
+use App\Models\Berita;
+use App\Models\JenisBerita;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
@@ -14,70 +16,112 @@ class BeritaController extends Controller
     public function index()
     {
         $berita = Berita::with(['user', 'jenisBerita'])->latest()->paginate(5);
-        return view('sistem.berita', compact('berita'));
+        return view('Sistem.Berita', compact('berita'));
     }
 
     public function create()
     {
-        $users = User::all();
-        $jenisBeritas = JenisBerita::all();
-        return view('sistem.beritacreate', compact('users', 'jenisBeritas'));
+        $jenisBerita = JenisBerita::all();
+        return view('Sistem.BeritaCreate', compact('jenisBerita'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_user' => 'required|exists:users,id_user',
+        $request->validate([
             'id_jenis_berita' => 'required|exists:jenis_beritas,id_jenis_berita',
             'judul' => 'required|max:50',
             'isi' => 'required',
             'tanggal' => 'required|date',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $data = [
+            'id_user' => Auth::user()->id_user,
+            'id_jenis_berita' => $request->id_jenis_berita,
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+            'tanggal' => $request->tanggal,
+        ];
+
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('berita', 'public');
+            $file = $request->file('foto');
+            $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/berita', $filename);
+            $data['foto'] = $filename;
         }
 
-        Berita::create($validated);
+        Berita::create($data);
+
         return redirect()->route('berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
-    public function edit(Berita $berita)
+    public function edit($id)
     {
-        $users = User::all();
-        $jenisBeritas = JenisBerita::all();
-        return view('berita.edit', compact('berita', 'users', 'jenisBeritas'));
+        $berita = Berita::findOrFail($id);
+        $jenisBerita = JenisBerita::all();
+        return view('Sistem.BeritaEdit', compact('berita', 'jenisBerita'));
     }
 
-    public function update(Request $request, Berita $berita)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'id_user' => 'required|exists:users,id_user',
+        $berita = Berita::findOrFail($id);
+
+        $request->validate([
             'id_jenis_berita' => 'required|exists:jenis_beritas,id_jenis_berita',
             'judul' => 'required|max:50',
             'isi' => 'required',
             'tanggal' => 'required|date',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $data = [
+            'id_user' => Auth::user()->id_user,
+            'id_jenis_berita' => $request->id_jenis_berita,
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+            'tanggal' => $request->tanggal,
+        ];
+
         if ($request->hasFile('foto')) {
-            if ($berita->foto) {
-                Storage::disk('public')->delete($berita->foto);
+            if ($berita->foto && Storage::exists('public/berita/' . $berita->foto)) {
+                Storage::delete('public/berita/' . $berita->foto);
             }
-            $validated['foto'] = $request->file('foto')->store('berita', 'public');
+
+            $file = $request->file('foto');
+            $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/berita', $filename);
+            $data['foto'] = $filename;
         }
 
-        $berita->update($validated);
+        $berita->update($data);
+
         return redirect()->route('berita.index')->with('success', 'Berita berhasil diperbarui.');
     }
 
-    public function destroy(Berita $berita)
+    public function destroy($id)
     {
-        if ($berita->foto) {
-            Storage::disk('public')->delete($berita->foto);
+        $berita = Berita::findOrFail($id);
+
+        if ($berita->foto && Storage::exists('public/berita/' . $berita->foto)) {
+            Storage::delete('public/berita/' . $berita->foto);
         }
+
         $berita->delete();
+
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus.');
+    }
+
+    public function showDetail($id)
+    {
+        $berita = Berita::with(['user', 'jenisBerita'])->findOrFail($id);
+
+        return response()->json([
+            'judul' => $berita->judul,
+            'isi' => $berita->isi,
+            'kategori' => optional($berita->jenisBerita)->kategori,
+            'tanggal' => \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d F Y'),
+            'foto' => asset('storage/berita/' . $berita->foto),
+            'penulis' => optional($berita->user)->username,
+        ]);
     }
 }

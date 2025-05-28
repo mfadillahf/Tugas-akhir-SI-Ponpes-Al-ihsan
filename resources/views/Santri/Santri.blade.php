@@ -75,12 +75,14 @@ Santri
                                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $s->id_santri }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                                                         Detail
                                                     </button>
-                                                    <a href="{{ route('santri.edit', $s->id_santri) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('santri.destroy', $s->id_santri) }}" method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus santri ini?')">Hapus</button>
-                                                    </form>
+                                                    @if(auth()->user()->hasRole('admin'))
+                                                        <a href="{{ route('santri.edit', $s->id_santri) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                        <form action="{{ route('santri.destroy', $s->id_santri) }}" method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus santri ini?')">Hapus</button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @empty
