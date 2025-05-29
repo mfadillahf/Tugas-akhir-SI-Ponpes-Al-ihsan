@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         $admin = User::create([
             'id_jenis_user' => 1,
             'username' => 'admin',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
         ]);
         $admin->assignRole('admin');
 
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         $guru = User::create([
             'id_jenis_user' => 2,
             'username' => 'guru',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
         ]);
         $guru->assignRole('guru');
 
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
         $donatur = User::create([
             'id_jenis_user' => 3,
             'username' => 'donatur',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
         ]);
         $donatur->assignRole('donatur');
 
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
         $santri = User::create([
             'id_jenis_user' => 4,
             'username' => 'santri',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
         ]);
         $santri->assignRole('santri');
     }

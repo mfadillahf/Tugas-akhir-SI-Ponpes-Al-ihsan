@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
 {
-       public function index()
+    public function index()
     {
         $guru = Guru::with('user')->paginate(10);
         return view('Guru.Guru', compact('guru'));

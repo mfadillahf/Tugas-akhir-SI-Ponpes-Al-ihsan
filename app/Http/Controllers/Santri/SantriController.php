@@ -26,6 +26,9 @@ class SantriController extends Controller
 
     public function store(Request $request)
     {
+    //     if (!auth()->user()->hasRole('admin')) {
+    //     abort(403, 'Anda tidak memiliki akses untuk menambah santri.');
+    // }
         $request->validate([
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed|min:6',

@@ -34,7 +34,9 @@ Santri
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
                             <h3 class="card-title mb-0 me-auto">Santri</h3>
+                            @role('admin')
                             <a href="{{ route('santri.create') }}" class="btn btn-primary btn-sm">+ Tambah Santri</a>
+                            @endrole
                         </div>
 
                         <div class="card-body">

@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
     // agenda
     Route::resource('agenda', AgendaController::class);
+    Route::get('agenda/{id}/detail', [AgendaController::class, 'showDetail'])->name('agenda.showDetail');
 
     // infaq
     Route::resource('infaq', InfaqController::class);
