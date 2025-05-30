@@ -12,6 +12,7 @@ use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
 use App\Http\Controllers\Akademik\KelasController;
 use App\Http\Controllers\Akademik\MapelController;
+use App\Http\Controllers\Akademik\NilaiController;
 use App\Http\Controllers\Donatur\DonaturController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
@@ -53,6 +54,12 @@ Route::middleware(['auth'])->group(function () {
     // mapel
     Route::resource('mapel', MapelController::class);
     Route::get('mapel/{id}/detail', [MapelController::class, 'showDetail'])->name('mapel.showDetail');
+
+    // nilai
+    Route::resource('nilai', NilaiController::class);
+
+    // hapalan
+    Route::resource('hapalan', \App\Http\Controllers\Akademik\HapalanController::class);
 
     // agenda
     Route::resource('agenda', AgendaController::class);

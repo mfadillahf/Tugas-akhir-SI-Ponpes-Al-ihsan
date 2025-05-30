@@ -50,14 +50,14 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{ route('santri.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-circle"></i>
+                  <i class="bi bi-people-fill"></i>
                   <p>Santri</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{ route('kepengurusan.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-circle"></i>
+                  <i class="bi bi-people-fill"></i>
                   <p>
                     Kepengurusan
                   </p>
@@ -66,14 +66,14 @@
 
               <li class="nav-item">
                 <a href="{{ route('guru.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-circle"></i>
+                <i class="bi bi-people-fill"></i>
                   <p>Guru</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{ route('donatur.index') }}" class="nav-link">
-                  <i class="nav-icon bi bi-circle"></i>
+                  <i class="bi bi-people-fill"></i>
                   <p>Donatur</p>
                 </a>
               </li>
@@ -84,15 +84,16 @@
           <li class="nav-item">
             <li class="nav-item">
             <a href="{{ route('kelas.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <i class="bi bi-door-closed-fill"></i>
               <p>
                 Kelas
               </p>
             </a>
           </li>
 
+          <li class="nav-item">
             <a href="{{ route('mapel.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+            <i class="bi bi-book"></i>
               <p>
                 Mapel
               </p>
@@ -100,8 +101,17 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+            <a href="{{ route('nilai.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
+              <p>
+                Nilai
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+             <a href="{{ route('hapalan.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
               <p>
                 Hapalan
               </p>
@@ -111,7 +121,7 @@
           <li class="nav-header">Agenda Ponpes</li>
           <li class="nav-item">
             <a href="{{ route('agenda.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-palette"></i>
+              <i class="bi bi-calendar-event-fill"></i>
               <p>Agenda</p>
             </a>
           </li>
@@ -119,7 +129,7 @@
           <li class="nav-header">Keuangan</li>
           <li class="nav-item">
             <a href="{{ route('infaq.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <i class="bi bi-cash-stack"></i>
               <p>
                 Infaq
               </p>
@@ -129,7 +139,7 @@
           <li class="nav-header">Sistem</li>
           <li class="nav-item">
             <a href="{{ route('berita.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <i class="bi bi-newspaper"></i>
               <p>
                 Berita
               </p>
@@ -138,7 +148,7 @@
 
           <li class="nav-item">
             <a href="{{ route('galeri.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+              <i class="bi bi-image-fill"></i>
               <p>
                 Galeri
               </p>
