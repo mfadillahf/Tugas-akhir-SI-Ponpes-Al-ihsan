@@ -1,18 +1,19 @@
 <?php
 
 
-use App\Http\Controllers\Agenda\AgendaController;
-use App\Http\Controllers\Akademik\KelasController;
-use App\Http\Controllers\Akademik\MapelController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Santri\SantriController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guru\GuruController;
-use App\Http\Controllers\Donatur\DonaturController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Infaq\InfaqController;
-use App\Http\Controllers\Kepengurusan\KepengurusanController;
+use App\Http\Controllers\Agenda\AgendaController;
+use App\Http\Controllers\Santri\SantriController;
 use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
+use App\Http\Controllers\Akademik\KelasController;
+use App\Http\Controllers\Akademik\MapelController;
+use App\Http\Controllers\Donatur\DonaturController;
+use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
 
 
@@ -69,9 +70,7 @@ Route::middleware(['auth'])->group(function () {
 
     
 
-    Route::get('/admin/dashboard', function () {
-        return view('welcome');
-    })->name('dashboard.admin');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard.admin');
 
     // Route::get('/santri/dashboard', function () {
     //     return view('welcome');

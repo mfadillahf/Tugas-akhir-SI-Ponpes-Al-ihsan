@@ -13,12 +13,12 @@ class MapelController extends Controller
     {
         $mapel = Mapel::with('guru')->paginate(10);
         $guru = Mapel::select('id_guru')->distinct()->get();
-        return view('Akademik.mapel',compact('mapel'));
+        return view('Mapel.mapel',compact('mapel'));
     }
     public function create()
     {
         $guru = Guru::all();
-        return view('Akademik.MapelCreate', compact('guru'));
+        return view('Mapel.MapelCreate', compact('guru'));
     }
 
     public function store(Request $request)
@@ -38,7 +38,7 @@ class MapelController extends Controller
     {
         $mapel = Mapel::findOrFail($id);
         $guru = Guru::all();
-        return view('Akademik.MapelEdit', compact('mapel', 'guru'));
+        return view('Mapel.MapelEdit', compact('mapel', 'guru'));
     }
 
     public function update(Request $request, $id)

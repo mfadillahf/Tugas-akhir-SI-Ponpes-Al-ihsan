@@ -11,12 +11,12 @@ class KelasController extends Controller
      public function index()
     {
         $kelas = Kelas::all();
-        return view('akademik.kelas', compact('kelas'));
+        return view('Kelas.kelas', compact('kelas'));
     }
 
     public function create()
     {
-        return view('akademik.kelascreate');
+        return view('Kelas.kelascreate');
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class KelasController extends Controller
 
     public function edit(Kelas $kelas)
     {
-        return view('akademik.KelasEdit', compact('kelas'));
+        return view('Kelas.KelasEdit', compact('kelas'));
     }
 
     public function update(Request $request, Kelas $kelas)

@@ -43,6 +43,8 @@ class DonaturController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            $user->assignRole('donatur');
+
             Donatur::create([
                 'id_user' => $user->id_user,
                 'nama' => $request->nama,

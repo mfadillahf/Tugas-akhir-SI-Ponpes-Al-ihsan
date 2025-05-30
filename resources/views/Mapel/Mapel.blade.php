@@ -63,7 +63,7 @@ Mapel
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $m->mapel }}</td>
                                                 <td>{{ $m->guru->nama ?? '-' }}</td>
-                                                <td>{{ $m->Deskripsi }}</td>
+                                                <td>{{ $m->deskripsi }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $m->id_mapel }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                                                         Detail

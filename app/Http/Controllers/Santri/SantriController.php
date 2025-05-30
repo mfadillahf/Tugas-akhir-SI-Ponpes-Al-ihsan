@@ -59,6 +59,8 @@ class SantriController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            $user->assignRole('santri');
+
             Santri::create([
                 'id_user' => $user->id_user,
                 'id_kelas' => $request->id_kelas,
@@ -80,7 +82,7 @@ class SantriController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('Santri.index')->with('success', 'Santri berhasil ditambahkan.');
+            return redirect()->route('santri.index')->with('success', 'Santri berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal menambahkan santri: ' . $e->getMessage()]);
@@ -148,7 +150,7 @@ class SantriController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('Santri.index')->with('success', 'Santri berhasil diupdate.');
+            return redirect()->route('santri.index')->with('success', 'Santri berhasil diupdate.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal update santri: ' . $e->getMessage()]);
@@ -160,7 +162,7 @@ class SantriController extends Controller
         try {
             $santri = Santri::findOrFail($id);
             $santri->user()->delete(); // otomatis delete santri karena foreign key cascade
-            return redirect()->route('Santri.index')->with('success', 'Santri berhasil dihapus.');
+            return redirect()->route('santri.index')->with('success', 'Santri berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus santri: ' . $e->getMessage()]);
         }

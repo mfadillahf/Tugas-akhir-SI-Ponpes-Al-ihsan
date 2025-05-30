@@ -44,6 +44,8 @@ class GuruController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
+            $user->assignRole('guru');
+
             Guru::create([
                 'id_user' => $user->id_user,
                 'nama' => $request->nama,
