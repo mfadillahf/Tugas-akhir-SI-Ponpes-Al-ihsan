@@ -22,12 +22,14 @@ class RolePermissionSeeder extends Seeder
             'kelola agenda',
             'lihat berita',
             'kelola berita',
-            'lihat nilai',
-            'kelola nilai',
             'lihat infaq',
-            'kelola infaq',
+            'tambah infaq',
             'lihat galeri',
             'kelola galeri',
+            'lihat nilai',
+            'kelola nilai',
+            'lihat hapalan',
+            'kelola hapalan',
         ];
 
         foreach ($permissions as $perm) {
@@ -40,16 +42,20 @@ class RolePermissionSeeder extends Seeder
         $guru->syncPermissions([
             'lihat nilai',
             'kelola nilai',
+            'lihat hapalan',
+            'kelola hapalan',
         ]);
 
         $donatur->syncPermissions([
             'lihat infaq',
+            'tambah infaq',
         ]);
 
         $santri->syncPermissions([
             'lihat nilai',
             'lihat berita',
             'lihat galeri',
+            'lihat hapalan',
         ]);
     }
 }

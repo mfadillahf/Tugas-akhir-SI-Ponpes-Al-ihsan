@@ -30,6 +30,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+
     // santri
     Route::resource('santri', SantriController::class);
     Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
@@ -43,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('kepengurusan/{id}/detail', [KepengurusanController::class, 'showDetail'])->name('kepengurusan.showDetail');
 
     // donatur
-    Route::resource('donatur', DonaturController::class);
+    Route::resource('donatur', DonaturController::class)->except(['show']);;
     Route::get('donatur/{id}/detail', [DonaturController::class, 'showDetail'])->name('donatur.showDetail');
 
     // akademik
@@ -86,4 +88,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru/dashboard', function () {
         return view('DashboardGuru');
     })->name('dashboard.guru');
+
+    Route::get('/donatur/dashboard', function () {
+        return view('DashboardDonatur');
+    })->name('dashboard.donatur');
 });

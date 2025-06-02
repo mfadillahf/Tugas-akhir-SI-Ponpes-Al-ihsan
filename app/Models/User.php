@@ -25,7 +25,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function jenisUser() { return $this->belongsTo(jenisUser::class, 'id_jenis_user');}
+    public function jenisUser() { return $this->belongsTo(JenisUser::class, 'id_jenis_user');}
     public function santri() { return $this->hasOne(santri::class, 'id_user');}
     public function guru() { return $this->hasOne(guru::class, 'id_user');}
     public function donatur() { return $this->hasOne(donatur::class, 'id_user');}

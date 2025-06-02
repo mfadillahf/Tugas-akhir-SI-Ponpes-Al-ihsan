@@ -17,7 +17,7 @@ Infaq
                 <div class="col-sm-6"><h3 class="mb-0">Data Infaq</h3></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Infaq</li>
                     </ol>
                 </div>
@@ -31,90 +31,135 @@ Infaq
             <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
+
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
                 <!--begin::Row-->
                 <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                    <div class="card-header"><h3 class="card-title">Infaq</h3></div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Task</th>
-                                <th>Progress</th>
-                                <th style="width: 40px">Label</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="align-middle">
-                                <td>1.</td>
-                                <td>Update software</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div
-                                        class="progress-bar progress-bar-danger"
-                                        style="width: 55%"
-                                    ></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-danger">55%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>2.</td>
-                                <td>Clean database</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                    <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-warning">70%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>3.</td>
-                                <td>Cron job running</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-primary">30%</span></td>
-                                </tr>
-                                <tr class="align-middle">
-                                <td>4.</td>
-                                <td>Fix and squish bugs</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge text-bg-success">90%</span></td>
-                                </tr>
-                            </tbody>
-                            </table>
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="card-title mb-0 me-auto">Infaq</h3>
+                        @role('donatur')
+                        <a href="{{ route('infaq.create') }}" class="btn btn-primary btn-sm">+ Tambah Infaq</a>
+                        @endrole
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Donatur</th>
+                                        <th>nominal</th>
+                                        <th>Tanggal</th>
+                                        <th>Keterangan</th>
+                                        {{-- <th>Aksi</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @forelse ($infaqs as $key => $infaq)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $infaq->donatur->nama ?? 'Tidak diketahui' }}</td>
+                                                <td>Rp {{ number_format($infaq->nominal, 0, ',', '.') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($infaq->tanggal)->format('d M Y') }}</td>
+                                                <td>{{ $infaq->keterangan }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">Data infaq belum tersedia.</td>
+                                            </tr>
+                                        @endforelse
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card-footer clearfix">
+                            {{-- {{ $infaq->links() }} --}}
                         </div>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-end">
-                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                        </ul>
-                    </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-                </div>
-                </div>
-                <!--end::Row-->
+{{-- modal detail infaq --}}
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Detail infaq</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!--end::Container-->
+            <div class="modal-body" id="modalBody">
+                
             </div>
-            <!--end::App Content-->
-        </main>
-        <!--end::App Main-->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+        var infaqId = $(this).data('id');
+        console.log('Tombol diklik, ID:', infaqId);
+
+        $.ajax({
+            url: '/infaq/' + infaqId + '/detail',
+            type: 'GET',
+            success: function(response) {
+                console.log('Response dari server:', response);
+
+                var modalContent = `
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Judul</th>
+                                <td>${response.judul}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Jenis infaq</th>
+                                <td>${response.kategori}</td>
+                            </tr>
+
+                            <tr>
+                                <th>isi</th>
+                                <td>${response.isi}</td>
+                            </tr>
+                            <tr>
+                                <th>Foto</th>
+                                <td><img src="${response.foto}" alt="Foto infaq" style="max-width: 150px;"></td>
+                            </tr>
+                            <tr>
+                                <th>Tanggal</th>
+                                <td>${response.tanggal}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Penulis</th>
+                                <td>${response.penulis}</td>
+                            </tr>
+
+                            
+                        </tbody>
+                `;
+                $('#modalBody').html(modalContent);
+            },
+            error: function() {
+                alert('Gagal mengambil data detail infaq.');
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

@@ -42,8 +42,11 @@ Hapalan
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center">
                             <h3 class="card-title mb-0 me-auto">hapalan</h3>
+                        @role('guru')
                         <a href="{{ route('hapalan.create') }}" class="btn btn-primary btn-sm">+ Tambah Hapalan</a>
+                        @endrole
                         </div>
+
 
                         <div class="card-body">
                             <div class="table-responsive">

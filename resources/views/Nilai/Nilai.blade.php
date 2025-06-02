@@ -72,7 +72,9 @@ Daftar Nilai Santri
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h3 class="card-title mb-0 me-auto">Daftar Nilai</h3>
+                    @role('guru')
                     <a href="{{ route('nilai.create') }}" class="btn btn-primary btn-sm">+ Tambah Nilai</a>
+                    @endrole
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

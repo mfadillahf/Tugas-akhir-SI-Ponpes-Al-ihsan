@@ -10,6 +10,14 @@ use App\Http\Controllers\Controller;
 
 class HapalanController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('role:guru');
+        $this->middleware('role:santri')->only(['index', 'show']);
+        // $this->middleware('role:admin')->except(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $hapalans = Hapalan::with(['santri', 'guru'])->latest()->paginate(10);

@@ -100,7 +100,7 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{ route('nilai.index') }}" class="nav-link">
               <i class="bi bi-journal-text"></i>
               <p>
@@ -110,13 +110,13 @@
           </li>
 
           <li class="nav-item">
-             <a href="{{ route('hapalan.index') }}" class="nav-link">
+            <a href="{{ route('hapalan.index') }}" class="nav-link">
               <i class="bi bi-journal-text"></i>
               <p>
                 Hapalan
               </p>
             </a>
-          </li>
+          </li> --}}
 
           <li class="nav-header">Agenda Ponpes</li>
           <li class="nav-item">
@@ -159,26 +159,31 @@
         @role('guru')
           <li class="nav-header">Guru</li>
           <li class="nav-item">
-            <a href="{{ route('kelas.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+            <a href="{{ route('nilai.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
               <p>
-                Kelas
+                Nilai
               </p>
             </a>
           </li>
+
           <li class="nav-item">
-            <a href="{{ route('mapel.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+            <a href="{{ route('hapalan.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
               <p>
-                Mapel
+                Hapalan
               </p>
             </a>
           </li>
+        @endrole
+
+        @role('donatur')
+          <li class="nav-header">Donatur</li>
           <li class="nav-item">
-            <a href="{{ route('santri.index') }}" class="nav-link">
-              <i class="nav-icon bi bi-box-seam-fill"></i>
+            <a href="{{ route('infaq.index') }}" class="nav-link">
+              <i class="bi bi-cash-stack"></i>
               <p>
-                Santri
+                Infaq
               </p>
             </a>
           </li>

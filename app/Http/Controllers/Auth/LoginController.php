@@ -40,7 +40,7 @@ class loginController extends Controller
         } elseif ($user->hasRole('donatur')) {
             return redirect()->route('dashboard.donatur');
         } else {
-            return redirect()->route('login')->with('error', 'Role tidak dikenal');
+            return redirect()->route('login')->with('error', 'User Tidak Terdaftar');
         }
     }
 
