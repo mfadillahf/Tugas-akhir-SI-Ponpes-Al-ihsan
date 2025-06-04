@@ -1,8 +1,6 @@
 @extends('layouts.App')
 
-@section('title')
-Tambah Nilai
-@endsection
+@section('title', 'Tambah Nilai')
 
 @section('content')
 <main class="app-main">
@@ -22,10 +20,23 @@ Tambah Nilai
 
     <div class="app-content">
         <div class="container-fluid">
+            
+            {{-- Tampilkan error session atau validasi --}}
             @if(session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Filter form GET --}}
             <form method="GET" action="{{ route('nilai.create') }}" class="card mb-4 p-3">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -33,7 +44,7 @@ Tambah Nilai
                         <select id="id_kelas" name="id_kelas" class="form-control" required>
                             <option value="">Pilih Kelas</option>
                             @foreach($kelasList as $kelas)
-                                <option value="{{ $kelas->id_kelas }}" {{ request('id_kelas') == $kelas->id_kelas ? 'selected' : '' }}>
+                                <option value="{{ $kelas->id_kelas }}" {{ old('id_kelas', $id_kelas) == $kelas->id_kelas ? 'selected' : '' }}>
                                     {{ $kelas->nama_kelas }}
                                 </option>
                             @endforeach
@@ -45,7 +56,7 @@ Tambah Nilai
                         <select id="id_mapel" name="id_mapel" class="form-control" required>
                             <option value="">Pilih Mapel</option>
                             @foreach($mapelList as $mapel)
-                                <option value="{{ $mapel->id_mapel }}" {{ request('id_mapel') == $mapel->id_mapel ? 'selected' : '' }}>
+                                <option value="{{ $mapel->id_mapel }}" {{ old('id_mapel', $id_mapel) == $mapel->id_mapel ? 'selected' : '' }}>
                                     {{ $mapel->mapel }}
                                 </option>
                             @endforeach
@@ -54,7 +65,7 @@ Tambah Nilai
 
                     <div class="col-md-3">
                         <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
-                        <input type="text" id="tahun_ajaran" name="tahun_ajaran" class="form-control" placeholder="2024/2025" value="{{ request('tahun_ajaran') }}" required>
+                        <input type="text" id="tahun_ajaran" name="tahun_ajaran" class="form-control" placeholder="2024/2025" value="{{ old('tahun_ajaran', $tahun_ajaran) }}" required>
                     </div>
 
                     <div class="col-md-2 d-grid">
@@ -63,47 +74,47 @@ Tambah Nilai
                 </div>
             </form>
 
+            {{-- Form input nilai --}}
+            @if($santris->count() > 0)
+                <form method="POST" action="{{ route('nilai.store') }}" class="card p-3">
+                    @csrf
+                    <input type="hidden" name="id_kelas" value="{{ $id_kelas }}">
+                    <input type="hidden" name="id_mapel" value="{{ $id_mapel }}">
+                    <input type="hidden" name="tahun_ajaran" value="{{ $tahun_ajaran }}">
 
-            @php
-                $id_kelas = request('id_kelas');
-                $id_mapel = request('id_mapel');
-                $tahun_ajaran = request('tahun_ajaran');
-                $santris = [];
-                if ($id_kelas && $id_mapel && $tahun_ajaran) {
-                    $santris = \App\Models\Santri::where('id_kelas', $id_kelas)->get();
-                }
-            @endphp
-
-            @if(count($santris) > 0)
-            <form method="POST" action="{{ route('nilai.store') }}" class="card p-3">
-                @csrf
-                <input type="hidden" name="id_mapel" value="{{ $id_mapel }}">
-                <input type="hidden" name="id_kelas" value="{{ $id_kelas }}">
-                <input type="hidden" name="tahun_ajaran" value="{{ $tahun_ajaran }}">
-
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nama Santri</th>
-                                <th>Nilai</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($santris as $santri)
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>{{ $santri->nama_lengkap }}</td>
-                                    <td>
-                                        <input type="number" name="nilai[{{ $santri->id_santri }}]" class="form-control" required>
-                                    </td>
+                                    <th>Nama Santri</th>
+                                    <th>Nilai</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach($santris as $santri)
+                                    <tr>
+                                        <td>{{ $santri->nama_lengkap }}</td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="nilai[{{ $santri->id_santri }}]"
+                                                class="form-control"
+                                                min="0" max="100"
+                                                value="{{ old('nilai.' . $santri->id_santri) }}"
+                                                required
+                                            >
+                                            @error('nilai.' . $santri->id_santri)
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                <button class="btn btn-success mt-3">Simpan Nilai</button>
-            </form>
+                    <button type="submit" class="btn btn-success mt-3">Simpan Nilai</button>
+                </form>
             @endif
         </div>
     </div>

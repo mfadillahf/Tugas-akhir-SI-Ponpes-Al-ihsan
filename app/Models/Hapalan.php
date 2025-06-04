@@ -12,6 +12,6 @@ class Hapalan extends Model
     protected $primaryKey = 'id_hapalan';
     protected $fillable = ['id_santri', 'id_guru', 'keterangan'];
 
-    public function santri() { return $this->belongsTo(santri::class, 'id_santri'); }
-    public function guru() { return $this->belongsTo(guru::class, 'id_guru'); }
+    public function santri() { return $this->belongsTo(Santri::class, 'id_santri'); }
+    public function guru() { return $this->belongsTo(Guru::class, 'id_guru'); }
 }

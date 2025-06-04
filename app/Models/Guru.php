@@ -13,6 +13,6 @@ class Guru extends Model
     protected $fillable = ['id_user', 'nama', 'no_telepon', 'email', 'nip', 'tanggal_lahir', 'jenis_kelamin'];
 
     public function user() { return $this->belongsTo(User::class, 'id_user'); }
-    public function hapalan() { return $this->hasMany(hapalan::class, 'id_guru'); }
-    public function mapel() { return $this->hasMany(mapel::class, 'id_guru'); }
+    public function hapalan() { return $this->hasMany(Hapalan::class, 'id_guru'); }
+    public function mapel() { return $this->hasMany(Mapel::class, 'id_guru'); }
 }

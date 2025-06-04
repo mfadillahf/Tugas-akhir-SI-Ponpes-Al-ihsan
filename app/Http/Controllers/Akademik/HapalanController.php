@@ -13,8 +13,8 @@ class HapalanController extends Controller
 
     public function __construct()
     {
-        $this->middleware('role:guru');
-        $this->middleware('role:santri')->only(['index', 'show']);
+        // $this->middleware('role:guru');
+        // $this->middleware('role:santri')->only(['index', 'show']);
         // $this->middleware('role:admin')->except(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     }
 

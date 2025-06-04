@@ -25,6 +25,7 @@ class JenisBeritaSeeder extends Seeder
                 ['id_jenis_berita' => 8, 'kategori' => 'kunjungan'],
                 ['id_jenis_berita' => 9, 'kategori' => 'renovasi / pembangunan'],
                 ['id_jenis_berita' => 10, 'kategori' => 'kerja sama / donasi'],
+                ['id_jenis_berita' => 11, 'kategori' => 'lainnya'],
             ]);
         }
     }

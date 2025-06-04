@@ -1,8 +1,6 @@
 @extends('layouts.App')
 
-@section('title')
-Daftar Nilai Santri
-@endsection
+@section('title', 'Daftar Nilai Santri')
 
 @section('content')
 <main class="app-main">
@@ -12,7 +10,7 @@ Daftar Nilai Santri
                 <div class="col-sm-6"><h3 class="mb-0">Nilai Santri</h3></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active">Nilai</li>
                     </ol>
                 </div>
@@ -26,10 +24,11 @@ Daftar Nilai Santri
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
+            {{-- Filter hanya untuk guru --}}
+            @role('guru')
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h3 class="card-title mb-0 me-auto">Filter Nilai</h3>
-                    
                 </div>
                 <div class="card-body">
                     <form method="GET" action="{{ route('nilai.index') }}">
@@ -56,7 +55,6 @@ Daftar Nilai Santri
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="col-md-3">
                                 <label>Tahun Ajaran</label>
                                 <input type="text" name="tahun_ajaran" class="form-control" value="{{ request('tahun_ajaran') }}" placeholder="2024/2025">
@@ -68,12 +66,13 @@ Daftar Nilai Santri
                     </form>
                 </div>
             </div>
+            @endrole
 
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center">
                     <h3 class="card-title mb-0 me-auto">Daftar Nilai</h3>
                     @role('guru')
-                    <a href="{{ route('nilai.create') }}" class="btn btn-primary btn-sm">+ Tambah Nilai</a>
+                        <a href="{{ route('nilai.create') }}" class="btn btn-primary btn-sm">+ Tambah Nilai</a>
                     @endrole
                 </div>
                 <div class="card-body">
@@ -82,23 +81,30 @@ Daftar Nilai Santri
                             <thead class="table-light">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Santri</th>
-                                    <th>Kelas</th>
+                                    @role('guru')
+                                        <th>Nama Santri</th>
+                                        <th>Kelas</th>
+                                    @endrole
                                     <th>Mapel</th>
                                     <th>Nilai</th>
                                     <th>Tahun Ajaran</th>
-                                    <th>Aksi</th>
+                                    @role('guru')
+                                        <th>Aksi</th>
+                                    @endrole
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($nilaiList as $key => $nl)
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $nl->santri->nama_lengkap }}</td>
-                                        <td>{{ $nl->santri->kelas->nama_kelas ?? '-' }}</td>
-                                        <td>{{ $nl->mapel->mapel }}</td>
+                                        <td>{{ $nilaiList->firstItem() + $key }}</td>
+                                        @role('guru')
+                                            <td>{{ $nl->santri->nama_lengkap }}</td>
+                                            <td>{{ $nl->santri->kelas->nama_kelas ?? '-' }}</td>
+                                        @endrole
+                                        <td>{{ $nl->mapel->mapel ?? '-' }}</td>
                                         <td>{{ $nl->nilai }}</td>
                                         <td>{{ $nl->tahun_ajaran }}</td>
+                                        @role('guru')
                                         <td>
                                             <a href="{{ route('nilai.edit', $nl->id_nilai) }}" class="btn btn-warning btn-sm">Edit</a>
                                             <form action="{{ route('nilai.destroy', $nl->id_nilai) }}" method="POST" style="display:inline-block;">
@@ -107,9 +113,10 @@ Daftar Nilai Santri
                                                 <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus nilai ini?')">Hapus</button>
                                             </form>
                                         </td>
+                                        @endrole
                                     </tr>
                                 @empty
-                                    <tr><td colspan="7" class="text-center">Data tidak ditemukan.</td></tr>
+                                    <tr><td colspan="{{ Auth::user()->hasRole('guru') ? 7 : 4 }}" class="text-center">Data tidak ditemukan.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>

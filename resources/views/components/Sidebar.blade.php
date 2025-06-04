@@ -100,24 +100,6 @@
             </a>
           </li>
 
-          {{-- <li class="nav-item">
-            <a href="{{ route('nilai.index') }}" class="nav-link">
-              <i class="bi bi-journal-text"></i>
-              <p>
-                Nilai
-              </p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="{{ route('hapalan.index') }}" class="nav-link">
-              <i class="bi bi-journal-text"></i>
-              <p>
-                Hapalan
-              </p>
-            </a>
-          </li> --}}
-
           <li class="nav-header">Agenda Ponpes</li>
           <li class="nav-item">
             <a href="{{ route('agenda.index') }}" class="nav-link">
@@ -175,10 +157,11 @@
               </p>
             </a>
           </li>
+          
         @endrole
 
         @role('donatur')
-          <li class="nav-header">Donatur</li>
+          <li class="nav-header">Infaq</li>
           <li class="nav-item">
             <a href="{{ route('infaq.index') }}" class="nav-link">
               <i class="bi bi-cash-stack"></i>
@@ -187,7 +170,49 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-header">profile</li>
+          <li class="nav-item">
+            <a href="{{ route('profile.edit') }}" class="nav-link">
+              <i class="bi bi-cash-stack"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
         @endrole
+
+        @role('santri')
+          <li class="nav-header">Santri</li>
+          <li class="nav-item">
+            <a href="{{ route('profile.edit') }}" class="nav-link">
+              <i class="bi bi-person-circle"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('hapalan.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
+              <p>
+                Hapalan
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('nilai.index') }}" class="nav-link">
+              <i class="bi bi-journal-text"></i>
+              <p>
+                Nilai
+              </p>
+            </a>
+          </li>
+          @endrole
+
+
 
 
         </ul>

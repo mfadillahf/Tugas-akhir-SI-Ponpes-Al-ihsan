@@ -14,6 +14,7 @@ use App\Http\Controllers\Akademik\KelasController;
 use App\Http\Controllers\Akademik\MapelController;
 use App\Http\Controllers\Akademik\NilaiController;
 use App\Http\Controllers\Donatur\DonaturController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
 
@@ -30,10 +31,16 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+
+    //dashboard
+    Route::middleware('role:admin')->get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin');
+    Route::middleware('role:santri')->get('/santri/dashboard', [DashboardController::class, 'santriDashboard'])->name('dashboard.santri');
+    Route::middleware('role:guru')->get('/guru/dashboard', [DashboardController::class, 'guruDashboard'])->name('dashboard.guru');
+    Route::middleware('role:donatur')->get('/donatur/dashboard', [DashboardController::class, 'donaturDashboard'])->name('dashboard.donatur');
 
     // santri
-    Route::resource('santri', SantriController::class);
+    Route::resource('santri', SantriController::class)->except(['show']);;
     Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
 
     // guru
@@ -77,19 +84,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
 
+    // profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     
 
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard.admin');
-
-    // Route::get('/santri/dashboard', function () {
-    //     return view('welcome');
-    // })->name('dashboard.santri');
-
-    Route::get('/guru/dashboard', function () {
-        return view('DashboardGuru');
-    })->name('dashboard.guru');
-
-    Route::get('/donatur/dashboard', function () {
-        return view('DashboardDonatur');
-    })->name('dashboard.donatur');
 });

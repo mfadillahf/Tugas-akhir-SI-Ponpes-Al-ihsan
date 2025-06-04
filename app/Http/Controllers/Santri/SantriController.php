@@ -128,6 +128,7 @@ class SantriController extends Controller
                 'username' => $request->username,
                 'password' => $request->filled('password') ? Hash::make($request->password) : $santri->user->password,
             ]);
+            
 
             $santri->update([
                 'id_kelas' => $request->id_kelas,
