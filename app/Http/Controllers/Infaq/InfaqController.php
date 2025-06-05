@@ -18,7 +18,24 @@ class InfaqController extends Controller
 
     public function index()
     {
-        $infaqs = Infaq::with('donatur')->latest()->get();
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            // Admin bisa melihat semua infaq
+            $infaqs = Infaq::with('donatur')->latest()->get();
+        } else {
+            // Donatur hanya bisa melihat infaq miliknya sendiri
+            $donatur = $user->donatur;
+            if (!$donatur) {
+                return back()->with('error', 'Akun ini belum terhubung dengan data donatur.');
+            }
+
+            $infaqs = Infaq::with('donatur')
+                ->where('id_donatur', $donatur->id_donatur)
+                ->latest()
+                ->get();
+        }
+
         return view('Infaq.Infaq', compact('infaqs'));
     }
 
@@ -52,6 +69,15 @@ class InfaqController extends Controller
 
     public function show(Infaq $infaq)
     {
+        $user = Auth::user();
+
+        if ($user->hasRole('donatur')) {
+            $donatur = $user->donatur;
+            if (!$donatur || $infaq->id_donatur !== $donatur->id_donatur) {
+                abort(403, 'Anda tidak memiliki izin untuk melihat data ini.');
+            }
+        }
+
         return view('infaq.show', compact('infaq'));
     }
 }

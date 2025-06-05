@@ -15,7 +15,7 @@ class NilaiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:guru|santri')->only(['index', 'show']);
+    $this->middleware('role:guru|santri')->only(['index', 'show']);
     $this->middleware('role:guru')->except(['index', 'show']);
     }
 

@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 
 class DonaturController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
         $donatur = Donatur::with('user')->paginate(10);

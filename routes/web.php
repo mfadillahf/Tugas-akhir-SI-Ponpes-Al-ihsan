@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guru\GuruController;
@@ -29,6 +30,14 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Form register Santri
+Route::get('/register/santri', [RegisterController::class, 'showSantriForm'])->name('register.santri');
+Route::post('/register/santri', [RegisterController::class, 'registerSantri'])->name('register.santri.post');
+
+// Form register Donatur
+Route::get('/register/donatur', [RegisterController::class, 'showDonaturForm'])->name('register.donatur');
+Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])->name('register.donatur.post');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
@@ -40,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:donatur')->get('/donatur/dashboard', [DashboardController::class, 'donaturDashboard'])->name('dashboard.donatur');
 
     // santri
-    Route::resource('santri', SantriController::class)->except(['show']);;
+    Route::resource('santri', SantriController::class);
     Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
 
     // guru
@@ -85,7 +94,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
 
     // profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     
 

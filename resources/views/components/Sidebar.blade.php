@@ -157,6 +157,16 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-header">profile</li>
+          <li class="nav-item">
+            <a href="{{ route('profile.show') }}" class="nav-link">
+              <i class="bi bi-cash-stack"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
           
         @endrole
 
@@ -173,7 +183,7 @@
 
           <li class="nav-header">profile</li>
           <li class="nav-item">
-            <a href="{{ route('profile.edit') }}" class="nav-link">
+            <a href="{{ route('profile.show') }}" class="nav-link">
               <i class="bi bi-cash-stack"></i>
               <p>
                 Profile
@@ -184,14 +194,6 @@
 
         @role('santri')
           <li class="nav-header">Santri</li>
-          <li class="nav-item">
-            <a href="{{ route('profile.edit') }}" class="nav-link">
-              <i class="bi bi-person-circle"></i>
-              <p>
-                Profile
-              </p>
-            </a>
-          </li>
 
           <li class="nav-item">
             <a href="{{ route('hapalan.index') }}" class="nav-link">
@@ -210,11 +212,16 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="{{ route('profile.show') }}" class="nav-link">
+              <i class="bi bi-person-circle"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
           @endrole
-
-
-
-
         </ul>
         <!--end::Sidebar Menu-->
       </nav>

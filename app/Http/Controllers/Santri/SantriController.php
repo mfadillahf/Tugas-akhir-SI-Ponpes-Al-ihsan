@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 
 class SantriController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
         $santri = Santri::with(['user', 'kelas'])->paginate(10);

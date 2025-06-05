@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-     public function edit()
+    public function show()
     {
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
@@ -25,6 +25,26 @@ class ProfileController extends Controller
         if (user()->hasRole('donatur')) {
             $profile = user()->donatur;
             return view('profile.profiledonatur', compact('profile'));
+        }
+
+        abort(403, 'Role tidak dikenali');
+    }
+
+    public function edit()
+    {
+        if (user()->hasRole('santri')) {
+            $profile = user()->santri;
+            return view('Profile.ProfileSantriEdit', compact('profile'));
+        }
+
+        if (user()->hasRole('guru')) {
+            $profile = user()->guru;
+            return view('Profile.ProfileGuruEdit', compact('profile'));
+        }
+
+        if (user()->hasRole('donatur')) {
+            $profile = user()->donatur;
+            return view('Profile.ProfileDonaturEdit', compact('profile'));
         }
 
         abort(403, 'Role tidak dikenali');
@@ -52,14 +72,13 @@ class ProfileController extends Controller
                 'no_hp_ibu' => 'required|string|max:14',
             ]);
 
-            // Jaga agar email tetap tidak null
             $validated['email'] = $validated['email'] ?? $profile->email;
 
             DB::transaction(function () use ($profile, $validated) {
                 $profile->update($validated);
             });
 
-            return back()->with('success', 'Profil santri berhasil diperbarui.');
+            return redirect()->route('profile.show')->with('success', 'Profil santri berhasil diperbarui.');
         }
 
         if (user()->hasRole('guru')) {
@@ -80,7 +99,7 @@ class ProfileController extends Controller
                 $profile->update($validated);
             });
 
-            return back()->with('success', 'Profil guru berhasil diperbarui.');
+            return redirect()->route('profile.show')->with('success', 'Profil guru berhasil diperbarui.');
         }
 
         if (user()->hasRole('donatur')) {
@@ -99,7 +118,7 @@ class ProfileController extends Controller
                 $profile->update($validated);
             });
 
-            return back()->with('success', 'Profil donatur berhasil diperbarui.');
+            return redirect()->route('profile.show')->with('success', 'Profil donatur berhasil diperbarui.');
         }
 
         abort(403, 'Role tidak dikenali');

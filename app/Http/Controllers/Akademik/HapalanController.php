@@ -7,20 +7,41 @@ use App\Models\Santri;
 use App\Models\Hapalan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class HapalanController extends Controller
 {
 
     public function __construct()
     {
-        // $this->middleware('role:guru');
-        // $this->middleware('role:santri')->only(['index', 'show']);
-        // $this->middleware('role:admin')->except(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    $this->middleware('role:guru|santri')->only(['index', 'show']);
+    $this->middleware('role:guru')->except(['index', 'show']);
     }
 
     public function index()
     {
-        $hapalans = Hapalan::with(['santri', 'guru'])->latest()->paginate(10);
+        $user = Auth::user();
+
+        if ($user->hasRole('santri')) {
+            $santri = $user->santri;
+
+            if (!$santri) {
+                abort(403, 'Santri tidak ditemukan.');
+            }
+
+            $hapalans = Hapalan::with(['santri', 'guru'])
+                ->where('id_santri', $santri->id_santri)
+                ->latest()
+                ->paginate(10);
+        } elseif ($user->hasRole('guru')) {
+            $hapalans = Hapalan::with(['santri', 'guru'])
+                ->latest()
+                ->paginate(10);
+        } else {
+            // admin tidak boleh akses
+            abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        }
+
         return view('hapalan.hapalan', compact('hapalans'));
     }
 

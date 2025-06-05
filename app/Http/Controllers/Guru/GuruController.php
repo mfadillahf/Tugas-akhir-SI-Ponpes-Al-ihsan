@@ -10,7 +10,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
-{
+{   
+    public function __construct()
+    {
+        $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
         $guru = Guru::with('user')->paginate(10);
