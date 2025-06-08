@@ -10,7 +10,11 @@ class Infaq extends Model
     use HasFactory;
     protected $table = 'infaqs';
     protected $primaryKey = 'id_infaq';
-    protected $fillable = ['id_donatur', 'nominal', 'tanggal', 'keterangan'];
+    protected $fillable = ['id_donatur', 'nominal', 'tanggal', 'keterangan', 'status'];
+
+    protected $casts = [
+        'tanggal' => 'datetime',
+    ];
 
     public function donatur() { return $this->belongsTo(Donatur::class, 'id_donatur'); }
 }

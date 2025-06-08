@@ -57,7 +57,7 @@ Infaq
                                         <th>nominal</th>
                                         <th>Tanggal</th>
                                         <th>Keterangan</th>
-                                        {{-- <th>Aksi</th> --}}
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,10 +68,21 @@ Infaq
                                                 <td>Rp {{ number_format($infaq->nominal, 0, ',', '.') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($infaq->tanggal)->format('d M Y') }}</td>
                                                 <td>{{ $infaq->keterangan }}</td>
+                                                <td>
+                                                    @if($infaq->status === 'paid')
+                                                        <span class="badge bg-success">Lunas</span>
+                                                    @elseif($infaq->status === 'pending')
+                                                        <span class="badge bg-warning text-dark">Menunggu</span>
+                                                    @elseif($infaq->status === 'failed')
+                                                        <span class="badge bg-danger">Gagal</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">{{ ucfirst($infaq->status) }}</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center">Data infaq belum tersedia.</td>
+                                                <td colspan="6" class="text-center">Data infaq belum tersedia.</td>
                                             </tr>
                                         @endforelse
                                 </tbody>

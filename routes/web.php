@@ -40,7 +40,7 @@ Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //dashboard
     Route::middleware('role:admin')->get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard.admin');
@@ -84,7 +84,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('agenda/{id}/detail', [AgendaController::class, 'showDetail'])->name('agenda.showDetail');
 
     // infaq
+    Route::post('/infaq/pay', [InfaqController::class, 'pay'])->name('infaq.pay');
+    Route::post('/midtrans/callback', [InfaqController::class, 'callback'])->name('midtrans.callback');
     Route::resource('infaq', InfaqController::class);
+
 
     // sistem
     Route::resource('berita', BeritaController::class);

@@ -25,27 +25,27 @@ class UserSeeder extends Seeder
         $admin->assignRole('admin');
 
         // Guru
-        $guru = User::create([
-            'id_jenis_user' => 2,
-            'username' => 'guru',
-            'password' => bcrypt('password'),
-        ]);
-        $guru->assignRole('guru');
+        // $guru = User::create([
+        //     'id_jenis_user' => 2,
+        //     'username' => 'guru',
+        //     'password' => bcrypt('password'),
+        // ]);
+        // $guru->assignRole('guru');
 
         // Donatur
-        $donatur = User::create([
-            'id_jenis_user' => 3,
-            'username' => 'donatur',
-            'password' => bcrypt('password'),
-        ]);
-        $donatur->assignRole('donatur');
+        // $donatur = User::create([
+        //     'id_jenis_user' => 3,
+        //     'username' => 'donatur',
+        //     'password' => bcrypt('password'),
+        // ]);
+        // $donatur->assignRole('donatur');
 
         // Santri
-        $santri = User::create([
-            'id_jenis_user' => 4,
-            'username' => 'santri',
-            'password' => bcrypt('password'),
-        ]);
-        $santri->assignRole('santri');
+        // $santri = User::create([
+        //     'id_jenis_user' => 4,
+        //     'username' => 'santri',
+        //     'password' => bcrypt('password'),
+        // ]);
+        // $santri->assignRole('santri');
     }
 }
