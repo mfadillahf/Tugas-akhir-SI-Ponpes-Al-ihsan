@@ -21,7 +21,7 @@
                         </button>
 
                         <p class="mt-3 text-muted small">
-                            Pastikan Anda menekan tombol "Bayar Sekarang" untuk melanjutkan proses pembayaran melalui Midtrans.
+                            Pastikan Anda menekan tombol "Bayar Sekarang" untuk melanjutkan proses pembayaran.
                         </p>
                     </div>
                 </div>

@@ -16,10 +16,18 @@ class GuruController extends Controller
         $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $guru = Guru::with('user')->paginate(10);
-        return view('Guru.Guru', compact('guru'));
+        $search = $request->query('search');
+
+        $guru = Guru::with('user')
+            ->when($search, function ($query, $search) {
+                return $query->where('nama', 'like', "%{$search}%");
+            })
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('Guru.Guru', compact('guru', 'search'));
     }
 
     public function create()

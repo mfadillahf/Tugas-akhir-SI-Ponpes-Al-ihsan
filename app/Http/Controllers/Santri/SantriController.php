@@ -17,9 +17,23 @@ class SantriController extends Controller
         $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $santri = Santri::with(['user', 'kelas'])->paginate(10);
+        $query = Santri::with(['user', 'kelas']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%$search%")
+                    ->orWhereHas('kelas', function ($kelasQuery) use ($search) {
+                    $kelasQuery->where('nama_kelas', 'like', "%$search%");
+                })
+                    ->orWhere('status', 'like', "%$search%");
+            });
+        }
+
+        $santri = $query->paginate(10)->withQueryString();
         return view('Santri.Santri', compact('santri'));
     }
 
@@ -31,9 +45,7 @@ class SantriController extends Controller
 
     public function store(Request $request)
     {
-    //     if (!auth()->user()->hasRole('admin')) {
-    //     abort(403, 'Anda tidak memiliki akses untuk menambah santri.');
-    // }
+
         $request->validate([
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed|min:6',

@@ -32,12 +32,24 @@ Santri
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title mb-0 me-auto">Santri</h3>
-                            @role('admin')
-                            <a href="{{ route('santri.create') }}" class="btn btn-primary btn-sm">+ Tambah Santri</a>
-                            @endrole
-                        </div>
+                        <div class="card-header">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <form method="GET" action="{{ route('santri.index') }}" class="d-flex" role="search" style="max-width: 450px;">
+                                    <input type="search" name="search" class="form-control form-control-sm me-2" style="width: 300px;" placeholder="Cari nama, kelas, atau status..." value="{{ request('search') }}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                    @if(request('search'))
+                                        <a href="{{ route('santri.index') }}" class="btn btn-light btn-sm ms-2">Reset</a>
+                                    @endif
+                                </form>
+
+                                <div class="ms-auto">
+                                    @role('admin')
+                                    <a href="{{ route('santri.create') }}" class="btn btn-primary btn-sm">+ Tambah Santri</a>
+                                    @endrole
+                                </div>
+                            </div>
+
+
 
                         <div class="card-body">
                             <div class="table-responsive">
@@ -64,6 +76,7 @@ Santri
                                                 <td>{{ $s->kelas->nama_kelas ?? '-' }}</td>
                                                 <td>{{ $s->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                                 <td>
+                                                    
                                                     @if($s->status == 'santri')
                                                         <span class="badge bg-success">Santri</span>
                                                     @elseif($s->status == 'calon')
@@ -71,6 +84,7 @@ Santri
                                                     @else
                                                         <span class="badge bg-warning">-</span>
                                                     @endif
+                                                    
                                                 </td>
                                                 
                                                 <td>

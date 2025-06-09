@@ -32,9 +32,20 @@ Guru
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title mb-0 me-auto">Kepengurusan</h3>
-                            <a href="{{ route('kepengurusan.create') }}" class="btn btn-primary btn-sm">+ Tambah Kepengurusan</a>
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <form method="GET" action="{{ route('kepengurusan.index') }}" class="d-flex" role="search" style="max-width: 300px;">
+                                <input type="search" name="search" class="form-control form-control-sm me-2" style="width: 200px;"  placeholder="Cari nama kepengurusan..." value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                @if(request('search'))
+                                    <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
+                                @endif
+                            </form>
+
+                            <div class="ms-auto">
+                                @role('admin')
+                                <a href="{{ route('kepengurusan.create') }}" class="btn btn-primary btn-sm">+ Tambah Kepengurusan</a>
+                                @endrole
+                            </div>
                         </div>
 
                         <div class="card-body">

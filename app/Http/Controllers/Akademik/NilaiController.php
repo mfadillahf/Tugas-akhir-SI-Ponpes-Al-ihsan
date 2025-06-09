@@ -88,7 +88,9 @@ class NilaiController extends Controller
         $santris = collect();
 
         if ($id_kelas && $id_mapel && $tahun_ajaran) {
-            $santris = Santri::where('id_kelas', $id_kelas)->get();
+        $santris = Santri::where('id_kelas', $id_kelas)
+                    ->where('status', '!=', 'calon')
+                    ->get();
         }
 
         $guru = Auth::user()->guru;

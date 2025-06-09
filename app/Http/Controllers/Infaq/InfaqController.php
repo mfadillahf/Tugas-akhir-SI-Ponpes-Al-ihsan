@@ -140,11 +140,23 @@ class InfaqController extends Controller
     {
         $json = json_decode($request->getContent());
 
-        if (!isset($json->order_id) || !isset($json->transaction_status)) {
-            return response()->json(['message' => 'Data callback tidak valid'], 400);
+        if (!isset($json->order_id, $json->transaction_status, $json->signature_key, $json->gross_amount, $json->status_code)) {
+            return response()->json(['message' => 'Data callback tidak lengkap'], 400);
         }
 
-        // Parsing ID infaq dari format order_id
+        // Validasi signature key
+        $expectedSignature = hash('sha512',
+            $json->order_id .
+            $json->status_code .
+            $json->gross_amount .
+            config('services.midtrans.server_key')
+        );
+
+        if ($json->signature_key !== $expectedSignature) {
+            return response()->json(['message' => 'Signature tidak valid'], 403);
+        }
+
+        // Parsing ID infaq dari order_id
         preg_match('/INFAQ-(\d+)-/', $json->order_id, $matches);
         $infaqId = $matches[1] ?? null;
 
@@ -184,4 +196,5 @@ class InfaqController extends Controller
 
         return response()->json(['message' => 'Callback diproses'], 200);
     }
+
 }

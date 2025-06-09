@@ -17,9 +17,17 @@ class DonaturController extends Controller
         $this->middleware('role:admin')->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $donatur = Donatur::with('user')->paginate(10);
+        $query = Donatur::with('user');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        $donatur = $query->paginate(10)->withQueryString();
+
         return view('Donatur.Donatur', compact('donatur'));
     }
 

@@ -30,6 +30,9 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// callback midtrans
+Route::post('/midtrans/callback', [InfaqController::class, 'callback'])->name('midtrans.callback');
+
 // Form register Santri
 Route::get('/register/santri', [RegisterController::class, 'showSantriForm'])->name('register.santri');
 Route::post('/register/santri', [RegisterController::class, 'registerSantri'])->name('register.santri.post');
@@ -85,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
 
     // infaq
     Route::post('/infaq/pay', [InfaqController::class, 'pay'])->name('infaq.pay');
-    Route::post('/midtrans/callback', [InfaqController::class, 'callback'])->name('midtrans.callback');
+    
     Route::resource('infaq', InfaqController::class);
 
 

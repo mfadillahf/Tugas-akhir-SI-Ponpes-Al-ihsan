@@ -32,9 +32,20 @@ Guru
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title mb-0 me-auto">Guru</h3>
-                            <a href="{{ route('guru.create') }}" class="btn btn-primary btn-sm">+ Tambah Guru</a>
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <form method="GET" action="{{ route('guru.index') }}" class="d-flex" role="search" style="max-width: 300px;">
+                                <input type="search" name="search" class="form-control form-control-sm me-2" placeholder="Cari nama guru..." value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                @if(request('search'))
+                                    <a href="{{ route('guru.index') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
+                                @endif
+                            </form>
+
+                            <div class="ms-auto">
+                                @role('admin')
+                                <a href="{{ route('guru.create') }}" class="btn btn-primary btn-sm">+ Tambah Guru</a>
+                                @endrole
+                            </div>
                         </div>
 
                         <div class="card-body">

@@ -47,7 +47,7 @@ class HapalanController extends Controller
 
     public function create()
     {
-        $santris = Santri::all();
+        $santris = Santri::where('status', '!=', 'calon')->get();
         $gurus = Guru::all();
         return view('hapalan.hapalancreate', compact('santris', 'gurus'));
     }
@@ -68,7 +68,7 @@ class HapalanController extends Controller
     public function edit($id)
     {
         $hapalan = Hapalan::findOrFail($id);
-        $santris = Santri::all();
+        $santris = Santri::where('status', '!=', 'calon')->get();
         $gurus = Guru::all();
         return view('hapalan.hapalanedit', compact('hapalan', 'santris', 'gurus'));
     }

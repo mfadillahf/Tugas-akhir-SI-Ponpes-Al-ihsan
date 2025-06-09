@@ -9,11 +9,19 @@ use App\Http\Controllers\Controller;
 
 class KepengurusanController extends Controller
 {
-    public function index()
-    {
-        $kepengurusan = Kepengurusan::paginate(10);
-        return view('Kepengurusan.Kepengurusan', compact('kepengurusan'));
+    public function index(Request $request)
+{
+    $query = Kepengurusan::query();
+
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where('nama', 'like', "%{$search}%");
     }
+
+    $kepengurusan = $query->paginate(10)->withQueryString();
+
+    return view('Kepengurusan.Kepengurusan', compact('kepengurusan'));
+}
 
     public function create()
     {
