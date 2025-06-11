@@ -21,8 +21,11 @@ use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
 
 
+// Route::get('/', function () {
+//     return redirect()->route('login');
+// });
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('landingpage.landingpage');
 });
 
 // Route Login
