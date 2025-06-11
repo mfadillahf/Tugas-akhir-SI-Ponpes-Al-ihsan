@@ -12,6 +12,11 @@ class ProfileController extends Controller
 {
     public function show()
     {
+        if (user()->hasRole('admin')) {
+            $profile = user();
+            return view('profile.profileadmin', compact('profile'));
+        }
+
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
             return view('profile.profilesantri', compact('profile'));
@@ -32,6 +37,10 @@ class ProfileController extends Controller
 
     public function edit()
     {
+        if (user()->hasRole('admin')) {
+            $profile = user();
+            return view('profile.profileadminedit', compact('profile'));
+        }
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
             return view('Profile.ProfileSantriEdit', compact('profile'));
@@ -52,6 +61,28 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        if (user()->hasRole('admin')) {
+            $profile = user();
+
+            $validated = $request->validate([
+                'username' => 'required|string|max:50|unique:users,username,' . $profile->id_user . ',id_user',
+                'password' => 'nullable|string|min:6|confirmed',
+            ]);
+
+            DB::transaction(function () use ($profile, $validated) {
+                $profile->username = $validated['username'];
+
+                if (!empty($validated['password'])) {
+                    $profile->password = bcrypt($validated['password']);
+                }
+
+                $profile->save();
+            });
+
+            return redirect()->route('profile.show')->with('success', 'Profil admin berhasil diperbarui.');
+        }
+        
+
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
 

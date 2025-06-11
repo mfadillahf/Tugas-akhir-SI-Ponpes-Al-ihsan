@@ -147,6 +147,16 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-header">profile</li>
+          <li class="nav-item">
+            <a href="{{ route('profile.show') }}" class="nav-link">
+              <i class="bi bi-person-lines-fill"></i>
+              <p>
+                Profile
+              </p>
+            </a>
+          </li>
         @endrole
 
         @role('guru')
@@ -172,7 +182,7 @@
           <li class="nav-header">profile</li>
           <li class="nav-item">
             <a href="{{ route('profile.show') }}" class="nav-link">
-              <i class="bi bi-cash-stack"></i>
+              <i class="bi bi-person-lines-fill"></i>
               <p>
                 Profile
               </p>
@@ -195,7 +205,7 @@
           <li class="nav-header">profile</li>
           <li class="nav-item">
             <a href="{{ route('profile.show') }}" class="nav-link">
-              <i class="bi bi-cash-stack"></i>
+              <i class="bi bi-person-lines-fill"></i>
               <p>
                 Profile
               </p>
@@ -226,7 +236,7 @@
 
           <li class="nav-item">
             <a href="{{ route('profile.show') }}" class="nav-link">
-              <i class="bi bi-person-circle"></i>
+              <i class="bi bi-person-lines-fill"></i>
               <p>
                 Profile
               </p>

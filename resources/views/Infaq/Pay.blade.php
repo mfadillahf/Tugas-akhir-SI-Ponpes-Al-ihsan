@@ -32,23 +32,52 @@
 </main>
 
 @push('scripts')
-<script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+
 <script type="text/javascript">
   document.getElementById('pay-button').onclick = function () {
     snap.pay('{{ $snapToken }}', {
       onSuccess: function (result) {
-        alert("Pembayaran berhasil!");
-        window.location.href = "{{ route('infaq.index') }}";
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Pembayaran berhasil!',
+          timer: 3000,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.href = "{{ route('infaq.index') }}";
+        });
       },
       onPending: function (result) {
-        alert("Menunggu pembayaran...");
-        window.location.href = "{{ route('infaq.index') }}";
+        Swal.fire({
+          icon: 'info',
+          title: 'Menunggu Pembayaran',
+          text: 'Silakan selesaikan pembayaran Anda.',
+          timer: 3000,
+          showConfirmButton: false
+        });
       },
       onError: function (result) {
-        alert("Terjadi kesalahan saat memproses pembayaran.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Terjadi kesalahan saat memproses pembayaran.',
+          timer: 3000,
+          showConfirmButton: false
+        });
       },
+      onClose: function () {
+        Swal.fire({
+          icon: 'info',
+          title: 'Dibatalkan',
+          text: 'Anda menutup pembayaran sebelum menyelesaikannya.',
+          timer: 3000,
+          showConfirmButton: false
+        });
+      }
     });
   };
 </script>
 @endpush
+
 @endsection
