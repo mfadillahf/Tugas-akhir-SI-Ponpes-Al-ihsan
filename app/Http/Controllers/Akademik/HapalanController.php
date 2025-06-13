@@ -8,6 +8,7 @@ use App\Models\Hapalan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\HapalanDetail;
 
 class HapalanController extends Controller
 {
@@ -57,7 +58,7 @@ class HapalanController extends Controller
         $request->validate([
             'id_santri' => 'required|exists:santris,id_santri',
             'id_guru' => 'required|exists:gurus,id_guru',
-            'keterangan' => 'required|string',
+            // 'keterangan' => 'required|string',
         ]);
 
         Hapalan::create($request->all());
@@ -78,7 +79,7 @@ class HapalanController extends Controller
         $request->validate([
             'id_santri' => 'required|exists:santris,id_santri',
             'id_guru' => 'required|exists:gurus,id_guru',
-            'keterangan' => 'required|string',
+            // 'keterangan' => 'required|string',
         ]);
 
         $hapalan = Hapalan::findOrFail($id);
@@ -93,5 +94,54 @@ class HapalanController extends Controller
         $hapalan->delete();
 
         return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil dihapus.');
+    }
+
+    // === Bagian Detail Hapalan ===
+
+    public function showDetail($id)
+    {
+        $hapalan = Hapalan::with(['santri', 'guru', 'details'])->findOrFail($id);
+        return view('hapalan.hapalandetail', compact('hapalan'));
+    }
+
+    public function storeDetail(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required|string',
+        ]);
+
+        HapalanDetail::create([
+            'id_hapalan' => $id,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->route('hapalan.detail', $id)->with('success', 'Detail hapalan berhasil ditambahkan.');
+    }
+
+    public function editDetail($id)
+    {
+        $detail = HapalanDetail::findOrFail($id);
+        return view('hapalan.hapalandetailedit', compact('detail'));
+    }
+
+    public function updateDetail(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required|string',
+        ]);
+
+        $detail = HapalanDetail::findOrFail($id);
+        $detail->update(['keterangan' => $request->keterangan]);
+
+        return redirect()->route('hapalan.detail', $detail->id_hapalan)->with('success', 'Detail hapalan berhasil diperbarui.');
+    }
+
+    public function destroyDetail($id)
+    {
+        $detail = HapalanDetail::findOrFail($id);
+        $id_hapalan = $detail->id_hapalan;
+        $detail->delete();
+
+        return redirect()->route('hapalan.detail', $id_hapalan)->with('success', 'Detail hapalan berhasil dihapus.');
     }
 }

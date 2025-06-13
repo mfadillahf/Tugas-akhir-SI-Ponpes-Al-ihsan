@@ -33,36 +33,42 @@
                     </div>
                 @endif
 
-                <form class="needs-validation" action="{{ route('kepengurusan.store') }}" method="POST">
-                    @csrf
+                <form class="needs-validation" action="{{ route('kepengurusan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-                    <div class="row">
-                        {{-- Data Kepengurusan --}}
-                        <div class="col-md-6 mb-3">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama" value="{{ old('nama') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="jabatan" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" name="jabatan" value="{{ old('jabatan') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="mulai" class="form-label">Mulai jabatan</label>
-                            <input type="date" class="form-control" name="mulai" value="{{ old('mulai') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="akhir" class="form-label">Akhir Jabatan</label>
-                            <input type="date" class="form-control" name="akhir" value="{{ old('akhir') }}" required>
-                        </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
-                        <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                <div class="row">
+                    {{-- Data Kepengurusan --}}
+                    <div class="col-md-6 mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" name="nama" value="{{ old('nama') }}" required>
                     </div>
-                </form>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="jabatan" class="form-label">Jabatan</label>
+                        <input type="text" class="form-control" name="jabatan" value="{{ old('jabatan') }}" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="mulai" class="form-label">Mulai Jabatan</label>
+                        <input type="date" class="form-control" name="mulai" value="{{ old('mulai') }}" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="akhir" class="form-label">Akhir Jabatan</label>
+                        <input type="date" class="form-control" name="akhir" value="{{ old('akhir') }}" required>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label for="foto" class="form-label">Foto</label>
+                        <input type="file" class="form-control" name="foto" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary">← Kembali</a>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
             </div>
         </div>
     </div>

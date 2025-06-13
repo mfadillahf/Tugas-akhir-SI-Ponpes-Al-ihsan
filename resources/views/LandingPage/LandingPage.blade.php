@@ -38,7 +38,7 @@
                         data-frame_1="st:300;sp:1000;sR:310;"
                         data-frame_999="o:0;st:w;sR:7690;"
                         style="z-index:11;text-transform:uppercase;"
-                        >Education
+                        >Ponpes Al-Ihsan
                         </rs-layer>
                         <!--
                         -->
@@ -221,33 +221,29 @@
         </div>
         </section>
 
-        <!-- Section: About -->
-        <section id="about">
-        <div class="container">
-            <div class="section-content">
+<!-- Section: About -->
+<section id="about">
+    <div class="container">
+        <div class="section-content">
             <div class="row">
                 <div class="col-md-12 col-lg-6 col-xl-6">
-                <h6 class="letter-space-4 text-gray-darkgray text-uppercase mt-0 mb-0">All About</h6>
-                <h2 class="text-uppercase mt-0 line-bottom line-bottom-theme-colored1">The World’s Best Education in Our University</h2>
-                <h4>Lorem ipsum dolor sit amet soluta saepe odit error, maxime praesentium sunt udiandae!</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore atque officiis maxime suscipit expedita obcaecati nulla in ducimus iure quos quam recusandae dolor quas et perspiciatis voluptatum accusantium delectus nisi reprehenderit, eveniet fuga modi pariatur, eius vero. Ea vitae maiores.</p>
-                <a href="#" class="btn btn-sm btn-theme-colored2 text-white mb-md-40">Know more</a>
+                    <h6 class="letter-space-4 text-gray-darkgray text-uppercase mt-0 mb-0">Tentang Kami</h6>
+                    <h2 class="text-uppercase mt-0 line-bottom line-bottom-theme-colored1">{{ $tentang->judul ?? '-' }}</h2>
+                    <h4></h4>
+                    <p>{!! $tentang->deskripsi ?? '-' !!}</p>
+                    {{-- <a href="#" class="btn btn-sm btn-theme-colored2 text-white mb-md-40">Know more</a> --}}
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-6">
-                <div class="box-hover-effect tm-sc-video-popup tm-sc-video-popup-button-over-image">
-                    <div class="effect-wrapper">
-                    <div class="thumb">
-                        <img class="w-100" src="{{ asset('studypress/images/about/5.jpg')}}" alt="">
-                    </div>
-                    <div class="animated-css-play-button"><span class="play-icon"><i class="fa fa-play"></i></span></div>
-                    <a class="hover-link" data-lightbox-gallery="youtube-video" href="https://www.youtube.com/watch?v=xcJtL7QggTI" title=""></a>
-                    </div>
+                    @if ($tentang && $tentang->gambar)
+                        <img class="w-100 rounded" src="{{ asset('storage/tentang/' . $tentang->gambar) }}" alt="Foto Tentang">
+                    @else
+                        <img class="w-100 rounded" src="{{ asset('studypress/images/about/default.jpg') }}" alt="Foto Default">
+                    @endif
                 </div>
-                </div>
-            </div>
             </div>
         </div>
-        </section>
+    </div>
+</section>
 
         <!-- Section: Courses -->
         {{-- <section id="courses" class="bg-silver-light">
@@ -338,239 +334,120 @@
 
         <!-- Section: Staff -->
         <section id="teachers">
-        <div class="container">
-            <div class="section-title">
-            <div class="row">
-                <div class="col-md-8">
-                <div class="mb-60">
-                    <div class="tm-sc tm-sc-section-title section-title">
-                    <div class="title-wrapper">
-                        <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">Our <span class="text-theme-colored1">Teachers</span></h2>
+            <div class="container">
+                <div class="section-title">
+                <div class="row">
+                    <div class="col-md-8">
+                    <div class="mb-60">
+                        <div class="tm-sc tm-sc-section-title section-title">
+                        <div class="title-wrapper">
+                            <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
+                            Kepengurusan <span class="text-theme-colored1"></span>
+                            </h2>
+                        </div>
+                        </div>
                     </div>
                     </div>
+                </div>
+                </div>
+
+                <div class="section-content">
+                <div class="row">
+                    @forelse ($kepengurusan as $item)
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="staff-item mb-lg-40">
+                        <div class="staff-thumb">
+                            <img alt="{{ $item->nama }}" src="{{ asset('storage/kepengurusan/' . $item->foto) }}" class="w-100" style="height: 300px; object-fit: cover;">
+                        </div>
+                        <div class="staff-content">
+                            <h4 class="staff-name text-theme-colored1 mt-0">
+                            {{ $item->nama }} - <small>{{ $item->jabatan }}</small>
+                            </h4>
+                            <p class="mb-0">Periode:</p>
+                            <p class="mb-20">{{ $item->mulai }} s.d {{ $item->akhir }}</p>
+                            <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
+                        </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-12 text-center">
+                        <p>Belum ada data kepengurusan yang tersedia.</p>
+                    </div>
+                    @endforelse
                 </div>
                 </div>
             </div>
-            </div>
-            <div class="section-content">
-            <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="staff-item mb-lg-40">
-                    <div class="staff-thumb"> <img alt="img" src="{{ asset('studypress/images/team/team5.jpg')}}" class="w-100">
-                    </div>
-                    <div class="staff-content">
-                    <h4 class="staff-name text-theme-colored1 mt-0">Andre Smith - <small>Teacher</small></h4>
-                    <p class="mb-20">Lorem ipsum dolor sit amet, con amit sectetur adipisicing elit.</p>
-                    <div class="staff-social-part">
-                        <ul class="styled-icons icon-dark icon-theme-colored2 icon-sm icon-circled float-start mt-10">
-                        <li><a class="social-link" href="#"><i class="fab fa-facebook"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                        <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="staff-item mb-lg-40">
-                    <div class="staff-thumb"> <img alt="img" src="{{ asset('studypress/images/team/team6.jpg')}}" class="w-100">
-                    </div>
-                    <div class="staff-content">
-                    <h4 class="staff-name text-theme-colored1 mt-0">Andre Smith - <small>Teacher</small></h4>
-                    <p class="mb-20">Lorem ipsum dolor sit amet, con amit sectetur adipisicing elit.</p>
-                    <div class="staff-social-part">
-                        <ul class="styled-icons icon-dark icon-theme-colored2 icon-sm icon-circled float-start mt-10">
-                        <li><a class="social-link" href="#"><i class="fab fa-facebook"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                        <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="staff-item mb-lg-40">
-                    <div class="staff-thumb"> <img alt="img" src="{{ asset('studypress/images/team/team7.jpg')}}" class="w-100">
-                    </div>
-                    <div class="staff-content">
-                    <h4 class="staff-name text-theme-colored1 mt-0">Andre Smith - <small>Teacher</small></h4>
-                    <p class="mb-20">Lorem ipsum dolor sit amet, con amit sectetur adipisicing elit.</p>
-                    <div class="staff-social-part">
-                        <ul class="styled-icons icon-dark icon-theme-colored2 icon-sm icon-circled float-start mt-10">
-                        <li><a class="social-link" href="#"><i class="fab fa-facebook"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                        <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="staff-item mb-sm-40">
-                    <div class="staff-thumb"> <img alt="img" src="{{ asset('studypress/images/team/team8.jpg')}}" class="w-100">
-                    </div>
-                    <div class="staff-content">
-                    <h4 class="staff-name text-theme-colored1 mt-0">Andre Smith - <small>Teacher</small></h4>
-                    <p class="mb-20">Lorem ipsum dolor sit amet, con amit sectetur adipisicing elit.</p>
-                    <div class="staff-social-part">
-                        <ul class="styled-icons icon-dark icon-theme-colored2 icon-sm icon-circled float-start mt-10">
-                        <li><a class="social-link" href="#"><i class="fab fa-facebook"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a class="social-link" href="#"><i class="fab fa-youtube"></i></a></li>
-                        </ul>
-                        <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        </section>
+            </section>
 
         @include('partials.gallery')
 
         <!-- Section: News -->
         <section id="blog" class="bg-silver-light">
-        <div class="container">
-            <div class="section-title">
-            <div class="row">
-                <div class="col-md-8">
-                <div class="mb-60">
-                    <div class="tm-sc tm-sc-section-title section-title">
-                    <div class="title-wrapper">
-                        <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">Latest <span class="text-theme-colored1">News</span></h2>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="section-content">
-            <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                <div class="tm-sc tm-sc-blog tm-sc-blog-masonry blog-style1-current-theme mb-lg-30">
-                    <article class="post">
-                    <div class="entry-header">
-                        <div class="post-thumb">
-                        <div class="post-thumb-inner">
-                            <div class="thumb"> <img class="w-100" src="{{ asset('studypress/images/blog/1.jpg')}}" alt="Image"></div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        <div class="clearfix mb-15">
-                        <div class="entry-date media-left text-center">
-                            <ul>
-                            <li class="font-16 text-white font-weight-600 border-bottom">28</li>
-                            <li class="font-12 text-white text-uppercase">Feb</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h5 class="entry-title"><a href="#" rel="bookmark">Things You Should</a></h5>
-                            <div class="blog-meta">
-                            <span class="admin-type mr-10">
-                                <i class="far fa-user-circle text-theme-colored1"></i>
-                            Admin
-                            </span>
-                            <span class="comments-type">
-                                <i class="far fa-comments text-theme-colored1"></i>
-                                2 Comments
-                            </span>
+            <div class="container">
+                <div class="section-title">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-60">
+                                <div class="tm-sc tm-sc-section-title section-title">
+                                    <div class="title-wrapper">
+                                        <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
+                                            Berita <span class="text-theme-colored1">Terbaru</span>
+                                        </h2>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                        <p class="mb-15">Lorem ipsum dolor sit am adipi sicing elit, sed do consulting firms Et leggings across the nation lipsim tempor.</p>
-                        <a href="#" target="_self" class="btn-plain-text-with-arrow"> Read More </a>
-                        <div class="clearfix"></div>
                     </div>
-                    </article>
                 </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                <div class="tm-sc tm-sc-blog tm-sc-blog-masonry blog-style1-current-theme mb-lg-30">
-                    <article class="post">
-                    <div class="entry-header">
-                        <div class="post-thumb">
-                        <div class="post-thumb-inner">
-                            <div class="thumb"> <img class="w-100" src="{{ asset('studypress/images/blog/2.jpg')}}" alt="Image"></div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        <div class="clearfix mb-15">
-                        <div class="entry-date media-left text-center">
-                            <ul>
-                            <li class="font-16 text-white font-weight-600 border-bottom">28</li>
-                            <li class="font-12 text-white text-uppercase">Feb</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h5 class="entry-title"><a href="#" rel="bookmark">Things You Should</a></h5>
-                            <div class="blog-meta">
-                            <span class="admin-type mr-10">
-                                <i class="far fa-user-circle text-theme-colored1"></i>
-                            Admin
-                            </span>
-                            <span class="comments-type">
-                                <i class="far fa-comments text-theme-colored1"></i>
-                                2 Comments
-                            </span>
+
+                <div class="section-content">
+                    <div class="row">
+                        @foreach ($berita as $item)
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="tm-sc tm-sc-blog tm-sc-blog-masonry blog-style1-current-theme mb-lg-30">
+                                <article class="post">
+                                    <div class="entry-header">
+                                        <div class="post-thumb">
+                                            <div class="post-thumb-inner">
+                                                <div class="thumb">
+                                                    <img class="w-100" src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-content">
+                                        <div class="clearfix mb-15">
+                                            <div class="entry-date media-left text-center">
+                                                <ul>
+                                                    <li class="font-16 text-white font-weight-600 border-bottom">{{ $item->created_at->format('d') }}</li>
+                                                    <li class="font-12 text-white text-uppercase">{{ $item->created_at->format('M') }}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="overflow-hidden">
+                                                <h5 class="entry-title">
+                                                    {{-- <a href="{{ route('berita.showDetail', $item->id) }}" rel="bookmark">
+                                                        {{ $item->judul }}
+                                                    </a> --}}
+                                                </h5>
+                                                <div class="blog-meta">
+                                                    <span class="admin-type mr-10">
+                                                        <i class="far fa-user-circle text-theme-colored1"></i>
+                                                        Admin
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="mb-15">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                                        {{-- <a href="{{ route('berita.showDetail', $item->id) }}" class="btn-plain-text-with-arrow"> Read More </a> --}}
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </article>
                             </div>
                         </div>
-                        </div>
-                        <p class="mb-15">Lorem ipsum dolor sit am adipi sicing elit, sed do consulting firms Et leggings across the nation lipsim tempor.</p>
-                        <a href="#" target="_self" class="btn-plain-text-with-arrow"> Read More </a>
-                        <div class="clearfix"></div>
+                        @endforeach
                     </div>
-                    </article>
-                </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                <div class="tm-sc tm-sc-blog tm-sc-blog-masonry blog-style1-current-theme mb-lg-30">
-                    <article class="post">
-                    <div class="entry-header">
-                        <div class="post-thumb">
-                        <div class="post-thumb-inner">
-                            <div class="thumb"> <img class="w-100" src="{{ asset('studypress/images/blog/3.jpg')}}" alt="Image"></div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="entry-content">
-                        <div class="clearfix mb-15">
-                        <div class="entry-date media-left text-center">
-                            <ul>
-                            <li class="font-16 text-white font-weight-600 border-bottom">28</li>
-                            <li class="font-12 text-white text-uppercase">Feb</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h5 class="entry-title"><a href="#" rel="bookmark">Things You Should</a></h5>
-                            <div class="blog-meta">
-                            <span class="admin-type mr-10">
-                                <i class="far fa-user-circle text-theme-colored1"></i>
-                            Admin
-                            </span>
-                            <span class="comments-type">
-                                <i class="far fa-comments text-theme-colored1"></i>
-                                2 Comments
-                            </span>
-                            </div>
-                        </div>
-                        </div>
-                        <p class="mb-15">Lorem ipsum dolor sit am adipi sicing elit, sed do consulting firms Et leggings across the nation lipsim tempor.</p>
-                        <a href="#" target="_self" class="btn-plain-text-with-arrow"> Read More </a>
-                        <div class="clearfix"></div>
-                    </div>
-                    </article>
-                </div>
                 </div>
             </div>
-            </div>
-        </div>
         </section>
     @include('partials.contact')
 

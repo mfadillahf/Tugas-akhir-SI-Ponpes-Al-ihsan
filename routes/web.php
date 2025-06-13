@@ -1,19 +1,21 @@
 <?php
 
 
-use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guru\GuruController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Infaq\InfaqController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Agenda\AgendaController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Santri\SantriController;
 use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
 use App\Http\Controllers\Akademik\KelasController;
 use App\Http\Controllers\Akademik\MapelController;
 use App\Http\Controllers\Akademik\NilaiController;
+use App\Http\Controllers\Sistem\TentangController;
 use App\Http\Controllers\Donatur\DonaturController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
@@ -24,9 +26,13 @@ use App\Http\Controllers\Kepengurusan\KepengurusanController;
 // Route::get('/', function () {
 //     return redirect()->route('login');
 // });
-Route::get('/', function () {
-    return view('landingpage.landingpage');
-});
+// Route::get('/', function () {
+//     return view('landingpage.landingpage');
+// });
+
+// Landing Page
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+
 
 // Route Login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -85,6 +91,19 @@ Route::middleware(['auth'])->group(function () {
     // hapalan
     Route::resource('hapalan', \App\Http\Controllers\Akademik\HapalanController::class);
 
+    // // Tambahan: rute untuk detail hapalan (misalnya muncul di pop-up/modal)
+    // Route::get('hapalan/{id}/detail', [\App\Http\Controllers\Akademik\HapalanController::class, 'showDetail'])->name('hapalan.showDetail');
+
+    // // Tambahan: proses simpan detail hapalan (AJAX / POST manual)
+    // Route::post('hapalan/{id}/detail', [\App\Http\Controllers\Akademik\HapalanController::class, 'storeDetail'])->name('hapalan.storeDetail');
+
+    // // Tambahan: edit/update detail hapalan (jika pakai modal atau redirect)
+    // Route::get('hapalan/detail/{id}/edit', [\App\Http\Controllers\Akademik\HapalanController::class, 'editDetail'])->name('hapalan.editDetail');
+    // Route::put('hapalan/detail/{id}', [\App\Http\Controllers\Akademik\HapalanController::class, 'updateDetail'])->name('hapalan.updateDetail');
+
+    // // Tambahan: hapus detail
+    // Route::delete('hapalan/detail/{id}', [\App\Http\Controllers\Akademik\HapalanController::class, 'destroyDetail'])->name('hapalan.destroyDetail');
+
     // agenda
     Route::resource('agenda', AgendaController::class);
     Route::get('agenda/{id}/detail', [AgendaController::class, 'showDetail'])->name('agenda.showDetail');
@@ -101,6 +120,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
+
+    Route::resource('tentang', TentangController::class);
 
     // profile
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');

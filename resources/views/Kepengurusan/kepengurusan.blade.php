@@ -34,7 +34,7 @@ Guru
                     <div class="card mb-4">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <form method="GET" action="{{ route('kepengurusan.index') }}" class="d-flex" role="search" style="max-width: 300px;">
-                                <input type="search" name="search" class="form-control form-control-sm me-2" style="width: 200px;"  placeholder="Cari nama kepengurusan..." value="{{ request('search') }}">
+                                <input type="search" name="search" class="form-control form-control-sm me-2" style="width: 200px;" placeholder="Cari nama kepengurusan..." value="{{ request('search') }}">
                                 <button type="submit" class="btn btn-primary btn-sm">Cari</button>
                                 @if(request('search'))
                                     <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
@@ -54,6 +54,7 @@ Guru
                                     <thead class="table-light">
                                         <tr>
                                             <th>No</th>
+                                            <th>Foto</th> {{-- kolom foto --}}
                                             <th>Nama</th>
                                             <th>Jabatan</th>
                                             <th>Mulai</th>
@@ -62,31 +63,38 @@ Guru
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($kepengurusan as $key => $k)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $k->nama }}</td>
-                                                <td>{{ $k->jabatan }}</td>
-                                                <td>{{ $k->mulai }}</td>
-                                                <td>{{ $k->akhir }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                        Detail
-                                                    </button>
-                                                    <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus Kepengurusan ini?')">Hapus</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
+                                    @forelse ($kepengurusan as $key => $k)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>
+                                                @if($k->foto)
+                                                    <img src="{{ asset('storage/kepengurusan/' . $k->foto) }}" alt="Foto Kepengurusan" style="max-width: 250px; height: auto;" class="img-thumbnail">
+                                                @else
+                                                    <span class="text-muted">Tidak ada foto</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $k->nama }}</td>
+                                            <td>{{ $k->jabatan }}</td>
+                                            <td>{{ $k->mulai }}</td>
+                                            <td>{{ $k->akhir }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                                    Detail
+                                                </button>
+                                                <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus Kepengurusan ini?')">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                                 </table>
                             </div>
                         </div>
@@ -111,7 +119,7 @@ Guru
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalBody">
-                
+                <!-- Detail akan dimuat lewat AJAX -->
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -122,17 +130,18 @@ Guru
 
 @push('scripts')
 <script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+    $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
         var kepengurusanId = $(this).data('id');
-        console.log('Tombol diklik, ID:', kepengurusanId);
-
         $.ajax({
             url: '/kepengurusan/' + kepengurusanId + '/detail',
             type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
+            success: function (response) {
+                var fotoPath = response.foto
+                    ? `<img src="/storage/kepengurusan/${response.foto}" alt="Foto" width="120" class="img-thumbnail mb-3">`
+                    : `<span class="text-muted">Tidak ada foto</span>`;
 
                 var modalContent = `
+                    ${fotoPath}
                     <table class="table table-sm table-bordered">
                         <tbody>
                             <tr><th>Nama</th><td>${response.nama}</td></tr>
@@ -144,7 +153,7 @@ Guru
                 `;
                 $('#modalBody').html(modalContent);
             },
-            error: function() {
+            error: function () {
                 alert('Gagal mengambil data detail kepengurusan.');
             }
         });

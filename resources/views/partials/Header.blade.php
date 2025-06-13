@@ -14,13 +14,13 @@
                 <div class="col-sm-auto ms-auto pr-0 align-self-center">
                     <nav id="top-primary-nav" class="menuzord theme-color1" data-effect="slide" data-animation="none" data-align="right">
                     <ul class="menuzord-menu onepage-nav">
-                        <li class="active"><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li class="active"><a href="#home">Beranda</a></li>
+                        <li><a href="#about">Tentang</a></li>
                         {{-- <li><a href="#courses">Courses</a></li> --}}
-                        <li><a href="#teachers">Teachers</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#teachers">Kepengurusan</a></li>
+                        <li><a href="#gallery">Galeri</a></li>
+                        <li><a href="#blog">Berita</a></li>
+                        <li><a href="#contact">kontak</a></li>
                     </ul>
                     </nav>
                 </div>

@@ -148,6 +148,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('tentang.index') }}" class="nav-link">
+              <i class="bi bi-info-circle-fill"></i>
+              <p>
+                Tentang
+              </p>
+              </a>
+          </li>
+
           <li class="nav-header">profile</li>
           <li class="nav-item">
             <a href="{{ route('profile.show') }}" class="nav-link">
