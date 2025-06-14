@@ -10,5 +10,10 @@ class Galeri extends Model
     use HasFactory;
     protected $table = 'galeris';
     protected $primaryKey = 'id_galeri';
-    protected $fillable = ['deskripsi', 'foto', 'tanggal'];
+    protected $fillable = ['deskripsi', 'foto', 'tanggal', 'kategori_galeri_id'];
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriGaleri::class, 'kategori_galeri_id');
+    }
 }

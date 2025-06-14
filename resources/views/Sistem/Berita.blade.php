@@ -61,7 +61,8 @@ Berita
                                 @forelse ($berita as $key => $be)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $be->isi }}</td>
+                                                <td>{{ $be->judul }}</td>
+                                                <td>{{ Str::limit($be->isi, 100) }}</td>
                                                 <td>
                                                     <img src="{{ asset('storage/berita/' . $be->foto) }}" alt="Foto berita" style="max-width: 150px;">
                                                 </td>

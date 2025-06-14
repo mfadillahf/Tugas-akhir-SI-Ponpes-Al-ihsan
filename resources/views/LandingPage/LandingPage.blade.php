@@ -400,6 +400,7 @@
                     </div>
                 </div>
 
+                {{-- berita --}}
                 <div class="section-content">
                     <div class="row">
                         @foreach ($berita as $item)
@@ -417,6 +418,7 @@
                                     </div>
                                     <div class="entry-content">
                                         <div class="clearfix mb-15">
+                                            <h5 class="card-title text-uppercase mb-2">{{ $item->judul }}</h5>
                                             <div class="entry-date media-left text-center">
                                                 <ul>
                                                     <li class="font-16 text-white font-weight-600 border-bottom">{{ $item->created_at->format('d') }}</li>
@@ -438,7 +440,8 @@
                                             </div>
                                         </div>
                                         <p class="mb-15">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
-                                        {{-- <a href="{{ route('berita.showDetail', $item->id) }}" class="btn-plain-text-with-arrow"> Read More </a> --}}
+                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" class="text-theme-colored2">Baca Selengkapnya →</a>
+
                                         <div class="clearfix"></div>
                                     </div>
                                 </article>

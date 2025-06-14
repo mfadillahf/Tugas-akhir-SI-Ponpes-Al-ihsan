@@ -17,15 +17,14 @@ class JenisBeritaSeeder extends Seeder
             DB::table('jenis_beritas')->insert([
                 ['id_jenis_berita' => 1, 'kategori' => 'acara'],
                 ['id_jenis_berita' => 2, 'kategori' => 'pengumuman'],
-                ['id_jenis_berita' => 3, 'kategori' => 'prestasi'],
-                ['id_jenis_berita' => 4, 'kategori' => 'kegiatan santri'],
-                ['id_jenis_berita' => 5, 'kategori' => 'kegiatan guru'],
-                ['id_jenis_berita' => 6, 'kategori' => 'informasi umum'],
-                ['id_jenis_berita' => 7, 'kategori' => 'dakwah'],
-                ['id_jenis_berita' => 8, 'kategori' => 'kunjungan'],
-                ['id_jenis_berita' => 9, 'kategori' => 'renovasi / pembangunan'],
-                ['id_jenis_berita' => 10, 'kategori' => 'kerja sama / donasi'],
-                ['id_jenis_berita' => 11, 'kategori' => 'lainnya'],
+                ['id_jenis_berita' => 3, 'kategori' => 'kegiatan'],
+                ['id_jenis_berita' => 4, 'kategori' => 'prestasi'],
+                ['id_jenis_berita' => 5, 'kategori' => 'informasi umum'],
+                ['id_jenis_berita' => 6, 'kategori' => 'dakwah'],
+                ['id_jenis_berita' => 7, 'kategori' => 'kunjungan'],
+                ['id_jenis_berita' => 8, 'kategori' => 'renovasi / pembangunan'],
+                ['id_jenis_berita' => 9, 'kategori' => 'kerja sama / donasi'],
+                ['id_jenis_berita' => 10, 'kategori' => 'lainnya'],
             ]);
         }
     }

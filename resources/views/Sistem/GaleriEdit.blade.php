@@ -40,6 +40,20 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
+                            <label for="kategori_galeri_id" class="form-label">Kategori</label>
+                            <select class="form-select" name="kategori_galeri_id" id="kategori_galeri_id" required>
+                                <option value="" disabled>Pilih Kategori</option>
+                                @foreach ($kategori as $item)
+                                    <option value="{{ $item->id }}" {{ old('kategori_galeri_id', $galeri->kategori_galeri_id) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama_kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
                             <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3" required>{{ old('deskripsi', $galeri->deskripsi) }}</textarea>
                         </div>

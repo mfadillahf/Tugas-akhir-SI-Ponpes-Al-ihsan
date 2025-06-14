@@ -50,6 +50,9 @@ Route::post('/register/santri', [RegisterController::class, 'registerSantri'])->
 Route::get('/register/donatur', [RegisterController::class, 'showDonaturForm'])->name('register.donatur');
 Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])->name('register.donatur.post');
 
+// berita detail
+Route::get('berita/{id}/detail', [LandingPageController::class, 'showDetail'])->name('berita.showDetail');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -116,7 +119,7 @@ Route::middleware(['auth'])->group(function () {
 
     // sistem
     Route::resource('berita', BeritaController::class);
-    Route::get('berita/{id}/detail', [BeritaController::class, 'showDetail'])->name('berita.showDetail');
+    
     
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');

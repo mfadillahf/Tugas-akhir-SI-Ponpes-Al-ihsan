@@ -20,4 +20,12 @@ class LandingPageController extends Controller
         return view('landingpage.landingpage', 
         compact('berita', 'galeri', 'kepengurusan', 'tentang'));
     }
+
+    // berita detail
+    public function showDetail($id)
+    {
+        $berita = Berita::findOrFail($id); 
+        $beritaLain = Berita::where('id_berita', '!=', $id)->latest()->take(5)->get();
+        return view('landingpage.beritadetail', compact('berita', 'beritaLain'));
+    }
 }

@@ -47,6 +47,18 @@
     <script src="{{ asset('studypress/js/revolution-slider/extra-rev-slider1.js') }}"></script>
     <script src="{{ asset('studypress/js/custom.js') }}"></script>
     <script src="{{ asset('studypress/js/custom-script.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        // Saat link menu diklik
+        $('.menuzord-menu li a').on('click', function () {
+            // Jika sedang tampil dalam mode mobile
+            if ($(window).width() <= 1199) {
+                // Klik tombol showhide (hamburger menu) secara otomatis
+                $('.menuzord-responsive .showhide').trigger('click');
+            }
+        });
+    });
+    </script>
     @stack('scripts')
 </body>
 </html>

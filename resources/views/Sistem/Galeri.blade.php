@@ -51,6 +51,7 @@ Galeri
                                     <thead class="table-light">
                                     <tr>
                                         <th>No</th>
+                                        <th>Kategori</th>
                                         <th>Deskripsi</th>
                                         <th>Foto</th>
                                         <th>Tanggal</th>
@@ -61,6 +62,7 @@ Galeri
                                 @forelse ($galeri as $key => $ga)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
+                                                <td>{{ $ga->kategori->nama_kategori ?? '-' }}</td>
                                                 <td>{{ $ga->deskripsi }}</td>
                                                 <td>
                                                     <img src="{{ asset('storage/galeri/' . $ga->foto) }}" alt="Foto Galeri" style="max-width: 150px;">

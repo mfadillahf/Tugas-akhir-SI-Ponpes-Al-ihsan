@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sistem;
 
 use App\Models\Tentang;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,7 @@ class TentangController extends Controller
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
-                $filename = time() . '_' . $file->getClientOriginalName();
+                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/tentang', $filename);
                 $data['gambar'] = $filename;
                 
@@ -78,7 +79,7 @@ class TentangController extends Controller
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
-                $filename = time() . '_' . $file->getClientOriginalName();
+                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/tentang', $filename);
                 $data['gambar'] = $filename;
 

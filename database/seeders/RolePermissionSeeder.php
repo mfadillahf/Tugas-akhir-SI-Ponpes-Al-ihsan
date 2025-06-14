@@ -30,6 +30,7 @@ class RolePermissionSeeder extends Seeder
             'kelola nilai',
             'lihat hapalan',
             'kelola hapalan',
+            'kelola tentang',
         ];
 
         foreach ($permissions as $perm) {

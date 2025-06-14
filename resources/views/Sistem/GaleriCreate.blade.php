@@ -37,6 +37,20 @@
                 <form class="needs-validation" action="{{ route('galeri.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="kategori_galeri_id" class="form-label">Kategori</label>
+                        <select name="kategori_galeri_id" id="kategori_galeri_id" class="form-select" required>
+                            <option value="" disabled selected>-- Pilih Kategori --</option>
+                            @foreach ($kategori as $kat)
+                                <option value="{{ $kat->id }}" {{ old('kategori_galeri_id') == $kat->id ? 'selected' : '' }}>
+                                    {{ $kat->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>

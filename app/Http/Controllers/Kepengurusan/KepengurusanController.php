@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kepengurusan;
 
+use Illuminate\Support\Str;
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +52,7 @@ class KepengurusanController extends Controller
 
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');
-                $filename = time() . '_' . $file->getClientOriginalName();
+                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/kepengurusan', $filename);
                 $data['foto'] = $filename;
             }
@@ -96,7 +97,7 @@ class KepengurusanController extends Controller
             if ($request->hasFile('foto')) {
                 // Simpan file baru
                 $file = $request->file('foto');
-                $filename = time() . '_' . $file->getClientOriginalName();
+               $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/kepengurusan', $filename);
                 $data['foto'] = $filename;
 
