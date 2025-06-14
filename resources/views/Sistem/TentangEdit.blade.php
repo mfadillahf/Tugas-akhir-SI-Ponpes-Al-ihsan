@@ -47,8 +47,8 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label for="isi" class="form-label">Isi</label>
-                            <textarea class="form-control" name="isi" id="isi" rows="6" required>{{ old('isi', $tentang->isi) }}</textarea>
+                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" name="deskripsi" id="deskripsi" rows="6" required>{{ old('isi', $tentang->deskripsi) }}</textarea>
                         </div>
                     </div>
 

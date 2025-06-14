@@ -222,7 +222,7 @@
         </section>
 
 <!-- Section: About -->
-<section id="about">
+<section id="about" class="bg-silver-light">
     <div class="container">
         <div class="section-content">
             <div class="row">
@@ -381,77 +381,78 @@
 
         @include('partials.gallery')
 
-        <!-- Section: News -->
-        <section id="blog" class="bg-silver-light">
-            <div class="container">
-                <div class="section-title">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-60">
-                                <div class="tm-sc tm-sc-section-title section-title">
-                                    <div class="title-wrapper">
-                                        <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
-                                            Berita <span class="text-theme-colored1">Terbaru</span>
-                                        </h2>
-                                    </div>
+    <!-- Section: News -->
+    <section id="blog" class="bg-silver-light">
+        <div class="container">
+            <div class="section-title">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-60">
+                            <div class="tm-sc-blog blog-style-default mb-lg-30">
+                                <div class="title-wrapper">
+                                    <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
+                                        Berita <span class="text-theme-colored2">Terkini</span>
+                                    </h2>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {{-- berita --}}
-                <div class="section-content">
-                    <div class="row">
-                        @foreach ($berita as $item)
-                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                            <div class="tm-sc tm-sc-blog tm-sc-blog-masonry blog-style1-current-theme mb-lg-30">
-                                <article class="post">
-                                    <div class="entry-header">
-                                        <div class="post-thumb">
-                                            <div class="post-thumb-inner">
-                                                <div class="thumb">
-                                                    <img class="w-100" src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}">
-                                                </div>
+            {{-- berita --}}
+            <div class="section-content">
+                <div class="row">
+                    @foreach ($berita as $item)
+                    <div class="col-md-6 col-lg-6 col-xl-3 d-flex">
+                        <div class="tm-sc-blog blog-style-default mb-lg-30 w-100 d-flex flex-column">
+                            <article class="post type-post status-publish format-standard has-post-thumbnail d-flex flex-column h-100">
+                                <div class="entry-header">
+                                    <div class="post-thumb lightgallery-lightbox">
+                                        <div class="post-thumb-inner">
+                                            <div class="thumb">
+                                                <img class="w-100" style="height: 200px; object-fit: cover;" src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="entry-content">
-                                        <div class="clearfix mb-15">
-                                            <h5 class="card-title text-uppercase mb-2">{{ $item->judul }}</h5>
-                                            <div class="entry-date media-left text-center">
-                                                <ul>
-                                                    <li class="font-16 text-white font-weight-600 border-bottom">{{ $item->created_at->format('d') }}</li>
-                                                    <li class="font-12 text-white text-uppercase">{{ $item->created_at->format('M') }}</li>
-                                                </ul>
-                                            </div>
-                                            <div class="overflow-hidden">
-                                                <h5 class="entry-title">
-                                                    {{-- <a href="{{ route('berita.showDetail', $item->id) }}" rel="bookmark">
-                                                        {{ $item->judul }}
-                                                    </a> --}}
-                                                </h5>
-                                                <div class="blog-meta">
-                                                    <span class="admin-type mr-10">
-                                                        <i class="far fa-user-circle text-theme-colored1"></i>
-                                                        Admin
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="mb-15">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
-                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" class="text-theme-colored2">Baca Selengkapnya →</a>
+                                    <a class="link" href="{{ route('berita.showDetail', $item->id_berita) }}"><i class="fa fa-link"></i></a>
+                                </div>
 
-                                        <div class="clearfix"></div>
+                                <div class="entry-content d-flex flex-column flex-grow-1">
+                                    <h4 class="entry-title">
+                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" rel="bookmark">
+                                            {{ \Str::limit($item->judul, 60) }}
+                                        </a>
+                                    </h4>
+                                    <div class="entry-meta mt-0 mb-2">
+                                        <span class="text-gray-darkgray font-size-13 d-block">
+                                            <i class="far fa-calendar-alt mr-5 text-theme-colored1"></i>
+                                            {{ $item->created_at->format('M d, Y') }}
+                                        </span>
+                                        <span class="text-gray-darkgray font-size-13">
+                                            <i class="far fa-user-circle mr-5 text-theme-colored1"></i> Admin
+                                        </span>
                                     </div>
-                                </article>
-                            </div>
+
+                                    <div class="post-excerpt mb-2 flex-grow-1">
+                                        <div class="mascot-post-excerpt">
+                                            {{ Str::limit(strip_tags($item->isi), 100) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="post-btn-readmore mt-auto">
+                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" class="btn btn-plain-text-with-arrow">Selengkapnya</a>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
-                        @endforeach
                     </div>
+                    @endforeach
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
+
     @include('partials.contact')
 
     <!-- end main-content -->

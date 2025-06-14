@@ -53,6 +53,9 @@ Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])
 // berita detail
 Route::get('berita/{id}/detail', [LandingPageController::class, 'showDetail'])->name('berita.showDetail');
 
+// Galeri All
+Route::get('/galeri/index', [LandingPageController::class, 'galeri'])->name('landing.galeri');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

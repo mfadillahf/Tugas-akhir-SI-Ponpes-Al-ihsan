@@ -7,13 +7,20 @@
                 <div class="thumb">
                     <img alt="Logo" src="{{ asset('studypress/images/logo-wide-white.png')}}">
                 </div>
-                <div class="description">203, Envato Labs, Behind Alis Steet, Melbourne, Australia.immersion along the information close the loop on focusing</div>
+                <div class="description">
+                    <p>Jl. Seberang Mesjid No.96 Rt.02,
+                    <br> Kec. Banjarmasin Tengah
+                    <br> Kota Banjarmasin, Kalimantan Selatan 70231
+                    <br> <span class="text-theme-colored2">Telp/WA:</span> +6281315330847
+                    <br> <span class="text-theme-colored2">Email:</span> xxxxxxxxxxxx@gmail.com
+                    </p>
+                    </div>
                 </div>
                 <ul class="styled-icons icon-dark icon-theme-colored1 icon-rounded clearfix">
                 <li><a class="social-link" href="#" ><i class="fab fa-facebook"></i></a></li>
                 <li><a class="social-link" href="#" ><i class="fab fa-twitter"></i></a></li>
                 <li><a class="social-link" href="#" ><i class="fab fa-youtube"></i></a></li>
-                <li><a class="social-link" href="#" ><i class="fab fa-instagram"></i></a></li>
+                <li><a class="social-link" href="https://www.instagram.com/al_ihsan_bjm/" ><i class="fab fa-instagram"></i></a></li>
                 </ul>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
@@ -63,7 +70,7 @@
                 </ul>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
+            {{-- <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="widget">
                 <h4 class="widget-title widget-title-line-bottom line-bottom-theme-colored1">Opening Hours</h4>
                 <div class="opening-hours border-dark">
@@ -80,23 +87,18 @@
                     </ul>
                 </div>
                 </div>
-            </div>
+            </div> --}}
             </div>
         </div>
         <div class="footer-bottom" data-tm-bg-color="#2A2A2A">
             <div class="container">
-            <div class="row pt-20 pb-20">
-                <div class="col-sm-6">
-                <div class="footer-paragraph">
-                    © 2020 ThemeMascot. All Rights Reserved.
+                <div class="row pt-20 pb-20 justify-content-center">
+                    <div class="col-12 text-center">
+                        <div class="footer-paragraph text-white">
+                            © Copyright Ponpes Al Ihsan. All Rights Reserved
+                        </div>
+                    </div>
                 </div>
-                </div>
-                <div class="col-sm-6">
-                <div class="footer-paragraph text-right">
-                    Site Template
-                </div>
-                </div>
-            </div>
             </div>
         </div>
         </div>

@@ -1,4 +1,4 @@
-    <header id="header" class="header header-layout-type-header-1rows-floating-header header-bg-dark-shadow">
+    <header id="header" class="header header-layout-type-header-2rows">
         <div class="header-nav tm-enable-navbar-hide-on-scroll">
             <div class="header-nav-wrapper navbar-scrolltofixed">
                 <div class="menuzord-container header-nav-container">
