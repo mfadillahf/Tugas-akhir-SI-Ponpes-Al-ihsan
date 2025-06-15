@@ -47,17 +47,16 @@
     <script src="{{ asset('studypress/js/revolution-slider/extra-rev-slider1.js') }}"></script>
     <script src="{{ asset('studypress/js/custom.js') }}"></script>
     <script src="{{ asset('studypress/js/custom-script.js') }}"></script>
+    <script src="{{ asset('studypress/js/lightgallery-all.min.js') }}"></script>
+    <script src="{{ asset('studypress/js/lightgallery.js') }}"></script>
     <script>
-    $(document).ready(function () {
-        // Saat link menu diklik
-        $('.menuzord-menu li a').on('click', function () {
-            // Jika sedang tampil dalam mode mobile
+        $(document).ready(function () {
+        $('#top-primary-nav .menuzord-menu li a, #top-primary-nav-clone .menuzord-menu li a').on('click', function () {
             if ($(window).width() <= 1199) {
-                // Klik tombol showhide (hamburger menu) secara otomatis
-                $('.menuzord-responsive .showhide').trigger('click');
+            $('.menuzord-responsive .showhide').trigger('click');
             }
         });
-    });
+        });
     </script>
     @stack('scripts')
 </body>

@@ -109,7 +109,7 @@ Hapalan
     </div>
 </div>
 
-@push('scripts')
+<!-- @push('scripts')
 <script>
     $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
         var hapalanId = $(this).data('id');
@@ -151,5 +151,5 @@ Hapalan
         });
     });
 </script>
-@endpush
+@endpush -->
 @endsection

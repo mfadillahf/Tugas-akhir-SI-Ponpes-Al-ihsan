@@ -8,6 +8,7 @@ use App\Models\Tentang;
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 use App\Models\KategoriGaleri;
+use App\Models\Agenda;
 
 class LandingPageController extends Controller
 {
@@ -24,18 +25,35 @@ class LandingPageController extends Controller
     }
 
     // berita detail
-    public function showDetail($id)
+    public function beritaDetail($id)
     {
         $berita = Berita::findOrFail($id); 
         $beritaLain = Berita::where('id_berita', '!=', $id)->latest()->take(5)->get();
         return view('landingpage.beritadetail', compact('berita', 'beritaLain'));
     }
 
-    // Galeri All
+    // Galeri All index
     public function galeri()
-{
-    $galeri = Galeri::latest()->get(); 
-    $kategoriGaleri = KategoriGaleri::all(); 
-    return view('LandingPage.GaleriIndex', compact('galeri', 'kategoriGaleri'));
-}
+    {
+        $galeri = Galeri::latest()->get(); 
+        $kategoriGaleri = KategoriGaleri::all(); 
+        return view('LandingPage.GaleriIndex', compact('galeri', 'kategoriGaleri'));
+    }
+
+    // kalender
+    public function kalender()
+    {
+        $agenda = Agenda::with('jenisAgenda')->orderBy('tanggal_mulai', 'asc')->get();
+        return view('LandingPage.Kalender', compact('agenda'));
+    }
+
+// tentang ponpes
+    public function tentangponpes()
+        {
+            $tentang = Tentang::first();
+            $beritaLain = Berita::latest()->take(5)->get();
+
+            return view('LandingPage.TentangDetail', compact('tentang', 'beritaLain'));
+        }
+
 }

@@ -231,7 +231,7 @@
                     <h2 class="text-uppercase mt-0 line-bottom line-bottom-theme-colored1">{{ $tentang->judul ?? '-' }}</h2>
                     <h4></h4>
                     <p>{!! $tentang->deskripsi ?? '-' !!}</p>
-                    {{-- <a href="#" class="btn btn-sm btn-theme-colored2 text-white mb-md-40">Know more</a> --}}
+                    <a href="{{ route('landing.tentang') }}" class="btn btn-sm btn-theme-colored2 text-white mb-md-40">Selengkapnya</a>
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-6">
                     @if ($tentang && $tentang->gambar)
@@ -415,12 +415,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="link" href="{{ route('berita.showDetail', $item->id_berita) }}"><i class="fa fa-link"></i></a>
+                                    <a class="link" href="{{ route('berita.detail', $item->id_berita) }}"><i class="fa fa-link"></i></a>
                                 </div>
 
                                 <div class="entry-content d-flex flex-column flex-grow-1">
                                     <h4 class="entry-title">
-                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" rel="bookmark">
+                                        <a href="{{ route('berita.detail', $item->id_berita) }}" rel="bookmark">
                                             {{ \Str::limit($item->judul, 60) }}
                                         </a>
                                     </h4>
@@ -441,7 +441,7 @@
                                     </div>
 
                                     <div class="post-btn-readmore mt-auto">
-                                        <a href="{{ route('berita.showDetail', $item->id_berita) }}" class="btn btn-plain-text-with-arrow">Selengkapnya</a>
+                                        <a href="{{ route('berita.detail', $item->id_berita) }}" class="btn btn-plain-text-with-arrow">Selengkapnya</a>
                                     </div>
                                 </div>
                             </article>

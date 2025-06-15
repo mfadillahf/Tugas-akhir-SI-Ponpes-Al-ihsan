@@ -51,10 +51,18 @@ Route::get('/register/donatur', [RegisterController::class, 'showDonaturForm'])-
 Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])->name('register.donatur.post');
 
 // berita detail
-Route::get('berita/{id}/detail', [LandingPageController::class, 'showDetail'])->name('berita.showDetail');
+Route::get('berita/{id}/detail', [LandingPageController::class, 'beritaDetail'])->name('berita.detail');
 
 // Galeri All
 Route::get('/galeri/index', [LandingPageController::class, 'galeri'])->name('landing.galeri');
+
+// tetang ponpes
+Route::get('/tentang/ponpes', [LandingPageController::class, 'tentangponpes'])->name('landing.tentang');
+
+// Kalender
+Route::get('/kalender', [LandingPageController::class, 'kalender'])->name('landing.kalender');
+
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -119,10 +127,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('infaq', InfaqController::class);
 
-
     // sistem
     Route::resource('berita', BeritaController::class);
-    
     
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');

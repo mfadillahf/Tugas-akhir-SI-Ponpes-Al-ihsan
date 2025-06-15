@@ -4,21 +4,25 @@
 
 @section('content')
 <!-- Section: Page Title -->
-    <section class="page-title layer-overlay overlay-dark-9 section-typo-light bg-img-center" data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg1.jpg') }}">
+    <section class="page-title layer-overlay overlay-dark-9 section-typo-light bg-img-center" style="padding-top: 120px;" data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg1.jpg') }}">
     <div class="container pt-50 pb-50">
         <div class="section-content">
         <div class="row">
-            <div class="col-md-12 text-center">
-            <h2 class="title">{{ $berita->judul }}</h2>
-            <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
-                <div class="breadcrumbs">
-                <span><a href="{{ route('landing') }}">Beranda</a></span>
-                <span><i class="fa fa-angle-right mx-2"></i></span>
-                <span><a href="{{ route('landing') }}#blog">Berita</a></span>
-                <span><i class="fa fa-angle-right mx-2"></i></span>
-                <span class="active text-theme-colored1">{{ $berita->judul }}</span>
+            <div class="col-md-12">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start">
+                    <h2 class="title">Berita</h2>
+                    </div>
+                    <div class="col-md-6 text-end">
+                    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
+                        <div class="breadcrumbs">
+                        <span><a href="{{ route('landing') }}">Beranda</a></span>
+                        <span><i class="fa fa-angle-right mx-2"></i></span>
+                        <span class="active">Berita</span>
+                        </div>
+                    </nav>
+                    </div>
                 </div>
-            </nav>
             </div>
         </div>
         </div>
@@ -54,9 +58,6 @@
                 <article class="content" style="line-height: 1.8; font-size: 1.1rem;">
                     {!! $berita->isi !!}
                 </article>
-                <div class="mt-4">
-                    <a href="{{ url()->previous() }}" class="btn btn-theme-colored1 btn-sm">← Kembali ke Berita</a>
-                </div>
                 </div>
             </article>
             </div>
@@ -70,11 +71,11 @@
                 <div class="latest-posts">
                 @foreach ($beritaLain as $item)
                 <article class="post clearfix pb-0 mb-20">
-                    <a class="post-thumb" href="{{ route('berita.showDetail', $item->id_berita) }}">
+                    <a class="post-thumb" href="{{ route('berita.detail', $item->id_berita) }}">
                     <img src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded shadow-sm">
                     </a>
                     <div class="post-right">
-                    <h5 class="post-title mt-0 mb-1"><a href="{{ route('berita.showDetail', $item->id_berita) }}">{{ $item->judul }}</a></h5>
+                    <h5 class="post-title mt-0 mb-1"><a href="{{ route('berita.detail', $item->id_berita) }}">{{ $item->judul }}</a></h5>
                     <span class="post-date small text-muted">
                         <i class="far fa-calendar-alt me-1"></i> {{ $item->created_at->format('d M Y') }}
                     </span>
