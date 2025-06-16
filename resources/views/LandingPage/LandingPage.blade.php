@@ -332,51 +332,72 @@
         </div>
         </section> --}}
 
-        <!-- Section: Staff -->
-        <section id="teachers">
-            <div class="container">
-                <div class="section-title">
-                <div class="row">
-                    <div class="col-md-8">
-                    <div class="mb-60">
-                        <div class="tm-sc tm-sc-section-title section-title">
-                        <div class="title-wrapper">
-                            <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
-                            Kepengurusan <span class="text-theme-colored1"></span>
-                            </h2>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-
-                <div class="section-content">
-                <div class="row">
-                    @forelse ($kepengurusan as $item)
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="staff-item mb-lg-40">
-                        <div class="staff-thumb">
-                            <img alt="{{ $item->nama }}" src="{{ asset('storage/kepengurusan/' . $item->foto) }}" class="w-100" style="height: 300px; object-fit: cover;">
-                        </div>
-                        <div class="staff-content">
-                            <h4 class="staff-name text-theme-colored1 mt-0">
-                            {{ $item->nama }} - <small>{{ $item->jabatan }}</small>
-                            </h4>
-                            <p class="mb-0">Periode:</p>
-                            <p class="mb-20">{{ $item->mulai }} s.d {{ $item->akhir }}</p>
-                        </div>
-                        </div>
-                    </div>
-                    @empty
-                    <div class="col-12 text-center">
-                        <p>Belum ada data kepengurusan yang tersedia.</p>
-                    </div>
-                    @endforelse
+<!-- Section: Staff -->
+<section id="teachers" class="bg-white-f5">
+    <div class="container">
+        <div class="section-title">
+        <div class="row">
+            <div class="col-md-8">
+            <div class="mb-60">
+                <div class="tm-sc tm-sc-section-title section-title">
+                <div class="title-wrapper">
+                    <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">
+                    Kepengurusan <span class="text-theme-colored1"></span>
+                    </h2>
                 </div>
                 </div>
             </div>
-            </section>
+            </div>
+        </div>
+        </div>
+
+        <div class="section-content">
+        <div class="row">
+            <div class="col-12">
+            <div class="tm-sc-staff tm-sc-staff-carousel staff-style3-modern owl-dots-light-skin owl-dots-center">
+                <div id="staff-holder-945632" class="owl-carousel owl-theme tm-owl-carousel-4col"
+                data-nav="true" data-dots="true" data-autoplay="true" data-loop="true"
+                data-duration="6000" data-smartspeed="300" data-margin="30" data-stagepadding="0">
+
+                @forelse ($kepengurusan as $item)
+                <div class="tm-carousel-item">
+                    <div class="tm-staff">
+                    <div class="staff-inner">
+                        <div class="box-hover-effect">
+                        <div class="staff-header effect-wrapper">
+                            <div class="thumb">
+                            <img alt="{{ $item->nama }}" src="{{ asset('storage/kepengurusan/' . $item->foto) }}" class="img-fullwidth" style="height: 300px; object-fit: cover;">
+                            </div>
+                        </div>
+                        <div class="staff-content text-center">
+                            <h5 class="name">{{ $item->nama }}</h5>
+                            <div class="speciality">{{ $item->jabatan }}</div>
+                            <p class="mb-0">Periode:</p>
+                            <p>{{ $item->mulai }} s.d {{ $item->akhir }}</p>
+
+                            <div class="staff-btn">
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                @empty
+                <div class="tm-carousel-item">
+                    <div class="text-center">Belum ada data kepengurusan yang tersedia.</div>
+                </div>
+                @endforelse
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
 
         @include('partials.gallery')
 
@@ -451,14 +472,27 @@
             </div>
         </div>
     </section>
-
     @include('partials.contact')
-
-    <!-- end main-content -->
 </div>
-<!-- end wrapper -->
-<!-- Footer Scripts -->
-
-
 </body>
+@push('scripts')
+<script>
+    $(document).ready(function(){
+        $('#staff-holder-945632').owlCarousel({
+            nav: true,
+            dots: true,
+            autoplay: true,
+            loop: true,
+            autoplayTimeout: 6000,
+            smartSpeed: 300,
+            margin: 30,
+            responsive:{
+                0:{ items:1 },
+                600:{ items:2 },
+                1000:{ items:4 }
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

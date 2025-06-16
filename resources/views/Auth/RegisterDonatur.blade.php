@@ -1,72 +1,104 @@
-@extends('layouts.auth')
+@extends('layouts.landing')
 
 @section('title', 'Register Donatur')
-@section('body-class', 'login-page')
 
 @section('content')
-<div class="container" style="margin-top: 40px; max-width: 900px;">
-    <div class="card p-4 shadow-sm">
-        <h2 class="text-center mb-4 text-primary">Register Donatur</h2>
-
-        @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<div class="main-content-area">
+    <!-- Section: page title -->
+    <section class="page-title layer-overlay overlay-dark-9 section-typo-light bg-img-center" style="padding-top: 120px;" data-tm-bg-img="{{ asset('images/bg/bg1.jpg') }}">
+        <div class="container pt-50 pb-50">
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center text-md-start">
+                                <h2 class="title">Form Pendaftaran Donatur</h2>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
+                                    <div class="breadcrumbs">
+                                        <span><a href="{{ route('landing') }}">Beranda</a></span>
+                                        <span><i class="fa fa-angle-right mx-2"></i></span>
+                                        <span class="active">Register Donatur</span>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        @endif
+    </section>
 
-        <form method="POST" action="{{ route('register.donatur.post') }}">
-            @csrf
-            <div class="row gy-3 gx-3">
-                <div class="col-12 col-md-6">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" value="{{ old('username') }}" class="form-control" required>
-                </div>
+    <!-- Form section -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form method="POST" action="{{ route('register.donatur.post') }}" class="register-form">
+                        @csrf
 
-                <div class="col-12 col-md-6">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control">
-                </div>
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
 
-                <div class="col-12 col-md-6">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
-                </div>
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                <div class="col-12 col-md-6">
-                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
-                </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label>Username</label>
+                                <input name="username" class="form-control" type="text" value="{{ old('username') }}" required>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label>Email</label>
+                                <input name="email" class="form-control" type="email" value="{{ old('email') }}">
+                            </div>
+                        </div>
 
-                <hr class="my-3">
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label>Password</label>
+                                <input name="password" class="form-control" type="password" required>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label>Konfirmasi Password</label>
+                                <input name="password_confirmation" class="form-control" type="password" required>
+                            </div>
+                        </div>
 
-                <div class="col-12 col-md-6">
-                    <label for="nama" class="form-label">Nama Lengkap</label>
-                    <input type="text" id="nama" name="nama" value="{{ old('nama') }}" class="form-control" required>
-                </div>
+                        <hr>
 
-                <div class="col-12 col-md-6">
-                    <label for="no_telepon" class="form-label">No Telepon</label>
-                    <input type="text" id="no_telepon" name="no_telepon" value="{{ old('no_telepon') }}" class="form-control" required>
-                </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label>Nama Lengkap</label>
+                                <input name="nama" class="form-control" type="text" value="{{ old('nama') }}" required>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label>No Telepon</label>
+                                <input name="no_telepon" class="form-control" type="text" value="{{ old('no_telepon') }}" required>
+                            </div>
+                        </div>
 
-                <div class="col-12">
-                    <label for="alamat" class="form-label">Alamat</label>
-                    <textarea id="alamat" name="alamat" class="form-control" rows="2" required>{{ old('alamat') }}</textarea>
+                        <div class="mb-3">
+                            <label>Alamat</label>
+                            <textarea name="alamat" class="form-control" rows="2" required>{{ old('alamat') }}</textarea>
+                        </div>
+
+                        <div class="tm-sc-button text-end">
+                            <button type="submit" class="btn btn-dark btn-theme-colored1 mt-15 px-4">Daftar Sekarang</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="d-flex justify-content-end mt-4">
-                <button type="submit" class="btn btn-primary px-4">Daftar</button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </section>
 </div>
 @endsection

@@ -27,16 +27,18 @@
                                         </ul>
                                     </li>
 
-                                    <li><a href="{{ route('landing.kalender') }}#calender">Kalender</a></li>
-                                    <li><a href="{{ route('landing.galeri')}}">Galeri</a></li>
-                                    <li><a href="{{ route('landing') }}#contact">Kontak</a></li>
-
-                                    <li class="hidden-mobile-mode">
-                                        <a href="{{ route('register.santri') }}">
-                                        PSB Online
-                                        </a>
+                                    <li class="menu-item">
+                                        <a href="#">Pendaftaran</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{{ route('register.santri') }}">PSB Online</a></li>
+                                            <li><a href="{{ route('register.donatur') }}">Daftar Sebagai Donatur</a></li>
+                                        </ul>
                                     </li>
 
+                                    <li><a href="{{ route('landing.kalender') }}#calender">Kalender</a></li>
+                                    <li><a href="{{ route('landing.galeri')}}">Galeri</a></li>
+
+                                    <li><a href="{{ route('landing') }}#contact">Kontak</a></li>
                                     <li class="hidden-mobile-mode">
                                         <a href="{{ route('login') }}">
                                         Login

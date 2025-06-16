@@ -1,4 +1,4 @@
-    <footer id="footer" class="footer layer-overlay overlay-dark-9" data-tm-bg-img="{{ asset('studypress/images/bg/bg2.jpg')}}">
+    <footer id="footer" class="footer layer-overlay overlay-dark-9" data-tm-bg-img="{{ asset('studypress/images/bg/ponpes.jpg')}}">
         <div class="footer-widget-area">
         <div class="container pt-90 pb-60">
             <div class="row">

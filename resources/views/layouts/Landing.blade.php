@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="{{ asset('studypress/css/menuzord-skins/menuzord-rounded-boxed.css') }}">
     <link rel="stylesheet" href="{{ asset('studypress/js/revolution-slider/css/rs6.css') }}">
     <link rel="stylesheet" href="{{ asset('studypress/js/revolution-slider/extra-rev-slider1.css') }}">
+    <link rel="stylesheet" href="{{ asset('studypress/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('studypress/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('studypress/css/lightgallery.min.css') }}">
+
     @stack('styles')
     <!-- Tambahkan stylesheet lainnya sesuai kebutuhan -->
     </head>
@@ -35,6 +39,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('studypress/js/jquery.js') }}"></script>
+    <script src="{{ asset('studypress/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('studypress/js/owl.carousel2.thumbs.min.js') }}"></script>
+    <script src="{{ asset('studypress/js/owl-init.js') }}"></script>
     <script src="{{ asset('studypress/js/popper.min.js') }}"></script>
     <script src="{{ asset('studypress/js/bootstrap.min.js') }}"></script>
     <!-- plugin bundle -->
@@ -49,6 +56,7 @@
     <script src="{{ asset('studypress/js/custom-script.js') }}"></script>
     <script src="{{ asset('studypress/js/lightgallery-all.min.js') }}"></script>
     <script src="{{ asset('studypress/js/lightgallery.js') }}"></script>
+
     <script>
         $(document).ready(function () {
         $('#top-primary-nav .menuzord-menu li a, #top-primary-nav-clone .menuzord-menu li a').on('click', function () {

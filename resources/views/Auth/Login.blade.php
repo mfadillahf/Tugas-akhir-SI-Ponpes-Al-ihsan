@@ -35,13 +35,6 @@
                     </div>
                     <a href="#" class="text-decoration-none">I forgot my password</a>
                 </div> --}}
-
-                {{-- Bagian link daftar di atas tombol --}}
-                <div class="mb-3 d-flex justify-content-between">
-                    <a href="{{ route('register.santri') }}" class="text-decoration-none">Daftar sebagai Santri</a>
-                    <a href="{{ route('register.donatur') }}" class="text-decoration-none">Daftar sebagai Donatur</a>
-                </div>
-
                 <button type="submit" class="btn btn-primary w-100">Sign In</button>
             </form>
         </div>
