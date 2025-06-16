@@ -20,10 +20,6 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             {{-- Filter hanya untuk guru --}}
             @role('guru')
             <div class="card mb-4">
@@ -96,7 +92,7 @@
                             <tbody>
                                 @forelse($nilaiList as $key => $nl)
                                     <tr>
-                                        <td>{{ $nilaiList->firstItem() + $key }}</td>
+                                        <td>{{ ($nilaiList->firstItem() ?? 0) + $key }}</td>
                                         @role('guru')
                                             <td>{{ $nl->santri->nama_lengkap }}</td>
                                             <td>{{ $nl->santri->kelas->nama_kelas ?? '-' }}</td>
@@ -110,7 +106,7 @@
                                             <form action="{{ route('nilai.destroy', $nl->id_nilai) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus nilai ini?')">Hapus</button>
+                                                <button class="btn btn-danger btn-sm btn-delete-nilai" data-id="{{ $nl->id_nilai }}">Hapus</button>
                                             </form>
                                         </td>
                                         @endrole
@@ -127,4 +123,75 @@
         </div>
     </div>
 </main>
+
+@push('scripts')
+    {{-- Notifikasi sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+    @endif
+
+    {{-- Notifikasi error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- SweetAlert konfirmasi hapus nilai --}}
+    <script>
+        $(document).on('click', '.btn-delete-nilai', function (e) {
+            e.preventDefault();
+            const nilaiId = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data nilai tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = $('<form>', {
+                        method: 'POST',
+                        action: `/nilai/${nilaiId}`
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    }));
+
+                    $('body').append(form);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+@endpush
+
 @endsection

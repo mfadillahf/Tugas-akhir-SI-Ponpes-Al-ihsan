@@ -31,11 +31,6 @@ Mapel
             <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
                 <!--begin::Row-->
                 <div class="row">
                 <div class="col-12">
@@ -72,7 +67,7 @@ Mapel
                                                     <form action="{{ route('mapel.destroy', $m->id_mapel) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus mapel ini?')">Hapus</button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $m->id_mapel }}">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -115,17 +110,44 @@ Mapel
 </div>
 
 @push('scripts')
+{{-- Notifikasi sukses --}}
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+</script>
+@endif
+
+{{-- Notifikasi error --}}
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    });
+</script>
+@endif
+
+{{-- AJAX untuk modal detail --}}
 <script>
     $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
         var mapelId = $(this).data('id');
-        console.log('Tombol diklik, ID:', mapelId);
 
         $.ajax({
             url: '/mapel/' + mapelId + '/detail',
             type: 'GET',
             success: function(response) {
-                console.log('Response dari server:', response);
-
                 var modalContent = `
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -148,6 +170,44 @@ Mapel
             },
             error: function() {
                 alert('Gagal mengambil data detail mapel.');
+            }
+        });
+    });
+</script>
+
+{{-- SweetAlert konfirmasi hapus --}}
+<script>
+    $(document).on('click', '.btn-delete', function () {
+        const mapelId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = $('<form>', {
+                    method: 'POST',
+                    action: `/mapel/${mapelId}`
+                });
+
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_token',
+                    value: '{{ csrf_token() }}'
+                }));
+
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_method',
+                    value: 'DELETE'
+                }));
+
+                form.appendTo('body').submit();
             }
         });
     });

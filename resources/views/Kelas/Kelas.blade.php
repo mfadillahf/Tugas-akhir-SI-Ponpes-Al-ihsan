@@ -23,11 +23,6 @@
     <!--begin::App Content-->
     <div class="app-content">
         <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -56,7 +51,7 @@
                                                     <form action="{{ route('kelas.destroy', $k->id_kelas) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus kelas ini?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                                        <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="{{ $k->id_kelas }}">Hapus</button>
                                                     </form>
                                                 </td>  
                                             </tr>
@@ -80,5 +75,58 @@
         </div>
     </div>
 </main>
+
+@push('scripts')
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+@endif
+
+<script>
+    $(document).on('click', '.btn-delete', function () {
+        var kelasId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data kelas tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Buat form dan submit secara otomatis
+                const form = $('<form>', {
+                    method: 'POST',
+                    action: `/kelas/${kelasId}`
+                });
+
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_token',
+                    value: '{{ csrf_token() }}'
+                }));
+
+                form.append($('<input>', {
+                    type: 'hidden',
+                    name: '_method',
+                    value: 'DELETE'
+                }));
+
+                form.appendTo('body').submit();
+            }
+        });
+    });
+</script>
+@endpush
 
 @endsection

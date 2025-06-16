@@ -24,11 +24,6 @@ Guru
     <!-- Main Content -->
     <div class="app-content">
         <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -79,7 +74,7 @@ Guru
                                                     <form action="{{ route('guru.destroy', $g->id_guru) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus guru ini?')">Hapus</button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $g->id_guru }}">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -123,36 +118,86 @@ Guru
 </div>
 
 @push('scripts')
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        var guruId = $(this).data('id');
-        console.log('Tombol diklik, ID:', guruId);
-
-        $.ajax({
-            url: '/guru/' + guruId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr><th>Nama</th><td>${response.nama}</td></tr>
-                            <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
-                            <tr><th>Email</th><td>${response.email}</td></tr>
-                            <tr><th>NIP</th><td>${response.nip}</td></tr>
-                            <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir}</td></tr>
-                            <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin}</td></tr>
-                        </tbody>
-                    </table>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail guru.');
-            }
+    {{-- Notifikasi Sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         });
-    });
-</script>
+    </script>
+    @endif
+
+    {{-- Notifikasi Error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- AJAX untuk Modal Detail Guru --}}
+    <script>
+        $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
+            var guruId = $(this).data('id');
+            $.ajax({
+                url: '/guru/' + guruId + '/detail',
+                type: 'GET',
+                success: function (response) {
+                    var modalContent = `
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr><th>Nama</th><td>${response.nama}</td></tr>
+                                <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
+                                <tr><th>Email</th><td>${response.email}</td></tr>
+                                <tr><th>NIP</th><td>${response.nip ?? '-'}</td></tr>
+                                <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir ?? '-'}</td></tr>
+                                <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'}</td></tr>
+                            </tbody>
+                        </table>
+                    `;
+                    $('#modalBody').html(modalContent);
+                },
+                error: function () {
+                    alert('Gagal mengambil data detail guru.');
+                }
+            });
+        });
+    </script>
+
+    {{-- SweetAlert Konfirmasi Hapus --}}
+    <script>
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault();
+            const btn = $(this);
+            const form = btn.closest('form');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data guru akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
 @endpush
+
 @endsection

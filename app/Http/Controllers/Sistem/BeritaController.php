@@ -16,7 +16,7 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $berita = Berita::with(['user', 'jenisBerita'])->latest()->paginate(5);
+        $berita = Berita::with(['user', 'jenisBerita'])->paginate(10);
         return view('sistem.berita', compact('berita'));
     }
 
@@ -139,7 +139,6 @@ class BeritaController extends Controller
     public function showDetail($id)
     {
         $berita = Berita::with(['user', 'jenisBerita'])->findOrFail($id);
-
         return response()->json([
             'judul' => $berita->judul,
             'isi' => $berita->isi,

@@ -59,10 +59,10 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label>Keterangan</label>
                         <textarea name="keterangan" class="form-control" rows="3" required>{{ old('keterangan', $hapalan->keterangan) }}</textarea>
-                    </div>
+                    </div> -->
 
                     <button class="btn btn-primary">Update</button>
                     <a href="{{ route('hapalan.index') }}" class="btn btn-secondary">Batal</a>

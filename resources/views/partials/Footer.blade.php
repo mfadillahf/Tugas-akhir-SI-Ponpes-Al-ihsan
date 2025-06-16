@@ -17,9 +17,9 @@
                     </div>
                 </div>
                 <ul class="styled-icons icon-dark icon-theme-colored1 icon-rounded clearfix">
-                <li><a class="social-link" href="#" ><i class="fab fa-facebook"></i></a></li>
-                <li><a class="social-link" href="#" ><i class="fab fa-twitter"></i></a></li>
-                <li><a class="social-link" href="#" ><i class="fab fa-youtube"></i></a></li>
+                {{-- <li><a class="social-link" href="#" ><i class="fab fa-facebook"></i></a></li>
+                <li><a class="social-link" href="#" ><i class="fab fa-twitter"></i></a></li> --}}
+                <li><a class="social-link" href="https://www.youtube.com/@thoha.z.9999" ><i class="fab fa-youtube"></i></a></li>
                 <li><a class="social-link" href="https://www.instagram.com/al_ihsan_bjm/" ><i class="fab fa-instagram"></i></a></li>
                 </ul>
             </div>

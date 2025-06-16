@@ -365,7 +365,6 @@
                             </h4>
                             <p class="mb-0">Periode:</p>
                             <p class="mb-20">{{ $item->mulai }} s.d {{ $item->akhir }}</p>
-                            <a class="btn btn-theme-colored2 btn-xs p-10 float-end" href="#">view details</a>
                         </div>
                         </div>
                     </div>

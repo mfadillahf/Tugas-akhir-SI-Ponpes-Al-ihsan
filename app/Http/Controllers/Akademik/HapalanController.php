@@ -101,7 +101,7 @@ class HapalanController extends Controller
     public function showDetail($id)
     {
         $hapalan = Hapalan::with(['santri', 'guru', 'details'])->findOrFail($id);
-        return view('hapalan.hapalandetail', compact('hapalan'));
+        return view('hapalan.hapalanDetail', compact('hapalan'));
     }
 
     public function storeDetail(Request $request, $id)
@@ -115,7 +115,7 @@ class HapalanController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect()->route('hapalan.detail', $id)->with('success', 'Detail hapalan berhasil ditambahkan.');
+        return redirect()->route('hapalan.showDetail', $id)->with('success', 'Detail hapalan berhasil ditambahkan.');
     }
 
     public function editDetail($id)
@@ -133,7 +133,7 @@ class HapalanController extends Controller
         $detail = HapalanDetail::findOrFail($id);
         $detail->update(['keterangan' => $request->keterangan]);
 
-        return redirect()->route('hapalan.detail', $detail->id_hapalan)->with('success', 'Detail hapalan berhasil diperbarui.');
+        return redirect()->route('hapalan.showDetail', $detail->id_hapalan)->with('success', 'Detail hapalan berhasil diperbarui.');
     }
 
     public function destroyDetail($id)
@@ -142,6 +142,6 @@ class HapalanController extends Controller
         $id_hapalan = $detail->id_hapalan;
         $detail->delete();
 
-        return redirect()->route('hapalan.detail', $id_hapalan)->with('success', 'Detail hapalan berhasil dihapus.');
+        return redirect()->route('hapalan.showDetail', $id_hapalan)->with('success', 'Detail hapalan berhasil dihapus.');
     }
 }

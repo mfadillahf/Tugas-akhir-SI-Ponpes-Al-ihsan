@@ -24,11 +24,6 @@ Guru
     <!-- Main Content -->
     <div class="app-content">
         <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -85,7 +80,7 @@ Guru
                                                 <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus Kepengurusan ini?')">Hapus</button>
+                                                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $k->id_kepengurusan }}">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -129,9 +124,40 @@ Guru
 </div>
 
 @push('scripts')
+{{-- Notifikasi sukses --}}
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+</script>
+@endif
+
+{{-- Notifikasi error --}}
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    });
+</script>
+@endif
+
+{{-- AJAX untuk modal detail kepengurusan --}}
 <script>
     $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
         var kepengurusanId = $(this).data('id');
+
         $.ajax({
             url: '/kepengurusan/' + kepengurusanId + '/detail',
             type: 'GET',
@@ -159,5 +185,29 @@ Guru
         });
     });
 </script>
+
+{{-- SweetAlert konfirmasi hapus --}}
+<script>
+    $(document).on('click', '.btn-delete', function (e) {
+        e.preventDefault();
+        const kepengurusanId = $(this).data('id');
+        const form = $(this).closest('form');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+</script>
 @endpush
+
 @endsection

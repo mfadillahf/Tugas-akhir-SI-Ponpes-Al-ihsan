@@ -18,6 +18,7 @@ use App\Http\Controllers\Akademik\NilaiController;
 use App\Http\Controllers\Sistem\TentangController;
 use App\Http\Controllers\Donatur\DonaturController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Akademik\HapalanController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
 
@@ -51,7 +52,7 @@ Route::get('/register/donatur', [RegisterController::class, 'showDonaturForm'])-
 Route::post('/register/donatur', [RegisterController::class, 'registerDonatur'])->name('register.donatur.post');
 
 // berita detail
-Route::get('berita/{id}/detail', [LandingPageController::class, 'beritaDetail'])->name('berita.detail');
+Route::get('berita/{id}/baca', [LandingPageController::class, 'beritaDetail'])->name('berita.detail');
 
 // Galeri All
 Route::get('/galeri/index', [LandingPageController::class, 'galeri'])->name('landing.galeri');
@@ -103,20 +104,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('nilai', NilaiController::class);
 
     // hapalan
-    Route::resource('hapalan', \App\Http\Controllers\Akademik\HapalanController::class);
+    Route::resource('hapalan', HapalanController::class);
+    Route::get('/hapalan/{id}/detail', [HapalanController::class, 'showDetail'])->name('hapalan.showDetail');
 
-    // // Tambahan: rute untuk detail hapalan (misalnya muncul di pop-up/modal)
-    // Route::get('hapalan/{id}/detail', [\App\Http\Controllers\Akademik\HapalanController::class, 'showDetail'])->name('hapalan.showDetail');
-
-    // // Tambahan: proses simpan detail hapalan (AJAX / POST manual)
-    // Route::post('hapalan/{id}/detail', [\App\Http\Controllers\Akademik\HapalanController::class, 'storeDetail'])->name('hapalan.storeDetail');
-
-    // // Tambahan: edit/update detail hapalan (jika pakai modal atau redirect)
-    // Route::get('hapalan/detail/{id}/edit', [\App\Http\Controllers\Akademik\HapalanController::class, 'editDetail'])->name('hapalan.editDetail');
-    // Route::put('hapalan/detail/{id}', [\App\Http\Controllers\Akademik\HapalanController::class, 'updateDetail'])->name('hapalan.updateDetail');
-
-    // // Tambahan: hapus detail
-    // Route::delete('hapalan/detail/{id}', [\App\Http\Controllers\Akademik\HapalanController::class, 'destroyDetail'])->name('hapalan.destroyDetail');
+    Route::post('/hapalan/{id}/detail', [HapalanController::class, 'storeDetail'])->name('hapalan.detail.store');
+    Route::get('/hapalan/detail/{id}/edit', [HapalanController::class, 'editDetail'])->name('hapalan.detail.edit');
+    Route::put('/hapalan/detail/{id}', [HapalanController::class, 'updateDetail'])->name('hapalan.detail.update');
+    Route::delete('/hapalan/detail/{id}', [HapalanController::class, 'destroyDetail'])->name('hapalan.detail.destroy');
 
     // agenda
     Route::resource('agenda', AgendaController::class);
@@ -129,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
 
     // sistem
     Route::resource('berita', BeritaController::class);
+    Route::get('berita/{id}/detail', [BeritaController::class, 'showDetail'])->name('berita.showDetail');
     
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');

@@ -24,11 +24,6 @@ Santri
     <!-- Main Content -->
     <div class="app-content">
         <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -96,7 +91,7 @@ Santri
                                                         <form action="{{ route('santri.destroy', $s->id_santri) }}" method="POST" style="display:inline-block;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus santri ini?')">Hapus</button>
+                                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $s->id_santri }}">Hapus</button>
                                                         </form>
                                                     @endif
                                                 </td>
@@ -141,24 +136,51 @@ Santri
 </div>
 
 @push('scripts')
+{{-- Notifikasi sukses --}}
+@if(session('success'))
 <script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+</script>
+@endif
+
+{{-- Notifikasi error --}}
+@if(session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    });
+</script>
+@endif
+
+{{-- AJAX untuk modal detail santri --}}
+<script>
+    $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
         var santriId = $(this).data('id');
-        console.log('Tombol diklik, ID:', santriId);
 
         $.ajax({
             url: '/santri/' + santriId + '/detail',
             type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
+            success: function (response) {
                 var modalContent = `
                     <table class="table table-sm table-bordered">
                         <tbody>
                             <tr><th>Nama Lengkap</th><td>${response.nama_lengkap}</td></tr>
-                            <tr><th>Email</th><td>${response.email}</td></tr>
+                            <tr><th>Email</th><td>${response.email ?? '-'}</td></tr>
                             <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
-                            <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin}</td></tr>
+                            <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'}</td></tr>
                             <tr><th>Status</th><td>${response.status}</td></tr>
                             <tr><th>Alamat</th><td>${response.alamat}</td></tr>
                             <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir}</td></tr>
@@ -176,13 +198,36 @@ Santri
                 `;
                 $('#modalBody').html(modalContent);
             },
-            error: function() {
+            error: function () {
                 alert('Gagal mengambil data detail santri.');
             }
         });
     });
 </script>
+
+{{-- SweetAlert konfirmasi hapus --}}
+<script>
+    $(document).on('click', '.btn-delete', function (e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+</script>
 @endpush
+
 @endsection
 
 

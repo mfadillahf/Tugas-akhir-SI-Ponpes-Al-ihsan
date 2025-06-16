@@ -56,18 +56,18 @@ Hapalan
                                     <tbody>
                                         @forelse ($hapalans as $h)
                                             <tr>
-                                                <td>{{ $h->hapalan->nama_lengkap ?? '-' }}</td>
+                                                <td>{{ $h->santri->nama_lengkap ?? '-' }}</td>
                                                 <td>{{ $h->guru->nama ?? '-' }}</td>
-                                                <td><button type="button" class="btn btn-info btn-sm" data-id="{{ $h->id_hapalan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                        Detail
-                                                    </button></td>
+                                                <td>
+                                                <a href="{{ route('hapalan.showDetail', $h->id_hapalan) }}" class="btn btn-info btn-sm">Detail</a>
+                                                </td>
 
                                                 @role('guru')
                                                 <td>
                                                     <a href="{{ route('hapalan.edit', $h->id_hapalan) }}" class="btn btn-sm btn-warning">Edit</a>
                                                     <form action="{{ route('hapalan.destroy', $h->id_hapalan) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin?')">
                                                         @csrf @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger">Hapus</button>
+                                                         <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $h->id_hapalan }}">Hapus</button>
                                                     </form>
                                                 </td>
                                                 @endrole
@@ -109,47 +109,74 @@ Hapalan
     </div>
 </div>
 
-<!-- @push('scripts')
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        var hapalanId = $(this).data('id');
-        console.log('Tombol diklik, ID:', hapalanId);
-
-        $.ajax({
-            url: '/hapalan/' + hapalanId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr><th>Nama Lengkap</th><td>${response.nama_lengkap}</td></tr>
-                            <tr><th>Email</th><td>${response.email}</td></tr>
-                            <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
-                            <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin}</td></tr>
-                            <tr><th>Status</th><td>${response.status}</td></tr>
-                            <tr><th>Alamat</th><td>${response.alamat}</td></tr>
-                            <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir}</td></tr>
-                            <tr><th>Nama Panggil</th><td>${response.nama_panggil}</td></tr>
-                            <tr><th>Pendidikan Asal</th><td>${response.pendidikan_asal}</td></tr>
-                            <tr><th>Nama Ayah</th><td>${response.nama_ayah}</td></tr>
-                            <tr><th>Pekerjaan Ayah</th><td>${response.pekerjaan_ayah}</td></tr>
-                            <tr><th>No HP Ayah</th><td>${response.no_hp_ayah}</td></tr>
-                            <tr><th>Nama Ibu</th><td>${response.nama_ibu}</td></tr>
-                            <tr><th>Pekerjaan Ibu</th><td>${response.pekerjaan_ibu}</td></tr>
-                            <tr><th>No HP Ibu</th><td>${response.no_hp_ibu}</td></tr>
-                            <tr><th>Kelas</th><td>${response.kelas}</td></tr>
-                        </tbody>
-                    </table>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail hapalan.');
-            }
+@push('scripts')
+    {{-- Notifikasi sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         });
-    });
-</script>
-@endpush -->
+    </script>
+    @endif
+
+    {{-- Notifikasi error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- SweetAlert konfirmasi hapus hapalan --}}
+    <script>
+        $(document).on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            const hapalanId = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data hapalan tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = $('<form>', {
+                        method: 'POST',
+                        action: `/hapalan/${hapalanId}`
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    }));
+
+                    $('body').append(form);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+@endpush
+
 @endsection

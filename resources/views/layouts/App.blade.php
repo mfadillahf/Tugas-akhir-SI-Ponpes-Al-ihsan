@@ -58,7 +58,7 @@
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -155,8 +155,9 @@
           ></script>
           
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
           
+          /sweetalert2
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
           @stack('scripts')
         </body>
         <!--end::Body-->

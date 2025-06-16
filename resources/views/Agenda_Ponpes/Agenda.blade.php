@@ -72,7 +72,7 @@ agenda
                                                     <form action="{{ route('agenda.destroy', $ad->id_agenda) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus agenda ini?')">Hapus</button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $ad->id_agenda }}">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -115,54 +115,115 @@ agenda
 </div>
 
 @push('scripts')
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        var agendaId = $(this).data('id');
-        console.log('Tombol diklik, ID:', agendaId);
-
-        $.ajax({
-            url: '/agenda/' + agendaId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>Judul</th>
-                                <td>${response.judul}</td>
-                            </tr>
-                            
-                            <tr>
-                                <th>Jenis agenda</th>
-                                <td>${response.kategori}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Deskripsi</th>
-                                <td>${response.deskripsi}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Tanggal</th>
-                                <td>${response.tanggal_mulai}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Tanggal Akhir</th>
-                                <td>${response.tanggal_akhir}</td>
-                            </tr>
-                    
-                        </tbody>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail agenda.');
-            }
+    {{-- Notifikasi sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         });
-    });
-</script>
+    </script>
+    @endif
+
+    {{-- Notifikasi error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- AJAX untuk modal detail agenda --}}
+    <script>
+        $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
+            var agendaId = $(this).data('id');
+
+            $.ajax({
+                url: '/agenda/' + agendaId + '/detail',
+                type: 'GET',
+                success: function (response) {
+                    var modalContent = `
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Judul</th>
+                                    <td>${response.judul}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jenis agenda</th>
+                                    <td>${response.kategori}</td>
+                                </tr>
+                                <tr>
+                                    <th>Deskripsi</th>
+                                    <td>${response.deskripsi}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <td>${response.tanggal_mulai}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal Akhir</th>
+                                    <td>${response.tanggal_akhir}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    $('#modalBody').html(modalContent);
+                },
+                error: function () {
+                    alert('Gagal mengambil data detail agenda.');
+                }
+            });
+        });
+    </script>
+
+    {{-- SweetAlert konfirmasi hapus --}}
+    <script>
+        $(document).on('click', '.btn-delete', function () {
+            const agendaId = $(this).data('id');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = $('<form>', {
+                        method: 'POST',
+                        action: `/agenda/${agendaId}`
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    }));
+
+                    form.appendTo('body').submit();
+                }
+            });
+        });
+    </script>
 @endpush
 @endsection

@@ -31,11 +31,6 @@ Berita
             <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
                 <!--begin::Row-->
                 <div class="row">
                 <div class="col-12">
@@ -72,10 +67,10 @@ Berita
                                                         Detail
                                                     </button>
                                                     <a href="{{ route('berita.edit', $be->id_berita) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('berita.destroy', $be->id_berita) }}" method="POST" style="display:inline-block;">
+                                                    <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $be->id_berita }}">Hapus</button>
+                                                    <form id="delete-form-{{ $be->id_berita }}" action="{{ route('galeri.destroy', $be->id_berita) }}" method="POST" style="display:none;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus berita ini?')">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -118,58 +113,122 @@ Berita
 </div>
 
 @push('scripts')
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        var beritaId = $(this).data('id');
-        console.log('Tombol diklik, ID:', beritaId);
-
-        $.ajax({
-            url: '/berita/' + beritaId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>Judul</th>
-                                <td>${response.judul}</td>
-                            </tr>
-                            
-                            <tr>
-                                <th>Jenis Berita</th>
-                                <td>${response.kategori}</td>
-                            </tr>
-
-                            <tr>
-                                <th>isi</th>
-                                <td>${response.isi}</td>
-                            </tr>
-                            <tr>
-                                <th>Foto</th>
-                                <td><img src="${response.foto}" alt="Foto berita" style="max-width: 150px;"></td>
-                            </tr>
-                            <tr>
-                                <th>Tanggal</th>
-                                <td>${response.tanggal}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Penulis</th>
-                                <td>${response.penulis}</td>
-                            </tr>
-
-                            
-                        </tbody>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail berita.');
-            }
+    {{-- Notifikasi sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         });
-    });
-</script>
+    </script>
+    @endif
+
+    {{-- Notifikasi error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- AJAX untuk modal detail berita --}}
+    <script>
+        $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
+            var beritaId = $(this).data('id');
+            $.ajax({
+                url: '/berita/' + beritaId + '/detail',
+                type: 'GET',
+                success: function (response) {
+                    var modalContent = `
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Judul</th>
+                                    <td>${response.judul}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jenis Berita</th>
+                                    <td>${response.kategori}</td>
+                                </tr>
+                                <tr>
+                                    <th>Isi</th>
+                                    <td>${response.isi}</td>
+                                </tr>
+                                <tr>
+                                    <th>Foto</th>
+                                    <td><img src="${response.foto}" alt="Foto berita" style="max-width: 150px;"></td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <td>${response.tanggal}</td>
+                                </tr>
+                                <tr>
+                                    <th>Penulis</th>
+                                    <td>${response.penulis}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    $('#modalBody').html(modalContent);
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Gagal mengambil data detail berita.',
+                    });
+                }
+            });
+        });
+    </script>
+
+    {{-- SweetAlert konfirmasi hapus --}}
+    <script>
+        $(document).on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            const beritaId = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data berita tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = $('<form>', {
+                        method: 'POST',
+                        action: `/berita/${beritaId}`
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    }));
+
+                    form.appendTo('body').submit();
+                }
+            });
+        });
+    </script>
 @endpush
 @endsection

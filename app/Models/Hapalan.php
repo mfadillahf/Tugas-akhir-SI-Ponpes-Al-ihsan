@@ -15,9 +15,9 @@ class Hapalan extends Model
     public function santri() { return $this->belongsTo(Santri::class, 'id_santri'); }
     public function guru() { return $this->belongsTo(Guru::class, 'id_guru'); }
 
-    public function detail()
-{
-    return $this->hasMany(HapalanDetail::class, 'id_hapalan');
-}
+    public function details()
+    {
+        return $this->hasMany(HapalanDetail::class, 'id_hapalan');
+    }
 
 }

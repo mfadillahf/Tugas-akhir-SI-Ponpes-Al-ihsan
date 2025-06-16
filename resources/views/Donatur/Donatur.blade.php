@@ -77,7 +77,7 @@ donatur
                                                     <form action="{{ route('donatur.destroy', $d->id_donatur) }}" method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus donatur ini?')">Hapus</button>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $d->id_donatur }}">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -121,36 +121,101 @@ donatur
 </div>
 
 @push('scripts')
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        var donaturId = $(this).data('id');
-        console.log('Tombol diklik, ID:', donaturId);
-
-        $.ajax({
-            url: '/donatur/' + donaturId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                console.log('Response dari server:', response);
-
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr><th>Nama</th><td>${response.nama}</td></tr>
-                            <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
-                            <tr><th>Email</th><td>${response.email}</td></tr>
-                            <tr><th>NIP</th><td>${response.nip}</td></tr>
-                            <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir}</td></tr>
-                            <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin}</td></tr>
-                        </tbody>
-                    </table>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail donatur.');
-            }
+    {{-- SweetAlert Notifikasi Sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
         });
-    });
-</script>
+    </script>
+    @endif
+
+    {{-- SweetAlert Notifikasi Error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+
+    {{-- AJAX untuk Modal Detail Donatur --}}
+    <script>
+        $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
+            var donaturId = $(this).data('id');
+            $.ajax({
+                url: '/donatur/' + donaturId + '/detail',
+                type: 'GET',
+                success: function (response) {
+                    var modalContent = `
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr><th>Nama</th><td>${response.nama}</td></tr>
+                                <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
+                                <tr><th>Email</th><td>${response.email}</td></tr>
+                                ${response.nip ? `<tr><th>NIP</th><td>${response.nip}</td></tr>` : ''}
+                                ${response.tanggal_lahir ? `<tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir}</td></tr>` : ''}
+                                ${response.jenis_kelamin ? `<tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin}</td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    `;
+                    $('#modalBody').html(modalContent);
+                },
+                error: function () {
+                    alert('Gagal mengambil data detail donatur.');
+                }
+            });
+        });
+    </script>
+
+    {{-- SweetAlert Konfirmasi Hapus --}}
+    <script>
+        $(document).on('click', '.btn-delete', function () {
+            const donaturId = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data donatur akan terhapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = $('<form>', {
+                        method: 'POST',
+                        action: `/donatur/${donaturId}`
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_method',
+                        value: 'DELETE'
+                    }));
+
+                    $('body').append(form);
+                    form.submit();
+                }
+            });
+        });
+    </script>
 @endpush
+
 @endsection

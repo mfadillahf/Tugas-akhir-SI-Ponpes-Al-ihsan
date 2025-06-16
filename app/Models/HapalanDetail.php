@@ -10,7 +10,7 @@ class HapalanDetail extends Model
     //
     use HasFactory;
 
-    protected $table = 'hapalan_detail';
+    protected $table = 'hapalan_details';
 
     protected $primaryKey = 'id_hapalan_detail';
 
