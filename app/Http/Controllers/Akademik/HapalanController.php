@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Akademik;
 
 use App\Models\Guru;
+use App\Models\Kelas;
 use App\Models\Santri;
 use App\Models\Hapalan;
 use Illuminate\Http\Request;
+use App\Models\HapalanDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\HapalanDetail;
 
 class HapalanController extends Controller
 {
 
     public function __construct()
     {
-    $this->middleware('role:guru|santri')->only(['index', 'show']);
-    $this->middleware('role:guru')->except(['index', 'show']);
+    $this->middleware('role:guru|santri')->only(['index', 'show', 'showDetail']);
+    $this->middleware('role:guru')->except(['index', 'show', 'showDetail']);
     }
 
     public function index()
@@ -35,7 +36,9 @@ class HapalanController extends Controller
                 ->latest()
                 ->paginate(10);
         } elseif ($user->hasRole('guru')) {
+            $guru = $user->guru;
             $hapalans = Hapalan::with(['santri', 'guru'])
+                ->where('id_guru', $guru->id_guru)
                 ->latest()
                 ->paginate(10);
         } else {
@@ -46,11 +49,20 @@ class HapalanController extends Controller
         return view('hapalan.hapalan', compact('hapalans'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $santris = Santri::where('status', '!=', 'calon')->get();
-        $gurus = Guru::all();
-        return view('hapalan.hapalancreate', compact('santris', 'gurus'));
+        $user = Auth::user();
+        $guru = $user->guru;
+
+        $kelasList = Kelas::all();
+        $id_kelas = $request->input('id_kelas');
+
+        $santris = collect(); // default kosong
+        if ($id_kelas) {
+            $santris = Santri::where('id_kelas', $id_kelas)->where('status', '!=', 'calon')->get();
+        }
+        // $santris = Santri::where('status', '!=', 'calon')->get();
+        return view('hapalan.hapalancreate', compact('santris', 'guru', 'kelasList', 'id_kelas'));
     }
 
     public function store(Request $request)
@@ -101,6 +113,9 @@ class HapalanController extends Controller
     public function showDetail($id)
     {
         $hapalan = Hapalan::with(['santri', 'guru', 'details'])->findOrFail($id);
+        if (Auth::user()->hasRole('guru')) {
+        $guru = Auth::user()->guru;
+        }
         return view('hapalan.hapalanDetail', compact('hapalan'));
     }
 

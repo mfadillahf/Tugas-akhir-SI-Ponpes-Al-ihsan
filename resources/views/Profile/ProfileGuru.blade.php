@@ -21,9 +21,6 @@
     <div class="container" style="max-width: 980px;">
         <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
             <div class="card-body">
-                @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
 
                 <table class="table table-bordered">
                     <tbody>
@@ -45,4 +42,35 @@
         </div>
     </div>
 </main>
+
+@push('scripts')
+    {{-- Notifikasi sukses --}}
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+    @endif
+
+    {{-- Notifikasi error --}}
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                showConfirmButton: true
+            });
+        });
+    </script>
+    @endif
+@endpush
 @endsection

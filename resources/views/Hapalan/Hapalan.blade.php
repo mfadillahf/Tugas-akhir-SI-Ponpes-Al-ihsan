@@ -23,11 +23,6 @@ Hapalan
 
     <div class="app-content">
         <div class="container-fluid">
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
@@ -64,10 +59,10 @@ Hapalan
 
                                                 @role('guru')
                                                 <td>
-                                                    <a href="{{ route('hapalan.edit', $h->id_hapalan) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                    {{-- <a href="{{ route('hapalan.edit', $h->id_hapalan) }}" class="btn btn-sm btn-warning">Edit</a> --}}
                                                     <form action="{{ route('hapalan.destroy', $h->id_hapalan) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin?')">
                                                         @csrf @method('DELETE')
-                                                         <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $h->id_hapalan }}">Hapus</button>
+                                                        <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $h->id_hapalan }}">Hapus</button>
                                                     </form>
                                                 </td>
                                                 @endrole

@@ -1,12 +1,19 @@
 
-      body.login-page {
-        background: linear-gradient(135deg, #b8b9cc 0%, #bec0e4 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Source Sans 3', sans-serif;
-      }
+        body.login-page {
+            background: 
+                linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                url("/images/ponpes.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
 
       .login-box .card {
         background-color: rgba(255, 255, 255, 0.95);
@@ -145,10 +152,10 @@
       .card {
         background: #f8f9fa;
       }
-      card {
-    max-width: 100%;
-    width: 100%;
-    }
+      .card {
+      max-width: 100%;
+      width: 100%;
+      }
 
   @media (min-width: 768px) {
       .card {

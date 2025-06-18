@@ -156,7 +156,7 @@
           
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
           
-          /sweetalert2
+          {{-- sweetalert2 --}}
           <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
           @stack('scripts')
         </body>
