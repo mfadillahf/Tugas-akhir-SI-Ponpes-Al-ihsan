@@ -76,19 +76,6 @@ class InfaqController extends Controller
         return redirect()->route('infaq.index')->with('success', 'Data infaq berhasil disimpan.');
     }
 
-    public function show(Infaq $infaq)
-    {
-        $user = Auth::user();
-
-        if ($user->hasRole('donatur')) {
-            $donatur = $user->donatur;
-            if (!$donatur || $infaq->id_donatur !== $donatur->id_donatur) {
-                abort(403, 'Anda tidak memiliki izin untuk melihat data ini.');
-            }
-        }
-
-        return view('infaq.show', compact('infaq'));
-    }
 
     public function pay(Request $request)
     {

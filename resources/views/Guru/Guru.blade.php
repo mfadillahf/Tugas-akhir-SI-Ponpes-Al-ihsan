@@ -1,203 +1,127 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title')
-Guru
+@section('title', 'Data Guru')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/jquery/jquery.js',
+    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/tables-datatables-guru.js'])
 @endsection
 
 @section('content')
-<main class="app-main">
-    <!-- Content Header -->
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Data Guru</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Guru</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
 
-    <!-- Main Content -->
+<main class="app-main">
     <div class="app-content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center justify-content-between">
-                            <form method="GET" action="{{ route('guru.index') }}" class="d-flex" role="search" style="max-width: 300px;">
-                                <input type="search" name="search" class="form-control form-control-sm me-2" placeholder="Cari nama guru..." value="{{ request('search') }}">
-                                <button type="submit" class="btn btn-primary btn-sm">Cari</button>
-                                @if(request('search'))
-                                    <a href="{{ route('guru.index') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
-                                @endif
-                            </form>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h3 class="card-title mb-0">Data Guru</h3>
+                    @role('admin')
+                    <a href="{{ route('guru.create') }}" class="btn btn-primary btn-sm">
+                        <i class="ri-add-line"></i> Tambah Guru
+                    </a>
+                    @endrole
+                </div>
 
-                            <div class="ms-auto">
-                                @role('admin')
-                                <a href="{{ route('guru.create') }}" class="btn btn-primary btn-sm">+ Tambah Guru</a>
-                                @endrole
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Email</th>
-                                            <th>No HP</th>
-                                            <th>NIP</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($guru as $key => $g)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $g->nama }}</td>
-                                                <td>{{ $g->email ?? '-' }}</td>
-                                                <td>{{ $g->no_telepon }}</td>
-                                                <td>{{ $g->nip ?? '-' }}</td>
-                                                <td>{{ $g->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $g->id_guru }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                        Detail
-                                                    </button>
-                                                    <a href="{{ route('guru.edit', $g->id_guru) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('guru.destroy', $g->id_guru) }}" method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $g->id_guru }}">Hapus</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="text-center">Data guru belum tersedia.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card-footer clearfix">
-                            {{ $guru->links() }}
-                        </div>
-                    </div>
+                <div class="card-datatable table-responsive pt-0">
+                    <table class="datatables-basic table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>No HP</th>
+                                <th>NIP</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($guru as $key => $g)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $g->nama }}</td>
+                                <td>{{ $g->email ?? '-' }}</td>
+                                <td>{{ $g->no_telepon }}</td>
+                                <td>{{ $g->nip ?? '-' }}</td>
+                                <td>{{ $g->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $g->id_guru }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                                        <i class="ri-eye-line"></i>
+                                    </button>
+                                    @role('admin')
+                                    <a href="{{ route('guru.edit', $g->id_guru) }}" class="btn btn-warning btn-sm">
+                                        <i class="ri-edit-line"></i>
+                                    </a>
+                                    <form action="{{ route('guru.destroy', $g->id_guru) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $g->id_guru }}">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </form>
+                                    @endrole
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Data guru belum tersedia.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
         </div>
     </div>
 </main>
 
-{{-- modal detail guru --}}
+
+{{-- Modal Detail Guru --}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Detail Guru</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Detail Guru</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
         </div>
     </div>
 </div>
-
-@push('scripts')
-    {{-- Notifikasi Sukses --}}
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-    </script>
-    @endif
-
-    {{-- Notifikasi Error --}}
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '{{ session('error') }}',
-                showConfirmButton: true
-            });
-        });
-    </script>
-    @endif
-
-    {{-- AJAX untuk Modal Detail Guru --}}
-    <script>
-        $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-            var guruId = $(this).data('id');
-            $.ajax({
-                url: '/guru/' + guruId + '/detail',
-                type: 'GET',
-                success: function (response) {
-                    var modalContent = `
-                        <table class="table table-sm table-bordered">
-                            <tbody>
-                                <tr><th>Nama</th><td>${response.nama}</td></tr>
-                                <tr><th>No Telepon</th><td>${response.no_telepon}</td></tr>
-                                <tr><th>Email</th><td>${response.email}</td></tr>
-                                <tr><th>NIP</th><td>${response.nip ?? '-'}</td></tr>
-                                <tr><th>Tanggal Lahir</th><td>${response.tanggal_lahir ?? '-'}</td></tr>
-                                <tr><th>Jenis Kelamin</th><td>${response.jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'}</td></tr>
-                            </tbody>
-                        </table>
-                    `;
-                    $('#modalBody').html(modalContent);
-                },
-                error: function () {
-                    alert('Gagal mengambil data detail guru.');
-                }
-            });
-        });
-    </script>
-
-    {{-- SweetAlert Konfirmasi Hapus --}}
-    <script>
-        $(document).on('click', '.btn-delete', function(e) {
-            e.preventDefault();
-            const btn = $(this);
-            const form = btn.closest('form');
-
-            Swal.fire({
-                title: 'Yakin ingin menghapus?',
-                text: "Data guru akan dihapus secara permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    </script>
-@endpush
 
 @endsection

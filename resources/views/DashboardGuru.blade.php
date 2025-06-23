@@ -1,5 +1,4 @@
-
-@extends('layouts.app')
+@extends('layouts/layoutMaster')
 
 @section('title')
 Home
@@ -164,5 +163,3 @@ Home
         </main>
         <!--end::App Main-->
 @endsection
-
-

@@ -1,4 +1,4 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Profil Admin')
 

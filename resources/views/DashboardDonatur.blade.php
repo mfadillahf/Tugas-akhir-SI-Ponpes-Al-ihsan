@@ -1,64 +1,92 @@
-@extends('layouts.app')
+@php
+    $configData = Helper::appClasses();
+@endphp
 
-@section('title')
-Home
+@extends('layouts/layoutMaster')
+
+@section('title', 'Dashboard Donatur')
+
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/apex-charts/apex-charts.scss'
+])
+@endsection
+
+@section('page-style')
+@vite([
+    'resources/assets/vendor/scss/pages/cards-statistics.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/apex-charts/apexcharts.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/dashboards-analytics.js'])
 @endsection
 
 @section('content')
-<!--begin::App Main-->
-<main class="app-main">
-    <!--begin::App Content Header-->
-    <div class="app-content-header">
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3 class="mb-0">Dashboard</h3>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                    </ol>
-                </div>
+<div class="row g-6">
+    <!-- Welcome Card -->
+    <div class="col-md-12 col-xxl-8">
+        <div class="card">
+        <div class="d-flex align-items-start row">
+            <div class="col-md-6 order-2 order-md-1">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Selamat Datang, <span class="fw-bold">{{ auth()->user()->username }}</span> 👋</h4>
+                <p class="mb-0">Berikut ringkasan dari donasi Anda.</p>
             </div>
-            <div class="col-sm-12">
-                <h5 class="mb-2">Selamat datang, {{ Auth::user()->username }}</h5>
             </div>
-            <!--end::Row-->
+            <div class="col-md-6 text-center text-md-end order-1 order-md-2">
+            <div class="card-body pb-0 px-0 pt-2">
+                <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}" height="186" class="scaleX-n1-rtl" alt="Welcome" data-app-light-img="illustrations/illustration-john-light.png" data-app-dark-img="illustrations/illustration-john-dark.png">
+            </div>
+            </div>
         </div>
-        <!--end::Container-->
+        </div>
     </div>
-    <!--end::App Content Header-->
 
-    <!--begin::App Content-->
-    <div class="app-content">
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
-                <!--begin::Col-->
-                <div class="col-lg-3 col-6">
-                    <!--begin::Small Box Widget-->
-                    <div class="small-box text-bg-primary">
-                        <div class="inner">
-                            <h3>Rp {{ number_format($totalDonasi, 0, ',', '.') }}</h3>
-                            <p>Total Donasi Anda</p>
-                        </div>
-                        <div class="small-box-icon d-flex align-items-center justify-content-center">
-                            <i class="bi bi-wallet2 fs-1 text-white"></i>
-                        </div>
-                    </div>
-                    <!--end::Small Box Widget-->
+    <!-- Total Donasi Card -->
+    <div class="col-xxl-2 col-sm-6">
+        <div class="card h-100">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+            <div class="avatar">
+                <div class="avatar-initial bg-label-primary rounded-3">
+                <i class="ri-wallet-3-line ri-24px"></i>
                 </div>
-                <!--end::Col-->
             </div>
-            <!--end::Row-->
+            <div class="d-flex align-items-center">
+                <p class="mb-0 text-success me-1">+{{ $persentaseKenaikan ?? 0 }}%</p>
+                <i class="ri-arrow-up-s-line text-success"></i>
+            </div>
+            </div>
+            <div class="card-info mt-5">
+            <h5 class="mb-1">Rp {{ number_format($totalDonasi, 0, ',', '.') }}</h5>
+            <p>Total Donasi Anda</p>
+            <div class="badge bg-label-secondary rounded-pill">Terupdate</div>
+            </div>
         </div>
-        <!--end::Container-->
+        </div>
     </div>
-    <!--end::App Content-->
-</main>
-<!--end::App Main-->
+
+    <!-- Grafik Donasi Bulanan -->
+    <div class="col-xxl-2 col-sm-6">
+        <div class="card h-100">
+        <div class="card-header pb-0">
+            <div class="d-flex align-items-center mb-1 flex-wrap">
+            <h5 class="mb-0 me-1">Rp {{ number_format($totalBulanIni ?? 0, 0, ',', '.') }}</h5>
+            <p class="mb-0 text-success">+{{ $persentaseKenaikan ?? 0 }}%</p>
+            </div>
+            <span class="d-block card-subtitle">Donasi Bulan Ini</span>
+        </div>
+        <div class="card-body">
+            <div id="sessions"></div>
+        </div>
+        </div>
+    </div>
+</div>
 @endsection

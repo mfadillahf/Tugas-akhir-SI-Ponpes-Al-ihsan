@@ -1,161 +1,235 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Tambah Santri')
 
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-santri.js'])
+@endsection
+
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6"><h3 class="mb-0">Tambah Santri</h3></div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a>Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/santri">Santri</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Santri</li>
-                        </ol>
-                    </div>
-                </div>
-        </div>
-    </div>
 
-    <div class="container" style="max-width:  980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-
-            <div class="card-body">
-                {{-- Tampilkan error validation --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form class="needs-validation" action="{{ route('santri.store') }}" method="POST">
-                @csrf
-                    {{-- Username dan Password --}}
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" value="{{ old('username') }}" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input type="password" class="form-control" name="password_confirmation" required>
-                        </div>
-
-
-                        {{-- Form Santri --}}
-                        <div class="col-md-6 mb-3">
-                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="nama_panggil" class="form-label">Nama Panggil</label>
-                            <input type="text" class="form-control" name="nama_panggil" value="{{ old('nama_panggil') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea class="form-control" name="alamat" rows="2" required>{{ old('alamat') }}</textarea>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="no_telepon" class="form-label">No Telepon</label>
-                            <input type="text" class="form-control" name="no_telepon" value="{{ old('no_telepon') }}">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                            <select class="form-select" name="jenis_kelamin" required>
-                                <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>-- Pilih Jenis Kelamin --</option>
-                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="pendidikan_asal" class="form-label">Pendidikan Asal</label>
-                            <input type="text" class="form-control" name="pendidikan_asal" value="{{ old('pendidikan_asal') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="nama_ayah" class="form-label">Nama Ayah</label>
-                            <input type="text" class="form-control" name="nama_ayah" value="{{ old('nama_ayah') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="pekerjaan_ayah" class="form-label">Pekerjaan Ayah</label>
-                            <input type="text" class="form-control" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="no_hp_ayah" class="form-label">No HP Ayah</label>
-                            <input type="text" class="form-control" name="no_hp_ayah" value="{{ old('no_hp_ayah') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="nama_ibu" class="form-label">Nama Ibu</label>
-                            <input type="text" class="form-control" name="nama_ibu" value="{{ old('nama_ibu') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="pekerjaan_ibu" class="form-label">Pekerjaan Ibu</label>
-                            <input type="text" class="form-control" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="no_hp_ibu" class="form-label">No HP Ibu</label>
-                            <input type="text" class="form-control" name="no_hp_ibu" value="{{ old('no_hp_ibu') }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="id_kelas" class="form-label">Kelas</label>
-                            <select class="form-select" name="id_kelas" required>
-                                <option value="" disabled selected>-- Pilih Kelas --</option>
-                                @foreach($kelas as $k)
-                                    <option value="{{ $k->id_kelas }}" {{ old('id_kelas') == $k->id_kelas ? 'selected' : '' }}>
-                                        {{ $k->nama_kelas }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-select" name="status" required>
-                                <option value="" disabled {{ old('status') ? '' : 'selected' }}>-- Pilih Status --</option>
-                                <option value="calon" {{ old('status') == 'calon' ? 'selected' : '' }}>Calon</option>
-                                <option value="santri" {{ old('status') == 'santri' ? 'selected' : '' }}>Santri</option>
-                            </select>
-                        </div>
-                        
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
-                        <a href="{{ route('santri.index') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+    <div class="col-12">
+        <div class="card shadow-sm">
+        <div class="card-body">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
             </div>
+            @endif
+
+        <form id="formSantriCreate" action="{{ route('santri.store') }}" method="POST" class="row g-4 needs-validation" enctype="multipart/form-data">
+            @csrf
+            <div class="col-12">
+                <h4 class="fw-bold">Tambah Santri Baru</h4>
+            </div>
+            <!-- 1. Account Details -->
+            <div class="col-12">
+                <h6>1. Akun Santri</h6>
+                <hr />
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="username" name="username" class="form-control" placeholder="Username" value="{{ old('username') }}" required>
+                <label for="username">Username</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-password-toggle">
+                <div class="input-group input-group-merge">
+                    <div class="form-floating form-floating-outline">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    <label for="password">Password</label>
+                    </div>
+                    <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-password-toggle">
+                <div class="input-group input-group-merge">
+                    <div class="form-floating form-floating-outline">
+                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password" required>
+                    <label for="password_confirmation">Konfirmasi Password</label>
+                    </div>
+                    <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
+                </div>
+                </div>
+            </div>
+
+            <!-- 2. Data Pribadi -->
+            <div class="col-12">
+                <h6 class="mt-2">2. Data Pribadi</h6>
+                <hr />
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" value="{{ old('nama_lengkap') }}" required>
+                <label for="nama_lengkap">Nama Lengkap</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="nama_panggil" name="nama_panggil" class="form-control" placeholder="Nama Panggil" value="{{ old('nama_panggil') }}" required>
+                <label for="nama_panggil">Nama Panggil</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" placeholder="DD-MM-YYYY" value="{{ old('tanggal_lahir') }}" required>
+                <label for="tanggal_lahir">Tanggal Lahir</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <textarea id="alamat" name="alamat" class="form-control" placeholder="Alamat" rows="2">{{ old('alamat') }}</textarea>
+                <label for="alamat">Alamat</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="no_telepon" name="no_telepon" class="form-control" placeholder="No Telepon" value="{{ old('no_telepon') }}">
+                <label for="no_telepon">No Telepon</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+                <label for="email">Email</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                    <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                    <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                <label for="jenis_kelamin">Jenis Kelamin</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" id="pendidikan_asal" name="pendidikan_asal" class="form-control" placeholder="Pendidikan Asal" value="{{ old('pendidikan_asal') }}" required>
+                    <label for="pendidikan_asal">Pendidikan Asal</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <select class="form-select" id="id_kelas" name="id_kelas" required>
+                    <option value="" disabled selected>-- Pilih Kelas --</option>
+                    @foreach($kelas as $k)
+                    <option value="{{ $k->id_kelas }}" {{ old('id_kelas') == $k->id_kelas ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
+                    @endforeach
+                </select>
+                <label for="id_kelas">Kelas</label>
+                </div>
+            </div>
+            <!--  Status -->
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <select class="form-select" id="status" name="status" required>
+                    <option value="" disabled {{ old('status') ? '' : 'selected' }}>-- Pilih Status --</option>
+                    <option value="calon" {{ old('status') == 'calon' ? 'selected' : '' }}>Calon</option>
+                    <option value="santri" {{ old('status') == 'santri' ? 'selected' : '' }}>Santri</option>
+                </select>
+                <label for="status">Status</label>
+                </div>
+            </div>
+
+            <!-- 3. Data Orang Tua -->
+            <div class="col-12">
+                <h6 class="mt-2">3. Data Orang Tua</h6>
+                <hr />
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="nama_ayah" name="nama_ayah" class="form-control" placeholder="Nama Ayah" value="{{ old('nama_ayah') }}" required>
+                <label for="nama_ayah">Nama Ayah</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="pekerjaan_ayah" name="pekerjaan_ayah" class="form-control" placeholder="Pekerjaan Ayah" value="{{ old('pekerjaan_ayah') }}" required>
+                <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="no_hp_ayah" name="no_hp_ayah" class="form-control" placeholder="No HP Ayah" value="{{ old('no_hp_ayah') }}" required>
+                <label for="no_hp_ayah">No HP Ayah</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="nama_ibu" name="nama_ibu" class="form-control" placeholder="Nama Ibu" value="{{ old('nama_ibu') }}" required>
+                <label for="nama_ibu">Nama Ibu</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="pekerjaan_ibu" name="pekerjaan_ibu" class="form-control" placeholder="Pekerjaan Ibu" value="{{ old('pekerjaan_ibu') }}" required>
+                <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <input type="text" id="no_hp_ibu" name="no_hp_ibu" class="form-control" placeholder="No HP Ibu" value="{{ old('no_hp_ibu') }}" required>
+                <label for="no_hp_ibu">No HP Ibu</label>
+                </div>
+            </div>
+            <!-- Submit -->
+            <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                <a href="{{ route('santri.index') }}" class="btn btn-secondary">← Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+        </div>
         </div>
     </div>
 </main>

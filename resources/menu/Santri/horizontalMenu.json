@@ -1,0 +1,35 @@
+{
+  "menu": [
+    {
+      "url": "dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "dashboard.santri"
+    },
+    {
+      "menuHeader": "Akademik"
+    },
+    {
+      "url": "nilai",
+      "name": "Data Nilai",
+      "icon": "menu-icon tf-icons ri-book-open-line",
+      "slug": "nilai.index",
+      "roles" : "guru"
+    },
+    {
+      "url": "hapalan",
+      "name": "Data Hapalan",
+      "icon": "menu-icon tf-icons ri-book-open-line",
+      "slug": "hapalan.index"
+    },
+    {
+      "menuHeader": "Profil Pengguna"
+    },
+    {
+      "url": "profile/show",
+      "name": "Profile",
+      "icon": "menu-icon tf-icons ri-user-settings-line",
+      "slug": "profile.show"
+    }
+  ]
+}

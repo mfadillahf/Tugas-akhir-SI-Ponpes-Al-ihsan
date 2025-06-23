@@ -1,83 +1,119 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Tambah Galeri')
+@section('title', 'Tambah Agenda')
+
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-agenda.js'])
+@endsection
 
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Tambah Agenda</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('agenda.index') }}">Agenda</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Agenda</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
+    <div class="col-12">
+        <div class="card shadow-sm">
             <div class="card-body">
-                {{-- Tampilkan error validation --}}
+                {{-- Tampilkan error validasi --}}
                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 @endif
 
-                {{-- FORM --}}
-                <form class="needs-validation" action="{{ route('agenda.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formAgendaCreate" action="{{ route('agenda.store') }}" method="POST" enctype="multipart/form-data" class="row g-4 needs-validation">
                     @csrf
 
-                    <div class="col-md-12 mb-3">
-                        <label for="id_jenis_agenda" class="form-label">Pilih Jenis Agenda</label>
-                        <select name="id_jenis_agenda" id="id_jenis_agenda" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Jenis Agenda --</option>
-                            @foreach ($jenisAgenda as $ja)
+                    <div class="col-12">
+                        <h4 class="fw-bold">Tambah Agenda</h4>
+                    </div>
+
+                    {{-- 1. Kategori Agenda --}}
+                    <div class="col-12">
+                        <h6>1. Kategori Agenda</h6>
+                        <hr />
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select name="id_jenis_agenda" id="id_jenis_agenda" class="form-select" required>
+                                <option value="" disabled selected>-- Pilih Jenis Agenda --</option>
+                                @foreach ($jenisAgenda as $ja)
                                 <option value="{{ $ja->id_jenis_agenda }}" {{ old('id_jenis_agenda') == $ja->id_jenis_agenda ? 'selected' : '' }}>
                                     {{ $ja->jenis_agenda }}
                                 </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="judul" class="form-label">Judul</label>
-                            <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul') }}" required>
+                                @endforeach
+                            </select>
+                            <label for="id_jenis_agenda">Jenis Agenda</label>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3" required>{{ old('deskripsi') }}</textarea>
+                    {{-- 2. Informasi Agenda --}}
+                    <div class="col-12">
+                        <h6 class="mt-2">2. Informasi Agenda</h6>
+                        <hr />
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="judul" name="judul" class="form-control" placeholder="Judul" value="{{ old('judul') }}" required>
+                            <label for="judul">Judul</label>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                            <input type="date" class="form-control" name="tanggal_mulai" id="tanggal_mulai" value="{{ old('tanggal_mulai') }}" required>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <textarea class="form-control" name="deskripsi" id="deskripsi" placeholder="Deskripsi" style="height: 58px;" required>{{ old('deskripsi') }}</textarea>
+                            <label for="deskripsi">Deskripsi</label>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_akhir" class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" name="tanggal_akhir" id="tanggal_akhir" value="{{ old('tanggal_akhir') }}" required>
+                    {{-- 3. Jadwal --}}
+                    <div class="col-12">
+                        <h6 class="mt-2">3. Jadwal</h6>
+                        <hr />
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai') }}" required>
+                            <label for="tanggal_mulai">Tanggal Mulai</label>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-3">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="date" name="tanggal_akhir" id="tanggal_akhir" class="form-control" value="{{ old('tanggal_akhir') }}" required>
+                            <label for="tanggal_akhir">Tanggal Akhir</label>
+                        </div>
+                    </div>
+
+                    {{-- Tombol --}}
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('agenda.index') }}" class="btn btn-secondary">← Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>

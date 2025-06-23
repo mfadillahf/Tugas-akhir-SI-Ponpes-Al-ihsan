@@ -1,0 +1,111 @@
+{
+  "menu": [
+    {
+      "url": "dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "dashboard.admin"
+    },
+    {
+      "name": "Manajemen Data",
+      "icon": "menu-icon tf-icons ri-team-line",
+      "slug": ["santri.index", "guru.index", "kepengurusan.index", "donatur.index"],
+      "submenu": [
+        {
+          "url": "santri",
+          "name": "Data Santri",
+          "icon": "ri-user-line",
+          "slug": "santri.index"
+        },
+        {
+          "url": "guru",
+          "name": "Data Guru",
+          "icon": "ri-user-voice-line",
+          "slug": "guru.index"
+        },
+        {
+          "url": "kepengurusan",
+          "name": "Data Kepengurusan",
+          "icon": "ri-user-settings-line",
+          "slug": "kepengurusan.index"
+        },
+        {
+          "url": "donatur",
+          "name": "Data Donatur",
+          "icon": "ri-hand-coin-line",
+          "slug": "donatur.index"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Akademik"
+    },
+    {
+      "url": "kelas",
+      "name": "Data Kelas",
+      "icon": "menu-icon tf-icons ri-building-line",
+      "slug": "kelas.index"
+    },
+    {
+      "url": "mapel",
+      "name": "Data Mata Pelajaran",
+      "icon": "menu-icon tf-icons ri-book-open-line",
+      "slug": "mapel.index"
+    },
+    {
+      "menuHeader": "Agenda & Kegiatan"
+    },
+    {
+      "url": "agenda",
+      "name": "Agenda Ponpes",
+      "icon": "menu-icon tf-icons ri-calendar-event-line",
+      "slug": "agenda.index"
+    },
+    {
+      "menuHeader": "Keuangan"
+    },
+    {
+      "url": "infaq",
+      "name": "Data Infaq",
+      "icon": "menu-icon tf-icons ri-wallet-3-line",
+      "slug": "infaq.index"
+    },
+    {
+      "menuHeader": "Sistem Informasi"
+    },
+    {
+      "name": "Informasi Umum",
+      "icon": "menu-icon tf-icons ri-information-line",
+      "slug": ["berita.index", "galeri.index", "tentang.index"],
+      "submenu": [
+        {
+          "url": "berita",
+          "name": "Berita Ponpes",
+          "icon": "ri-article-line",
+          "slug": "berita.index"
+        },
+        {
+          "url": "galeri",
+          "name": "Galeri Ponpes",
+          "icon": "ri-image-line",
+          "slug": "galeri.index"
+        },
+        {
+          "url": "tentang",
+          "name": "Tentang Ponpes",
+          "icon": "ri-information-line",
+          "slug": "tentang.index"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Profil Pengguna"
+    },
+    {
+      "url": "profile/show",
+      "name": "Profile",
+      "icon": "menu-icon tf-icons ri-user-settings-line",
+      "slug": "profile.show"
+    }
+  ]
+}

@@ -1,79 +1,126 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Edit Kepengurusan')
 
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-kepengurusan.js'])
+@endsection
+
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Edit Kepengurusan</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a>Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/kepengurusan">Kepengurusan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Kepengurusan</li>
-                    </ol>
-                </div>
+    <div class="col-12">
+        <div class="card shadow-sm">
+        <div class="card-body">
+
+            {{-- Error Validation --}}
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
             </div>
-        </div>
-    </div>
+            @endif
 
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-            <div class="card-body">
-                {{-- Error Validation --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form class="needs-validation" action="{{ route('kepengurusan.update', $kepengurusan->id_kepengurusan) }}" method="POST" enctype="multipart/form-data">
+            <form id="formKepengurusanEdit" action="{{ route('kepengurusan.update', $kepengurusan->id_kepengurusan) }}" method="POST" enctype="multipart/form-data" class="row g-4 needs-validation">
                 @csrf
                 @method('PUT')
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" name="nama" value="{{ old('nama', $kepengurusan->nama ?? '') }}" required>
-                    </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" name="jabatan" value="{{ old('jabatan', $kepengurusan->jabatan) }}" required>
-                    </div>
+                <div class="col-12">
+                    <h4 class="fw-bold">Edit Kepengurusan</h4>
+                </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label for="mulai" class="form-label">Mulai Jabatan</label>
-                        <input type="date" class="form-control" name="mulai" value="{{ old('mulai', $kepengurusan->mulai) }}" required>
-                    </div>
+                {{-- 1. Data Pribadi --}}
+                <div class="col-12">
+                    <h6>1. Data Pribadi</h6>
+                    <hr />
+                </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label for="akhir" class="form-label">Akhir Jabatan</label>
-                        <input type="date" class="form-control" name="akhir" value="{{ old('akhir', $kepengurusan->akhir) }}" required>
-                    </div>
-
-                    <div class="col-md-12 mb-3">
-                        <label for="foto" class="form-label">Foto</label>
-                        <input type="file" class="form-control" name="foto" accept="image/*">
-                        @if ($kepengurusan->foto)
-                            <div class="mt-2">
-                                <img src="{{ asset('storage/kepengurusan/' . $kepengurusan->foto) }}" alt="Foto Lama" width="120" class="img-thumbnail">
-                            </div>
-                        @endif
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                    <input type="text" id="nama" name="nama" class="form-control" placeholder="Nama" value="{{ old('nama', $kepengurusan->nama) }}" required>
+                    <label for="nama">Nama</label>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2 mt-3">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                    <input type="text" id="jabatan" name="jabatan" class="form-control" placeholder="Jabatan" value="{{ old('jabatan', $kepengurusan->jabatan) }}" required>
+                    <label for="jabatan">Jabatan</label>
+                    </div>
+                </div>
+
+                {{-- 2. Masa Jabatan --}}
+                <div class="col-12">
+                    <h6 class="mt-2">2. Masa Jabatan</h6>
+                    <hr />
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                    <input type="date" id="mulai" name="mulai" class="form-control" value="{{ old('mulai', $kepengurusan->mulai) }}" required>
+                    <label for="mulai">Mulai Jabatan</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                    <input type="date" id="akhir" name="akhir" class="form-control" value="{{ old('akhir', $kepengurusan->akhir) }}" required>
+                    <label for="akhir">Akhir Jabatan</label>
+                    </div>
+                </div>
+
+                {{-- 3. Foto --}}
+                <div class="col-12">
+                    <h6 class="mt-2">3. Foto</h6>
+                    <hr />
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-floating form-floating-outline">
+                    <input type="file" id="foto" name="foto" class="form-control" accept="image/*">
+                    <label for="foto">Upload Foto</label>
+                    </div>
+
+                    @if ($kepengurusan->foto)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/kepengurusan/' . $kepengurusan->foto) }}" alt="Foto Lama" width="120" class="img-thumbnail">
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Tombol Aksi --}}
+                <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                     <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary">← Kembali</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
-            </div>
+
+        </div>
         </div>
     </div>
 </main>

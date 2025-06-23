@@ -1,213 +1,129 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title')
-Guru
+@section('title', 'Data Kepengurusan')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/jquery/jquery.js',
+    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/tables-datatables-kepengurusan.js'])
 @endsection
 
 @section('content')
-<main class="app-main">
-    <!-- Content Header -->
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Data Kepengurusan</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Kepengurusan</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
 
-    <!-- Main Content -->
+<main class="app-main">
     <div class="app-content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center justify-content-between">
-                            <form method="GET" action="{{ route('kepengurusan.index') }}" class="d-flex" role="search" style="max-width: 300px;">
-                                <input type="search" name="search" class="form-control form-control-sm me-2" style="width: 200px;" placeholder="Cari nama kepengurusan..." value="{{ request('search') }}">
-                                <button type="submit" class="btn btn-primary btn-sm">Cari</button>
-                                @if(request('search'))
-                                    <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary btn-sm ms-2">Reset</a>
-                                @endif
-                            </form>
-
-                            <div class="ms-auto">
-                                @role('admin')
-                                <a href="{{ route('kepengurusan.create') }}" class="btn btn-primary btn-sm">+ Tambah Kepengurusan</a>
-                                @endrole
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Foto</th> {{-- kolom foto --}}
-                                            <th>Nama</th>
-                                            <th>Jabatan</th>
-                                            <th>Mulai</th>
-                                            <th>Akhir</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse ($kepengurusan as $key => $k)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>
-                                                @if($k->foto)
-                                                    <img src="{{ asset('storage/kepengurusan/' . $k->foto) }}" alt="Foto Kepengurusan" style="max-width: 250px; height: auto;" class="img-thumbnail">
-                                                @else
-                                                    <span class="text-muted">Tidak ada foto</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $k->nama }}</td>
-                                            <td>{{ $k->jabatan }}</td>
-                                            <td>{{ $k->mulai }}</td>
-                                            <td>{{ $k->akhir }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                    Detail
-                                                </button>
-                                                <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $k->id_kepengurusan }}">Hapus</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card-footer clearfix">
-                            {{ $kepengurusan->links() }}
-                        </div>
-                    </div>
-                </div>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h3 class="card-title mb-0">Data Kepengurusan</h3>
+            @role('admin')
+            <a href="{{ route('kepengurusan.create') }}" class="btn btn-primary btn-sm">
+                <i class="ri-add-line"></i> Tambah Kepengurusan
+            </a>
+            @endrole
             </div>
 
+            <div class="card-datatable table-responsive pt-0">
+            <table class="datatables-basic table table-bordered">
+                <thead class="table-light">
+                <tr>
+                    <th>No</th>
+                    <th>Foto</th>
+                    <th>Nama</th>
+                    <th>Jabatan</th>
+                    <th>Mulai</th>
+                    <th>Akhir</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse ($kepengurusan as $key => $k)
+                <tr>
+                    <td>{{ $key + 1 }}</td>
+                    <td>
+                    @if($k->foto)
+                        <img src="{{ asset('storage/kepengurusan/' . $k->foto) }}" alt="Foto Kepengurusan" class="img-thumbnail" style="max-width: 80px; height: auto;">
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
+                    </td>
+                    <td>{{ $k->nama }}</td>
+                    <td>{{ $k->jabatan }}</td>
+                    <td>{{ $k->mulai }}</td>
+                    <td>{{ $k->akhir }}</td>
+                    <td>
+                    <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
+                        <i class="ri-eye-line"></i>
+                    </button>
+                    @role('admin')
+                    <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">
+                        <i class="ri-edit-line"></i>
+                    </a>
+                    <form action="{{ route('kepengurusan.destroy', $k->id_kepengurusan) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $k->id_kepengurusan }}">
+                        <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </form>
+                    @endrole
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+            </div>
+        </div>
         </div>
     </div>
 </main>
 
-{{-- modal detail kepengurusan --}}
+{{-- Modal Detail Kepengurusan --}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Detail Kepengurusan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Detail akan dimuat lewat AJAX -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Detail Kepengurusan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
         </div>
     </div>
 </div>
-
-@push('scripts')
-{{-- Notifikasi sukses --}}
-@if(session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    });
-</script>
-@endif
-
-{{-- Notifikasi error --}}
-@if(session('error'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal',
-            text: '{{ session('error') }}',
-            showConfirmButton: true
-        });
-    });
-</script>
-@endif
-
-{{-- AJAX untuk modal detail kepengurusan --}}
-<script>
-    $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-        var kepengurusanId = $(this).data('id');
-
-        $.ajax({
-            url: '/kepengurusan/' + kepengurusanId + '/detail',
-            type: 'GET',
-            success: function (response) {
-                var fotoPath = response.foto
-                    ? `<img src="/storage/kepengurusan/${response.foto}" alt="Foto" width="120" class="img-thumbnail mb-3">`
-                    : `<span class="text-muted">Tidak ada foto</span>`;
-
-                var modalContent = `
-                    ${fotoPath}
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr><th>Nama</th><td>${response.nama}</td></tr>
-                            <tr><th>Jabatan</th><td>${response.jabatan}</td></tr>
-                            <tr><th>Mulai Jabatan</th><td>${response.mulai}</td></tr>
-                            <tr><th>Akhir Jabatan</th><td>${response.akhir}</td></tr>
-                        </tbody>
-                    </table>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function () {
-                alert('Gagal mengambil data detail kepengurusan.');
-            }
-        });
-    });
-</script>
-
-{{-- SweetAlert konfirmasi hapus --}}
-<script>
-    $(document).on('click', '.btn-delete', function (e) {
-        e.preventDefault();
-        const kepengurusanId = $(this).data('id');
-        const form = $(this).closest('form');
-
-        Swal.fire({
-            title: 'Yakin ingin menghapus?',
-            text: "Data tidak bisa dikembalikan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, hapus!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-        });
-    });
-</script>
-@endpush
-
 @endsection

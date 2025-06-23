@@ -1,28 +1,39 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Edit Mapel')
 
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-mapel.js'])
+@endsection
+
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Edit Mapel</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('mapel.index') }}">Mata Pelajaran</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Mapel</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
+    <div class="col-12">
+        <div class="card shadow-sm">
             <div class="card-body">
-                {{-- Tampilkan error validation --}}
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -33,42 +44,51 @@
                     </div>
                 @endif
 
-                {{-- FORM --}}
-                <form class="needs-validation" action="{{ route('mapel.update', $mapel->id_mapel) }}" method="POST">
+                <form id="formMapelEdit" class="row g-4 needs-validation" action="{{ route('mapel.update', $mapel->id_mapel) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <div class="col-md-12 mb-3">
-                        <label for="id_guru" class="form-label">Pilih Guru</label>
-                        <select name="id_guru" id="id_guru" class="form-select" required>
-                            <option value="" disabled>-- Pilih Guru --</option>
-                            @foreach ($guru as $gm)
-                                <option value="{{ $gm->id_guru }}" {{ old('id_guru', $mapel->id_guru) == $gm->id_guru ? 'selected' : '' }}>
-                                    {{ $gm->nama }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="col-12">
+                        <h4 class="fw-bold">Edit Mata Pelajaran</h4>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="mapel" class="form-label">Mapel</label>
-                            <input type="text" class="form-control" id="mapel" name="mapel" value="{{ old('mapel', $mapel->mapel) }}" required>
+                    <!-- Guru -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select name="id_guru" id="id_guru" class="form-select select2" required>
+                                <option value="" disabled>-- Pilih Guru --</option>
+                                @foreach ($guru as $gm)
+                                    <option value="{{ $gm->id_guru }}" {{ old('id_guru', $mapel->id_guru) == $gm->id_guru ? 'selected' : '' }}>
+                                        {{ $gm->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" rows="2">{{ old('deskripsi', $mapel->deskripsi) }}</textarea>
+                    <!-- Nama Mapel -->
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" id="mapel" name="mapel" value="{{ old('mapel', $mapel->mapel) }}" placeholder="Nama Mapel" required>
+                            <label for="mapel">Nama Mapel</label>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-3">
+                    <!-- Deskripsi -->
+                    <div class="col-12">
+                        <div class="form-floating form-floating-outline">
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="Deskripsi Mata Pelajaran" style="height: 100px;" required>{{ old('deskripsi', $mapel->deskripsi) }}</textarea>
+                            <label for="deskripsi">Deskripsi</label>
+                        </div>
+                    </div>
+
+                    <!-- Tombol -->
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('mapel.index') }}" class="btn btn-secondary">← Kembali</a>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

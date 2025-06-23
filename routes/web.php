@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/infaq/pay', [InfaqController::class, 'pay'])->name('infaq.pay');
     
     Route::resource('infaq', InfaqController::class);
+    Route::get('infaq/{id}/detail', [InfaqController::class, 'showDetail'])->name('infaq.showDetail');
 
     // sistem
     Route::resource('berita', BeritaController::class);

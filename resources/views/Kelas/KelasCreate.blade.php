@@ -1,28 +1,40 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Tambah Kelas')
 
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-kelas.js'])
+@endsection
+
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Tambah Kelas</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('kelas.index') }}">Kelas</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah Kelas</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
+    <div class="col-12">
+        <div class="card shadow-sm">
             <div class="card-body">
-                {{-- Tampilkan error validation --}}
+                {{-- Tampilkan error validasi --}}
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -33,22 +45,33 @@
                     </div>
                 @endif
 
-                {{-- FORM --}}
-                <form class="needs-validation" action="{{ route('kelas.store') }}" method="POST">
+                <form id="formKelasCreate" action="{{ route('kelas.store') }}" method="POST" class="row g-4 needs-validation">
                     @csrf
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="nama_kelas" class="form-label">Nama Kelas</label>
-                            <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" value="{{ old('nama_kelas') }}" required>
+                    <div class="col-12">
+                        <h4 class="fw-bold">Tambah Kelas</h4>
+                    </div>
+
+                    {{-- 1. Data Kelas --}}
+                    <div class="col-12">
+                        <h6>1. Data Kelas</h6>
+                        <hr />
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="nama_kelas" name="nama_kelas" class="form-control" placeholder="Nama Kelas" value="{{ old('nama_kelas') }}" required>
+                            <label for="nama_kelas">Nama Kelas</label>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-3">
+                    {{-- Tombol Aksi --}}
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('kelas.index') }}" class="btn btn-secondary">← Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

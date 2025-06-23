@@ -45,7 +45,7 @@ class GuruController extends Controller
             'email' => 'nullable|email|unique:gurus,email',
             'nip' => 'nullable|unique:gurus,nip',
             'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|in:L,P',
+            'jenis_kelamin' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -95,7 +95,7 @@ class GuruController extends Controller
             'email' => 'nullable|email|unique:gurus,email,' . $id . ',id_guru',
             'nip' => 'nullable|unique:gurus,nip,' . $id . ',id_guru',
             'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|in:L,P',
+            'jenis_kelamin' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -145,7 +145,7 @@ class GuruController extends Controller
             'email'            => $guru->email,
             'nip'              => $guru->nip,
             'tanggal_lahir'    => $guru->tanggal_lahir,
-            'jenis_kelamin'    => $guru->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan',
+            'jenis_kelamin'    => $guru->jenis_kelamin,
         ]);
     }
 }

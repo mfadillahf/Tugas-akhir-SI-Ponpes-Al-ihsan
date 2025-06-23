@@ -1,0 +1,28 @@
+{
+  "menu": [
+    {
+      "url": "dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "dashboard.donatur"
+    },
+    {
+      "menuHeader": "Keuangan"
+    },
+    {
+      "url": "infaq",
+      "name": "Data Infaq",
+      "icon": "menu-icon tf-icons ri-wallet-3-line",
+      "slug": "infaq.index"
+    },
+    {
+      "menuHeader": "Profil Pengguna"
+    },
+    {
+      "url": "profile/show",
+      "name": "Profile",
+      "icon": "menu-icon tf-icons ri-user-settings-line",
+      "slug": "profile.show"
+    }
+  ]
+}

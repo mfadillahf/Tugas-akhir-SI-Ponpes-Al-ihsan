@@ -195,7 +195,7 @@ class SantriController extends Controller
             'nama_lengkap'     => $santri->nama_lengkap,
             'email'            => $santri->email,
             'no_telepon'       => $santri->no_telepon,
-            'jenis_kelamin'    => $santri->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan',
+            'jenis_kelamin'    => $santri->jenis_kelamin,
             'status'           => ucfirst($santri->status),
             'alamat'           => $santri->alamat,
             'tanggal_lahir'    => $santri->tanggal_lahir,

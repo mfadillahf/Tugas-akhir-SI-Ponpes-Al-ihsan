@@ -30,92 +30,6 @@
     </div>
 </section>
 
-        <!-- Section: Courses -->
-        {{-- <section id="courses" class="bg-silver-light">
-        <div class="container">
-            <div class="section-title">
-            <div class="row">
-                <div class="col-md-8">
-                <div class="mb-60">
-                    <div class="tm-sc tm-sc-section-title section-title">
-                    <div class="title-wrapper">
-                        <h2 class="text-uppercase line-bottom line-bottom-theme-colored1">Our <span class="text-theme-colored1">Courses</span></h2>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="section-content">
-            <div class="row">
-                <div class="col-lg-12">
-                <div class="owl-carousel tm-owl-carousel-4col" data-dots="true">
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/1.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/2.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/3.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/4.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/5.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                    <div class="course-item mb-30 bg-white border-1px">
-                    <div class="course-thumb"> <img alt="featured project" src="{{ asset('studypress/images/courses/6.jpg')}}" class="w-100">
-                    <h4 class="price mt-0 mb-0">$125</h4>
-                    </div>
-                    <div class="content text-left flip p-25 pt-0">
-                        <h4 class="line-bottom line-bottom-theme-colored1 mb-30 pb-0">Electrical & Electronic</h4>
-                        <p>Lorem ipsum dolor sit amet consur adipiscing elite of aliquam aliquam ipsum quis ipsum facilisis sit amet ratione doloremque</p>
-                        <a class="btn btn-dark btn-theme-colored2 btn-xs text-uppercase mt-10" href="#">view details</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        </section> --}}
 
 <!-- Section: Staff -->
 <section id="teachers" class="bg-white-f5">
@@ -226,7 +140,7 @@
                                 <div class="entry-content d-flex flex-column flex-grow-1">
                                     <h4 class="entry-title">
                                         <a href="{{ route('berita.detail', $item->id_berita) }}" rel="bookmark">
-                                            {{ \Str::limit($item->judul, 60) }}
+                                            {{ str($item->judul)->limit(60) }}
                                         </a>
                                     </h4>
                                     <div class="entry-meta mt-0 mb-2">
@@ -241,7 +155,7 @@
 
                                     <div class="post-excerpt mb-2 flex-grow-1">
                                         <div class="mascot-post-excerpt">
-                                            {{ Str::limit(strip_tags($item->isi), 100) }}
+                                            {{ str(strip_tags($item->isi))->limit(100) }}
                                         </div>
                                     </div>
 
