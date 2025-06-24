@@ -1,72 +1,91 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Edit Profil Admin')
 
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/pages-profile-admin-edit.js'])
+@endsection
+
 @section('content')
-<main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Edit Profil Admin</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Profil Admin</li>
-                    </ol>
-                </div>
-            </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-6">
+      <!-- Account -->
+      <div class="card-header">
+        <h5 class="card-title mb-0">Ganti Username atau Password</h5>
+      </div>
+      <div class="card-body pt-0">
+        @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
         </div>
-    </div>
+        @endif
 
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-            <div class="card-body">
-                {{-- Pesan sukses --}}
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                {{-- Error Validation --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('profile.update') }}" method="POST">
-                    @csrf
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control"
-                                value="{{ old('username', $profile->username) }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="password" class="form-label">Password Baru (opsional)</label>
-                            <input type="password" name="password" class="form-control">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
-                        <a href="{{ route('profile.show') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    </div>
-                </form>
+        <form id="formAccountSettings" method="POST" action="{{ route('profile.update') }}"enctype="multipart/form-data" class="row g-4 needs-validation">
+          @csrf
+          <div class="row mt-1 g-5">
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <input class="form-control" type="text" id="username" name="username" value="{{ old('username', $profile->username) }}" autofocus required />
+                <label for="username">Username</label>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Kosongkan jika tidak ingin ubah" />
+                <label for="password">Password Baru</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating form-floating-outline">
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" />
+                <label for="password_confirmation">Konfirmasi Password</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 d-flex justify-content-end gap-2">
+            <a href="{{ route('profile.show') }}" class="btn btn-secondary">← Kembali</a>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+          </div>
+        </form>
+      </div>
+      <!-- /Account -->
     </div>
-</main>
+  </div>
+</div>
 @endsection

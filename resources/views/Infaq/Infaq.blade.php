@@ -13,7 +13,9 @@
     'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
     'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
     'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
+    'resources/assets/vendor/libs/spinkit/spinkit.scss'
+    
 ])
 @endsection
 
@@ -87,9 +89,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">Data infaq belum tersedia.</td>
-                                </tr>
+                            <p>data tidak tersedia</p>
                             @endforelse
                         </tbody>
                     </table>

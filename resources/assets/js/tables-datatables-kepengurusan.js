@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Detail Guru via AJAX
   $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-        var kepengurusanId = $(this).data('id');
-
+        const kepengurusanId = $(this).data('id');
+    $('#modalBody').html('<p class="text-center">Memuat...</p>');
         $.ajax({
             url: '/kepengurusan/' + kepengurusanId + '/detail',
             type: 'GET',

@@ -2,62 +2,91 @@
 
 @section('title', 'Tambah Infaq')
 
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-infaq.js'])
+@endsection
+
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Tambah Infaq</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('infaq.index') }}">Infaq</a></li>
-                        <li class="breadcrumb-item active">Tambah Infaq</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
+    <div class="col-12">
+        <div class="card shadow-sm">
             <div class="card-body">
+                {{-- Tampilkan error validasi --}}
                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 @endif
 
-                <form action="{{ route('infaq.pay') }}" method="POST">
+                <form action="{{ route('infaq.pay') }}" method="POST" class="row g-4 needs-validation">
                     @csrf
 
-                    <div class="mb-3">
-                        <label for="nominal">Nominal</label>
-                        <input type="number" name="nominal" id="nominal" class="form-control" required>
+                    <div class="col-12">
+                        <h4 class="fw-bold">Tambah Infaq</h4>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="tanggal">Tanggal</label>
-                        <input type="date" name="tanggal" class="form-control" value="{{ now()->format('Y-m-d') }}" required>
+                    {{-- 1. Informasi Infaq --}}
+                    <div class="col-12">
+                        <h6>1. Informasi Infaq</h6>
+                        <hr />
                     </div>
 
-                    <div class="mb-3">
-                        <label for="keterangan">Keterangan</label>
-                        <input type="text" name="keterangan" class="form-control">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="number" name="nominal" id="nominal" class="form-control" placeholder="Nominal" value="{{ old('nominal') }}" required>
+                            <label for="nominal">Nominal</label>
+                        </div>
                     </div>
 
-                    <div class="d-flex justify-content-end">
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="date" name="tanggal" id="tanggal" class="form-control" value="{{ old('tanggal', now()->format('Y-m-d')) }}" required>
+                            <label for="tanggal">Tanggal</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" name="keterangan" id="keterangan" class="form-control" placeholder="Keterangan" value="{{ old('keterangan') }}">
+                            <label for="keterangan">Keterangan</label>
+                        </div>
+                    </div>
+
+                    {{-- Tombol --}}
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('infaq.index') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary ms-2">Lanjut</button>
+                        <button type="submit" class="btn btn-primary">Lanjut</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </main>
-
 @endsection

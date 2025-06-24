@@ -1,7 +1,10 @@
 @php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 $configData = Helper::appClasses();
+$currentRole = Auth::user()->getRoleNames()->first();
 @endphp
+
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
@@ -26,7 +29,7 @@ $configData = Helper::appClasses();
 
   <ul class="menu-inner py-1">
     @foreach ($menuData[0]->menu as $menu)
-
+      @if (!isset($menu->roles) || in_array($currentRole, (array) $menu->roles))
       {{-- adding active and open class if child is active --}}
 
       {{-- menu headers --}}
@@ -78,6 +81,7 @@ $configData = Helper::appClasses();
         @endisset
       </li>
       @endif
+    @endif
     @endforeach
   </ul>
 

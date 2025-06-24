@@ -1,165 +1,113 @@
+@php
+    $configData = Helper::appClasses();
+@endphp
 @extends('layouts/layoutMaster')
 
-@section('title')
-Home
+@section('title', 'Dashboard - Admin')
+
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/apex-charts/apex-charts.scss',
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss'
+    ])
 @endsection
 
-    @section('content')
-        <!--begin::App Main-->
-        <main class="app-main">
-            <!--begin::App Content Header-->
-            <div class="app-content-header">
-            <!--begin::Container-->
-            <div class="container-fluid">
-                <!--begin::Row-->
-                <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Dashboard</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                    </ol>
-                </div>
-                </div>
-                <!--end::Row-->
+@section('page-style')
+@vite('resources/assets/vendor/scss/pages/app-logistics-dashboard.scss')
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/apex-charts/apexcharts.js',
+    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js'
+    ])
+@endsection
+
+@section('page-script')
+@vite('resources/assets/js/app-logistics-dashboard.js')
+@endsection
+
+@section('content')
+<div class="row g-6">
+    <!-- Welcome Card -->
+    <div class="col-md-12 col-xxl-8">
+        <div class="card">
+        <div class="d-flex align-items-start row">
+            <div class="col-md-6 order-2 order-md-1">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Selamat Datang, <span class="fw-bold">{{ auth()->user()->username }}</span> 👋</h4>
             </div>
-            <!--end::Container-->
             </div>
-            <!--end::App Content Header-->
-            <!--begin::App Content-->
-            <div class="app-content">
-            <!--begin::Container-->
-            <div class="container-fluid">
-                <!--begin::Row-->
-                <div class="row">
-                <!--begin::Col-->
-                <div class="col-lg-3 col-6">
-                    <!--begin::Small Box Widget 1-->
-                    <div class="small-box text-bg-primary">
-                    <div class="inner">
-                        <h3>150</h3>
-                        <p>New Orders</p>
-                    </div>
-                    <svg
-                        class="small-box-icon"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                        d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                        ></path>
-                    </svg>
-                    <a
-                        href="#"
-                        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-                    >
-                        More info <i class="bi bi-link-45deg"></i>
-                    </a>
-                    </div>
-                    <!--end::Small Box Widget 1-->
-                </div>
-                <!--end::Col-->
-                <div class="col-lg-3 col-6">
-                    <!--begin::Small Box Widget 2-->
-                    <div class="small-box text-bg-success">
-                    <div class="inner">
-                        <h3>53<sup class="fs-5">%</sup></h3>
-                        <p>Bounce Rate</p>
-                    </div>
-                    <svg
-                        class="small-box-icon"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                        d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"
-                        ></path>
-                    </svg>
-                    <a
-                        href="#"
-                        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-                    >
-                        More info <i class="bi bi-link-45deg"></i>
-                    </a>
-                    </div>
-                    <!--end::Small Box Widget 2-->
-                </div>
-                <!--end::Col-->
-                <div class="col-lg-3 col-6">
-                    <!--begin::Small Box Widget 3-->
-                    <div class="small-box text-bg-warning">
-                    <div class="inner">
-                        <h3>44</h3>
-                        <p>User Registrations</p>
-                    </div>
-                    <svg
-                        class="small-box-icon"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                        d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"
-                        ></path>
-                    </svg>
-                    <a
-                        href="#"
-                        class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
-                    >
-                        More info <i class="bi bi-link-45deg"></i>
-                    </a>
-                    </div>
-                    <!--end::Small Box Widget 3-->
-                </div>
-                <!--end::Col-->
-                <div class="col-lg-3 col-6">
-                    <!--begin::Small Box Widget 4-->
-                    <div class="small-box text-bg-danger">
-                    <div class="inner">
-                        <h3>65</h3>
-                        <p>Unique Visitors</p>
-                    </div>
-                    <svg
-                        class="small-box-icon"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                        clip-rule="evenodd"
-                        fill-rule="evenodd"
-                        d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z"
-                        ></path>
-                        <path
-                        clip-rule="evenodd"
-                        fill-rule="evenodd"
-                        d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z"
-                        ></path>
-                    </svg>
-                    <a
-                        href="#"
-                        class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
-                    >
-                        More info <i class="bi bi-link-45deg"></i>
-                    </a>
-                    </div>
-                    <!--end::Small Box Widget 4-->
-                </div>
-                <!--end::Col-->
-                </div>
-                <!--end::Row-->
-                <!--begin::Row-->
-                <!-- /.row (main row) -->
+            <div class="col-md-6 text-center text-md-end order-1 order-md-2">
+            <div class="card-body pb-0 px-0 pt-2">
+                <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}" height="186" class="scaleX-n1-rtl" alt="Welcome" data-app-light-img="illustrations/illustration-john-light.png" data-app-dark-img="illustrations/illustration-john-dark.png">
             </div>
-            <!--end::Container-->
             </div>
-            <!--end::App Content-->
-        </main>
-        <!--end::App Main-->
+        </div>
+        </div>
+    </div>
+
+<!-- Statistik Cards -->
+<div class="row g-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card card-border-shadow-primary h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <div class="avatar me-4">
+            <span class="avatar-initial rounded-3 bg-label-primary"><i class="ri-group-3-line"></i></span>
+          </div>
+          <h4 class="mb-0">{{ $jumlahSantri }}</h4>
+        </div>
+        <h6 class="mb-0 fw-normal">Jumlah Santri</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card card-border-shadow-success h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <div class="avatar me-4">
+            <span class="avatar-initial rounded-3 bg-label-success"><i class="ri-user-2-fill"></i></span>
+          </div>
+          <h4 class="mb-0">{{ $jumlahGuru }}</h4>
+        </div>
+        <h6 class="mb-0 fw-normal">Jumlah Guru</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card card-border-shadow-warning h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <div class="avatar me-4">
+            <span class="avatar-initial rounded-3 bg-label-warning"><i class="ri-user-2-line"></i></span>
+          </div>
+          <h4 class="mb-0">{{ $jumlahDonatur }}</h4>
+        </div>
+        <h6 class="mb-0 fw-normal">Jumlah Donatur</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3">
+    <div class="card card-border-shadow-danger h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+          <div class="avatar me-4">
+            <span class="avatar-initial rounded-3 bg-label-danger"><i class="ri-group-line"></i></span>
+          </div>
+          <h4 class="mb-0">{{ $jumlahPengurus }}</h4>
+        </div>
+        <h6 class="mb-0 fw-normal">Jumlah Pengurus</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- /Statistik Cards -->
+
 @endsection

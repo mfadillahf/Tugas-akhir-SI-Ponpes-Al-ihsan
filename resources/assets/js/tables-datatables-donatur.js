@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Detail Donatur via AJAX
   $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-            var donaturId = $(this).data('id');
+            const donaturId = $(this).data('id');
+            $('#modalBody').html('<p class="text-center">Memuat...</p>');
             $.ajax({
                 url: '/donatur/' + donaturId + '/detail',
                 type: 'GET',

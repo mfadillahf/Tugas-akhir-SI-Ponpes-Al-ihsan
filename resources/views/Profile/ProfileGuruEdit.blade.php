@@ -1,91 +1,138 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Edit Profil Donatur')
+@section('title', 'Edit Profil Guru')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/pages-profile-guru-edit.js'])
+@endsection
 
 @section('content')
-<main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Edit Profil Donatur</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.donatur') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Profil Donatur</li>
-                    </ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-6">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Edit Profil Guru</h5>
+        </div>
+        <div class="card-body pt-0">
+        {{-- Pesan sukses --}}
+        @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        {{-- Error Validation --}}
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            </div>
+        @endif
+
+        <form id="formAccountSettings" method="POST" action="{{ route('profile.update') }}" class="row g-4 needs-validation">
+            @csrf
+            <div class="row mt-1 g-5">
+                <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        <input type="text" class="form-control" id="username" name="username" value="{{ old('username', auth()->user()->username) }}" required />
+                        <label for="username">Username</label>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Kosongkan jika tidak ingin ubah" />
+                        <label for="password">Password Baru</label>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-floating form-floating-outline">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" />
+                        <label for="password_confirmation">Konfirmasi Password</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama', $profile->nama) }}" required />
+                    <label for="nama">Nama Lengkap</label>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" class="form-control" id="no_telepon" name="no_telepon" value="{{ old('no_telepon', $profile->no_telepon) }}" required />
+                    <label for="no_telepon">No Telepon</label>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $profile->email) }}" />
+                    <label for="email">Email</label>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" class="form-control" id="nip" name="nip" value="{{ old('nip', $profile->nip) }}" required />
+                    <label for="nip">NIP</label>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $profile->tanggal_lahir) }}" required />
+                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                </div>
+                </div>
+
+                <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <select class="form-select" name="jenis_kelamin" id="jenis_kelamin" required>
+                    <option value="Laki-laki" {{ old('jenis_kelamin', $profile->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('jenis_kelamin', $profile->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-            <div class="card-body">
-                {{-- Pesan sukses --}}
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                {{-- Error Validation --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('profile.update') }}" method="POST">
-                    @csrf
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" 
-                                value="{{ old('nama', $profile->nama) }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="no_telepon" class="form-label">No Telepon</label>
-                            <input type="text" class="form-control" id="no_telepon" name="no_telepon" 
-                                value="{{ old('no_telepon', $profile->no_telepon) }}" required>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email', $profile->email) }}">
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="nip" class="form-label">Nip</label>
-                            <textarea class="form-control" id="alamat" name="alamat" rows="2" required>{{ old('nip', $profile->nip) }}</textarea>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" name="tanggal_lahir" value="{{ old('tanggal_lahir', $profile->tanggal_lahir) }}" required>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jenis Kelamin</label>
-                            <select class="form-control" name="jenis_kelamin" required>
-                                <option value="Laki-laki" {{ old('jenis_kelamin', $profile->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="Perempuan" {{ old('jenis_kelamin', $profile->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
-                        <a href="{{ route('profile.show') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    </div>
-                </form>
+            <div class="mt-6 d-flex justify-content-end gap-2">
+                <a href="{{ route('profile.show') }}" class="btn btn-secondary">← Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
             </div>
+            </form>
+        </div>
         </div>
     </div>
-</main>
+</div>
 @endsection

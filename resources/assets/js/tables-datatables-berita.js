@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Detail Guru via AJAX
+  // Detail berita via AJAX
   $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-            const agendaId = $(this).data('id');
-      $('#modalBody').html('<p class="text-center">Memuat...</p>');
+            const beritaId = $(this).data('id');
+            $('#modalBody').html('<p class="text-center">Memuat...</p>');
             $.ajax({
-                url: '/agenda/' + agendaId + '/detail',
+                url: '/berita/' + beritaId + '/detail',
                 type: 'GET',
                 success: function (response) {
                     var modalContent = `
@@ -73,20 +73,24 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <td>${response.judul}</td>
                                 </tr>
                                 <tr>
-                                    <th>Jenis agenda</th>
+                                    <th>Jenis Berita</th>
                                     <td>${response.kategori}</td>
                                 </tr>
                                 <tr>
-                                    <th>Deskripsi</th>
-                                    <td>${response.deskripsi}</td>
+                                    <th>Isi</th>
+                                    <td>${response.isi}</td>
+                                </tr>
+                                <tr>
+                                    <th>Foto</th>
+                                    <td><img src="${response.foto}" alt="Foto berita" style="max-width: 150px;"></td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal</th>
-                                    <td>${response.tanggal_mulai}</td>
+                                    <td>${response.tanggal}</td>
                                 </tr>
                                 <tr>
-                                    <th>Tanggal Akhir</th>
-                                    <td>${response.tanggal_akhir}</td>
+                                    <th>Penulis</th>
+                                    <td>${response.penulis}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -94,7 +98,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('#modalBody').html(modalContent);
                 },
                 error: function () {
-                    alert('Gagal mengambil data detail agenda.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Gagal mengambil data detail berita.',
+                    });
                 }
             });
         });

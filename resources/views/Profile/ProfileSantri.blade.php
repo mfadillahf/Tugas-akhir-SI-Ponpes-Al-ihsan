@@ -1,82 +1,154 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Profil Santri')
+@section('title', 'User Profile - Santri')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+])
+@endsection
+
+<!-- Page Styles -->
+@section('page-style')
+@vite([
+    'resources/assets/vendor/scss/pages/page-profile.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js'])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/pages-profile-santri.js'])
+@endsection
 
 @section('content')
-<main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Profil Santri</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.santri') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Profil</li>
-                    </ol>
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
+
+<!-- Header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-6">
+        <div class="user-profile-header-banner">
+            <img src="{{ asset('assets/img/pages/profile-banner.png') }}" alt="Banner image" class="rounded-top">
+        </div>
+        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
+            <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img">
+            </div>
+            <div class="flex-grow-1 mt-4 mt-sm-12">
+            <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
+                <div class="user-profile-info">
+                <h4 class="mb-2">{{ $profile->nama_lengkap }}</h4>
+                <span class="badge bg-label-info">Santri</span>
                 </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<!--/ Header -->
+
+<!-- User Profile Content -->
+<div class="row">
+    <div class="col-12">
+        <!-- About User -->
+        <div class="card mb-6">
+        <div class="card-body">
+            <small class="card-text text-uppercase text-muted small">Tentang</small>
+            <div class="row g-4 my-2">
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-user-3-line ri-24px me-2 text-muted"></i>
+                <span><strong>Nama Lengkap:</strong> {{ $profile->nama_lengkap }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-account-circle-line ri-24px me-2 text-muted"></i>
+                <span><strong>Username:</strong> {{ $profile->user->username ?? '-' }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-user-smile-line ri-24px me-2 text-muted"></i>
+                <span><strong>Nama Panggilan:</strong> {{ $profile->nama_panggil }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-calendar-line ri-24px me-2 text-muted"></i>
+                <span><strong>Tanggal Lahir:</strong> {{ $profile->tanggal_lahir }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-user-line ri-24px me-2 text-muted"></i>
+                <span><strong>Jenis Kelamin:</strong> {{ $profile->jenis_kelamin }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-book-2-line ri-24px me-2 text-muted"></i>
+                <span><strong>Pendidikan Asal:</strong> {{ $profile->pendidikan_asal }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-map-pin-line ri-24px me-2 text-muted"></i>
+                <span><strong>Alamat:</strong> {{ $profile->alamat }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-phone-line ri-24px me-2 text-muted"></i>
+                <span><strong>No Telepon:</strong> {{ $profile->no_telepon }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-mail-line ri-24px me-2 text-muted"></i>
+                <span><strong>Email:</strong> {{ $profile->email }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-user-2-line ri-24px me-2 text-muted"></i>
+                <span><strong>Nama Ayah:</strong> {{ $profile->nama_ayah }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-briefcase-line ri-24px me-2 text-muted"></i>
+                <span><strong>Pekerjaan Ayah:</strong> {{ $profile->pekerjaan_ayah }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-phone-line ri-24px me-2 text-muted"></i>
+                <span><strong>No HP Ayah:</strong> {{ $profile->no_hp_ayah }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-user-2-line ri-24px me-2 text-muted"></i>
+                <span><strong>Nama Ibu:</strong> {{ $profile->nama_ibu }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-briefcase-line ri-24px me-2 text-muted"></i>
+                <span><strong>Pekerjaan Ibu:</strong> {{ $profile->pekerjaan_ibu }}</span>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <i class="ri-phone-line ri-24px me-2 text-muted"></i>
+                <span><strong>No HP Ibu:</strong> {{ $profile->no_hp_ibu }}</span>
+            </div>
+            </div>
+
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profil</a>
             </div>
         </div>
     </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-            <div class="card-body">
-
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr><th>Nama Lengkap</th><td>{{ $profile->nama_lengkap }}</td></tr>
-                        <tr><th>Nama Panggilan</th><td>{{ $profile->nama_panggil }}</td></tr>
-                        <tr><th>Tanggal Lahir</th><td>{{ $profile->tanggal_lahir }}</td></tr>
-                        <tr><th>Jenis Kelamin</th><td>{{ $profile->jenis_kelamin }}</td></tr>
-                        <tr><th>Pendidikan Asal</th><td>{{ $profile->pendidikan_asal }}</td></tr>
-                        <tr><th>Alamat</th><td>{{ $profile->alamat }}</td></tr>
-                        <tr><th>No Telepon</th><td>{{ $profile->no_telepon }}</td></tr>
-                        <tr><th>Email</th><td>{{ $profile->email }}</td></tr>
-                        <tr><th>Nama Ayah</th><td>{{ $profile->nama_ayah }}</td></tr>
-                        <tr><th>Pekerjaan Ayah</th><td>{{ $profile->pekerjaan_ayah }}</td></tr>
-                        <tr><th>No HP Ayah</th><td>{{ $profile->no_hp_ayah }}</td></tr>
-                        <tr><th>Nama Ibu</th><td>{{ $profile->nama_ibu }}</td></tr>
-                        <tr><th>Pekerjaan Ibu</th><td>{{ $profile->pekerjaan_ibu }}</td></tr>
-                        <tr><th>No HP Ibu</th><td>{{ $profile->no_hp_ibu }}</td></tr>
-                    </tbody>
-                </table>
-
-                <div class="d-flex justify-content-end mt-3">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profil</a>
-                </div>
-            </div>
-        </div>
+    <!--/ About User -->
     </div>
-</main>
-
-@push('scripts')
-    {{-- Notifikasi sukses --}}
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-    </script>
-    @endif
-
-    {{-- Notifikasi error --}}
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '{{ session('error') }}',
-                showConfirmButton: true
-            });
-        });
-    </script>
-    @endif
-@endpush
+</div>
 @endsection

@@ -1,68 +1,81 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Profil Admin')
+@section('title', 'User Profile - Admin')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+  'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+  'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+  'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+  'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+])
+@endsection
+
+<!-- Page Styles -->
+@section('page-style')
+@vite([
+    'resources/assets/vendor/scss/pages/page-profile.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite(['resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js'])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/pages-profile-admin.js'])
+@endsection
 
 @section('content')
-<main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Profil Admin</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Profil</li>
-                    </ol>
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
+<!-- Header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-6">
+        <div class="user-profile-header-banner">
+            <img src="{{asset('assets/img/pages/profile-banner.png')}}" alt="Banner image" class="rounded-top">
+        </div>
+        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
+            <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+            <img src="{{asset('assets/img/avatars/1.png')}}" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img">
+            </div>
+            <div class="flex-grow-1 mt-4 mt-sm-12">
+            <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
+                <div class="user-profile-info">
+                <h4 class="mb-2">{{ $profile->name ?? 'Admin' }}</h4>
+                <span class="badge bg-label-primary">Admin</span>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr><th>Username</th><td>{{ $profile->username }}</td></tr>
-                    </tbody>
-                </table>
-
-                <div class="d-flex justify-content-end mt-3">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit Profil</a>
-                </div>
             </div>
         </div>
+        </div>
     </div>
-</main>
+</div>
+<!--/ Header -->
 
-@push('scripts')
-    {{-- Notifikasi sukses --}}
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-    </script>
-    @endif
+<!-- User Profile Content -->
+<div class="row">
+    <div class="col-12">
+        <!-- About User -->
+        <div class="card mb-6">
+        <div class="card-body">
+            <small class="card-text text-uppercase text-muted small">Tentang</small>
+            <ul class="list-unstyled my-3 py-1">
+            <li class="d-flex align-items-center mb-4"><i class="ri-user-3-line ri-24px"></i><span class="fw-medium mx-2">Username:</span> <span>{{ $profile->username }}</span></li>
+            <li class="d-flex align-items-center mb-4"><i class="ri-star-smile-line ri-24px"></i><span class="fw-medium mx-2">Role:</span> <span>{{ $profile->roles->pluck('name')->first() ?? 'Admin' }}</span></li>
+            </ul>
 
-    {{-- Notifikasi error --}}
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '{{ session('error') }}',
-                showConfirmButton: true
-            });
-        });
-    </script>
-    @endif
-@endpush
+            <div class="d-flex justify-content-end mt-3">
+            <a href="{{ route('profile.edit') }}" class="btn btn-primary">Edit / ganti password</a>
+            </div>
+        </div>
+        </div>
+        <!--/ About User -->
+    </div>
+</div>
 @endsection

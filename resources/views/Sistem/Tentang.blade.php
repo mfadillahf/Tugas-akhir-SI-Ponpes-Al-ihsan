@@ -1,161 +1,83 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title')
-Tentang
+@section('title', 'Tentang Pesantren')
+
+@section('vendor-style')
+@vite([
+  'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+  'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+  'resources/assets/vendor/libs/@form-validation/popular.js',
+  'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+  'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+  'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/pages-tentang-ponpes.js'])
 @endsection
 
 @section('content')
-<main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Data Tentang</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tentang</li>
-                    </ol>
-                </div>
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+
+        <form action="{{ route('tentang.update', $tentang->id ?? 0) }}" 
+        method="POST" 
+        enctype="multipart/form-data" 
+        id="formTentang" 
+        data-mode="edit"
+        class="form-floating-outline needs-validation"
+        novalidate>
+            @csrf
+            @method('PUT')
+
+            <!-- Judul + Preview Gambar -->
+            <div class="card-body text-center">
+            <h4 class="fw-bold mb-4">Edit Tentang Pondok Pesantren</h4>
+
+            <img
+                src="{{ $tentang && $tentang->gambar ? asset('storage/tentang/' . $tentang->gambar) : asset('assets/img/placeholders/placeholder.png') }}"
+                alt="Foto Pesantren"
+                class="rounded-3 mb-3 mx-auto d-block"
+                id="previewTentangImg"
+                style="width: 100%; max-width: 500px; height: auto; object-fit: cover;" />
+
+            <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                <button type="button" class="btn btn-primary mb-2" onclick="document.getElementById('gambar').click()">Upload Foto Baru</button>
+                <button type="button" class="btn btn-outline-danger mb-2 reset-image-btn">Reset Gambar</button>
             </div>
-        </div>
-    </div>
-
-    <div class="app-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header d-flex align-items-center">
-                            <h3 class="card-title mb-0 me-auto">Tentang</h3>
-                            @role('admin')
-                            <a href="{{ route('tentang.create') }}" class="btn btn-primary btn-sm">+ Tambah Tentang</a>
-                            @endrole
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Judul</th>
-                                            <th>Deskripsi</th>
-                                            <th>Gambar</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($tentang as $key => $t)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $t->judul }}</td>
-                                                <td style="max-width: 250px; word-break: break-word;">
-                                                    {{ Str::limit(strip_tags($t->deskripsi), 100) }}
-                                                </td>
-                                                <td>
-                                                    @if($t->gambar)
-                                                        <img src="{{ asset('storage/tentang/' . $t->gambar) }}" alt="gambar" style="max-width: 150px;">
-                                                    @else
-                                                        gambar tidak tersedia
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('tentang.edit', $t->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('tentang.destroy', $t->id) }}" method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $t->id }}">Hapus</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="text-center">Belum ada data tentang.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card-footer clearfix">
-                            {{-- Pagination --}}
-                        </div>
-                    </div>
-                </div>
+            <input type="file" id="gambar" name="gambar" class="d-none">
+            <p class="mb-0 text-muted">Format JPG/PNG. Max 2MB.</p>
             </div>
 
+            <!-- Form Edit -->
+            <div class="card-body pt-0">
+            <div class="form-floating form-floating-outline mb-4">
+                <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul"
+                    value="{{ old('judul', $tentang->judul ?? '') }}" required>
+                <label for="judul">Judul</label>
+            </div>
+
+            <div class="form-floating form-floating-outline mb-4">
+                <textarea class="form-control" name="deskripsi" id="deskripsi" style="height: 150px" required>{{ old('deskripsi', $tentang->deskripsi ?? '') }}</textarea>
+                <label for="deskripsi">Deskripsi</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+            </div>
+        </form>
         </div>
     </div>
-</main>
-
-@push('scripts')
-    {{-- Notifikasi sukses --}}
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-    </script>
-    @endif
-
-    {{-- Notifikasi error --}}
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '{{ session('error') }}',
-                showConfirmButton: true
-            });
-        });
-    </script>
-    @endif
-
-    {{-- SweetAlert konfirmasi hapus --}}
-    <script>
-        $(document).on('click', '.btn-delete', function (e) {
-            e.preventDefault();
-            const tentangId = $(this).data('id');
-
-            Swal.fire({
-                title: 'Yakin ingin menghapus?',
-                text: "Data tidak bisa dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = $('<form>', {
-                        method: 'POST',
-                        action: `/tentang/${tentangId}`
-                    });
-
-                    form.append($('<input>', {
-                        type: 'hidden',
-                        name: '_token',
-                        value: '{{ csrf_token() }}'
-                    }));
-
-                    form.append($('<input>', {
-                        type: 'hidden',
-                        name: '_method',
-                        value: 'DELETE'
-                    }));
-
-                    form.appendTo('body').submit();
-                }
-            });
-        });
-    </script>
-@endpush
+</div>
 @endsection

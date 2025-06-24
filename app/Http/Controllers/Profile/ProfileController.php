@@ -61,6 +61,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        // Admin
         if (user()->hasRole('admin')) {
             $profile = user();
 
@@ -71,22 +72,22 @@ class ProfileController extends Controller
 
             DB::transaction(function () use ($profile, $validated) {
                 $profile->username = $validated['username'];
-
                 if (!empty($validated['password'])) {
                     $profile->password = bcrypt($validated['password']);
                 }
-
                 $profile->save();
             });
 
             return redirect()->route('profile.show')->with('success', 'Profil admin berhasil diperbarui.');
         }
-        
 
+        // Santri
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
+            $user = user(); // akses user santri
 
             $validated = $request->validate([
+                // data santri
                 'nama_lengkap' => 'required|string|max:50',
                 'nama_panggil' => 'required|string|max:50',
                 'tanggal_lahir' => 'required|date',
@@ -101,52 +102,107 @@ class ProfileController extends Controller
                 'nama_ibu' => 'required|string|max:50',
                 'pekerjaan_ibu' => 'required|string|max:30',
                 'no_hp_ibu' => 'required|string|max:14',
+
+                // akun
+                'username' => 'required|string|max:50|unique:users,username,' . $user->id_user . ',id_user',
+                'password' => 'nullable|string|min:6|confirmed',
             ]);
 
-            $validated['email'] = $validated['email'] ?? $profile->email;
+            DB::transaction(function () use ($profile, $user, $validated) {
+                $profile->update([
+                    'nama_lengkap' => $validated['nama_lengkap'],
+                    'nama_panggil' => $validated['nama_panggil'],
+                    'tanggal_lahir' => $validated['tanggal_lahir'],
+                    'alamat' => $validated['alamat'],
+                    'no_telepon' => $validated['no_telepon'],
+                    'email' => $validated['email'] ?? $profile->email,
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                    'pendidikan_asal' => $validated['pendidikan_asal'],
+                    'nama_ayah' => $validated['nama_ayah'],
+                    'pekerjaan_ayah' => $validated['pekerjaan_ayah'],
+                    'no_hp_ayah' => $validated['no_hp_ayah'],
+                    'nama_ibu' => $validated['nama_ibu'],
+                    'pekerjaan_ibu' => $validated['pekerjaan_ibu'],
+                    'no_hp_ibu' => $validated['no_hp_ibu'],
+                ]);
 
-            DB::transaction(function () use ($profile, $validated) {
-                $profile->update($validated);
+                $user->username = $validated['username'];
+                if (!empty($validated['password'])) {
+                    $user->password = bcrypt($validated['password']);
+                }
+                $user->save();
             });
 
             return redirect()->route('profile.show')->with('success', 'Profil santri berhasil diperbarui.');
         }
 
+        // Guru
         if (user()->hasRole('guru')) {
             $profile = user()->guru;
+            $user = user(); // akses user guru
 
             $validated = $request->validate([
+                // data guru
                 'nama' => 'required|string|max:50',
                 'no_telepon' => 'required|string|max:14',
                 'email' => 'nullable|email|max:50',
                 'nip' => 'nullable|string|max:20',
                 'tanggal_lahir' => 'required|date',
                 'jenis_kelamin' => 'required|string|max:10',
+
+                // akun
+                'username' => 'required|string|max:50|unique:users,username,' . $user->id_user . ',id_user',
+                'password' => 'nullable|string|min:6|confirmed',
             ]);
 
-            $validated['email'] = $validated['email'] ?? $profile->email;
+            DB::transaction(function () use ($profile, $user, $validated) {
+                $profile->update([
+                    'nama' => $validated['nama'],
+                    'no_telepon' => $validated['no_telepon'],
+                    'email' => $validated['email'] ?? $profile->email,
+                    'nip' => $validated['nip'],
+                    'tanggal_lahir' => $validated['tanggal_lahir'],
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                ]);
 
-            DB::transaction(function () use ($profile, $validated) {
-                $profile->update($validated);
+                $user->username = $validated['username'];
+                if (!empty($validated['password'])) {
+                    $user->password = bcrypt($validated['password']);
+                }
+                $user->save();
             });
 
             return redirect()->route('profile.show')->with('success', 'Profil guru berhasil diperbarui.');
         }
 
+        // Donatur (sudah benar)
         if (user()->hasRole('donatur')) {
             $profile = user()->donatur;
+            $user = user(); // akses tabel users
 
             $validated = $request->validate([
                 'nama' => 'required|string|max:50',
                 'alamat' => 'nullable|string|max:255',
                 'no_telepon' => 'required|string|max:14',
                 'email' => 'nullable|email|max:50',
+
+                'username' => 'required|string|max:50|unique:users,username,' . $user->id_user . ',id_user',
+                'password' => 'nullable|string|min:6|confirmed',
             ]);
 
-            $validated['email'] = $validated['email'] ?? $profile->email;
+            DB::transaction(function () use ($profile, $user, $validated) {
+                $profile->update([
+                    'nama' => $validated['nama'],
+                    'alamat' => $validated['alamat'],
+                    'no_telepon' => $validated['no_telepon'],
+                    'email' => $validated['email'] ?? $profile->email,
+                ]);
 
-            DB::transaction(function () use ($profile, $validated) {
-                $profile->update($validated);
+                $user->username = $validated['username'];
+                if (!empty($validated['password'])) {
+                    $user->password = bcrypt($validated['password']);
+                }
+                $user->save();
             });
 
             return redirect()->route('profile.show')->with('success', 'Profil donatur berhasil diperbarui.');

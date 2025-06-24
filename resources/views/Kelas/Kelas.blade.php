@@ -78,9 +78,6 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="3" class="text-center">Data kelas belum tersedia.</td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>

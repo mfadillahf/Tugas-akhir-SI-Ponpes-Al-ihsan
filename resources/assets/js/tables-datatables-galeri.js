@@ -1,15 +1,27 @@
 'use strict';
 
 let fv, offCanvasEl;
+
 document.addEventListener('DOMContentLoaded', function () {
   // SweetAlert2: Notifikasi sukses/gagal dari session
   const flashSuccess = document.querySelector('meta[name="flash-success"]');
   const flashError = document.querySelector('meta[name="flash-error"]');
   if (flashSuccess?.content) {
-    Swal.fire({ icon: 'success', title: 'Berhasil', text: flashSuccess.content, timer: 2000, showConfirmButton: false });
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil',
+      text: flashSuccess.content,
+      timer: 2000,
+      showConfirmButton: false
+    });
   }
   if (flashError?.content) {
-    Swal.fire({ icon: 'error', title: 'Gagal', text: flashError.content, showConfirmButton: true });
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal',
+      text: flashError.content,
+      showConfirmButton: true
+    });
   }
 
   // SweetAlert2: Konfirmasi hapus data
@@ -17,67 +29,67 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     const form = $(this).closest('form');
     Swal.fire({
-    title: 'Yakin ingin menghapus?',
-    text: 'Data tidak bisa dikembalikan!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Batal',
-    customClass: {
-      confirmButton: 'btn btn-danger me-3 waves-effect waves-light',
-      cancelButton: 'btn btn-outline-secondary waves-effect'
-    },
-    buttonsStyling: false
-  }).then((result) => {
-    if (result.isConfirmed) {
-      form.submit();
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire({
-        title: 'Dibatalkan',
-        text: 'Data tidak jadi dihapus.',
-        icon: 'info',
-        customClass: {
-          confirmButton: 'btn btn-primary waves-effect'
-        },
-        buttonsStyling: false
-      });
-    }
-  });
-});
-
-  // Detail Santri via AJAX
-  $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
-        const mapelId = $(this).data('id');
-        $('#modalBody').html('<p class="text-center">Memuat...</p>');
-        $.ajax({
-            url: '/mapel/' + mapelId + '/detail',
-            type: 'GET',
-            success: function(response) {
-                var modalContent = `
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>Mapel</th>
-                                <td>${response.mapel}</td>
-                            </tr>
-                            <tr>
-                                <th>Guru</th>
-                                <td>${response.guru.nama ?? '-'}</td>
-                            </tr>
-                            <tr>
-                                <th>Deskripsi</th>
-                                <td>${response.deskripsi}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                `;
-                $('#modalBody').html(modalContent);
-            },
-            error: function() {
-                alert('Gagal mengambil data detail mapel.');
-            }
+      title: 'Yakin ingin menghapus?',
+      text: 'Data tidak bisa dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal',
+      customClass: {
+        confirmButton: 'btn btn-danger me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-secondary waves-effect'
+      },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Dibatalkan',
+          text: 'Data tidak jadi dihapus.',
+          icon: 'info',
+          customClass: {
+            confirmButton: 'btn btn-primary waves-effect'
+          },
+          buttonsStyling: false
         });
+      }
     });
+  });
+
+  // Detail Guru via AJAX
+  $(document).on('click', 'button[data-bs-toggle="modal"]', function() {
+            const galeriId = $(this).data('id');
+            $('#modalBody').html('<p class="text-center">Memuat...</p>');
+            $.ajax({
+                url: '/galeri/' + galeriId + '/detail',
+                type: 'GET',
+                success: function(response) {
+                    var modalContent = `
+                        <table class="table table-sm table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Deskripsi</th>
+                                    <td>${response.deskripsi}</td>
+                                </tr>
+                                <tr>
+                                    <th>Foto</th>
+                                    <td><img src="${response.foto}" alt="Foto Galeri" style="max-width: 150px;"></td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <td>${response.tanggal}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    $('#modalBody').html(modalContent);
+                },
+                error: function() {
+                    alert('Gagal mengambil data detail galeri.');
+                }
+            });
+        });
 
   // Inisialisasi DataTables
   const dt_basic_table = $('.datatables-basic');
@@ -124,37 +136,36 @@ document.addEventListener('DOMContentLoaded', function () {
               extend: 'print',
               text: '<i class="ri-printer-line me-1"></i>Print',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5, 6] }
+              exportOptions: { columns: [1, 2, 3, 4, 5] }
             },
             {
               extend: 'csv',
               text: '<i class="ri-file-text-line me-1"></i>Csv',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5, 6] }
+              exportOptions: { columns: [1, 2, 3, 4, 5] }
             },
             {
               extend: 'excel',
               text: '<i class="ri-file-excel-line me-1"></i>Excel',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5, 6] }
+              exportOptions: { columns: [1, 2, 3, 4, 5] }
             },
             {
               extend: 'pdf',
               text: '<i class="ri-file-pdf-line me-1"></i>Pdf',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5, 6] }
+              exportOptions: { columns: [1, 2, 3, 4, 5] }
             },
             {
               extend: 'copy',
               text: '<i class="ri-file-copy-line me-1"></i>Copy',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5, 6] }
+              exportOptions: { columns: [1, 2, 3, 4, 5] }
             }
           ]
         }
       ]
     });
-
 
     table.on('draw', function () {
       const body = $(table.table().body());

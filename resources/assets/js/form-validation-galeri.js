@@ -1,9 +1,9 @@
-// Form Validation for Tambah Infaq Page
 'use strict';
 
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   window.Helpers.initCustomOptionCheck();
 
+  // Inisialisasi Flatpickr
   const flatPickrTanggal = document.querySelector('#tanggal');
   if (flatPickrTanggal) {
     flatPickrTanggal.flatpickr({
@@ -12,6 +12,16 @@
     });
   }
 
+  // Inisialisasi Select2
+  const selectKategori = $('#kategori_galeri_id');
+  if (selectKategori.length) {
+    selectKategori.wrap('<div class="position-relative"></div>').select2({
+      placeholder: '-- Pilih Kategori --',
+      dropdownParent: selectKategori.parent()
+    });
+  }
+
+  // Validasi Bootstrap biasa
   const bsValidationForms = document.querySelectorAll('.needs-validation');
   Array.prototype.slice.call(bsValidationForms).forEach(function (form) {
     form.addEventListener(
@@ -27,19 +37,23 @@
     );
   });
 
-  const formEl = document.querySelector('form[action*="infaq"]');
+  // Validasi FormValidation.js
+  const formEl = document.getElementById('formGaleriCreate') || document.getElementById('formGaleriEdit');
   if (!formEl) return;
 
   const fv = FormValidation.formValidation(formEl, {
     fields: {
-      nominal: {
+      kategori_galeri_id: {
         validators: {
-          notEmpty: { message: 'Nominal wajib diisi' },
-          numeric: { message: 'Nominal harus berupa angka' },
-          greaterThan: {
-            inclusive: false,
-            min: 0,
-            message: 'Nominal harus lebih dari 0'
+          notEmpty: { message: 'Kategori wajib dipilih' }
+        }
+      },
+      deskripsi: {
+        validators: {
+          notEmpty: { message: 'Deskripsi wajib diisi' },
+          stringLength: {
+            min: 5,
+            message: 'Deskripsi minimal 5 karakter'
           }
         }
       },
@@ -52,11 +66,16 @@
           }
         }
       },
-      keterangan: {
+      foto: {
         validators: {
-          stringLength: {
-            max: 255,
-            message: 'Keterangan maksimal 255 karakter'
+          notEmpty: {
+            enabled: formEl.id === 'formGaleriCreate', // hanya wajib saat create
+            message: 'Foto wajib diunggah'
+          },
+          file: {
+            extension: 'jpg,jpeg,png',
+            type: 'image/jpeg,image/png',
+            message: 'File harus berupa gambar (jpg, jpeg, png)'
           }
         }
       }
@@ -72,4 +91,4 @@
       autoFocus: new FormValidation.plugins.AutoFocus()
     }
   });
-})();
+});

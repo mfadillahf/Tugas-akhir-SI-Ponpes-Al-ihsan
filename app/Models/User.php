@@ -41,6 +41,11 @@ class User extends Authenticatable
     { 
         return $this->hasMany(Berita::class, 'id_user');
     }
+
+    public function getKey()
+    {
+        return $this->id_user;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

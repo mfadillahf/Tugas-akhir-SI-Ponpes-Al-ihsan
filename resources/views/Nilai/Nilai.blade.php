@@ -1,6 +1,6 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Daftar Nilai Santri')
+@section('title', 'daftar nilai santri')
 
 @section('content')
 <main class="app-main">

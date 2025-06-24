@@ -11,54 +11,10 @@ use Illuminate\Support\Facades\Storage;
 
 class TentangController extends Controller
 {
-    public function index()
+ public function index()
     {
-        $tentang = Tentang::all();
+        $tentang = Tentang::first(); // Ambil data pertama (anggap hanya ada satu)
         return view('sistem.tentang', compact('tentang'));
-    }
-
-    public function create()
-    {
-        return view('sistem.tentangcreate');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        DB::beginTransaction();
-
-        try {
-            $data = [
-                'judul' => $request->judul,
-                'deskripsi' => $request->deskripsi,
-            ];
-
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/tentang', $filename);
-                $data['gambar'] = $filename;
-                
-            }
-
-            Tentang::create($data);
-
-            DB::commit();
-            return redirect()->route('tentang.index')->with('success', 'Data berhasil ditambahkan.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
-        }
-    }
-
-    public function edit(Tentang $tentang)
-    {
-        return view('sistem.tentangedit', compact('tentang'));
     }
 
     public function update(Request $request, Tentang $tentang)
@@ -83,7 +39,7 @@ class TentangController extends Controller
                 $file->storeAs('public/tentang', $filename);
                 $data['gambar'] = $filename;
 
-                // hapus gambar lama
+                // Hapus gambar lama
                 if ($tentang->gambar && Storage::exists('public/tentang/' . $tentang->gambar)) {
                     Storage::delete('public/tentang/' . $tentang->gambar);
                 }
@@ -92,29 +48,10 @@ class TentangController extends Controller
             $tentang->update($data);
 
             DB::commit();
-            return redirect()->route('tentang.index')->with('success', 'Data berhasil diupdate.');
+            return redirect()->route('tentang.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage()]);
-        }
-    }
-
-    public function destroy(Tentang $tentang)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($tentang->gambar && Storage::exists('public/tentang/' . $tentang->gambar)) {
-                Storage::delete('public/tentang/' . $tentang->gambar);
-            }
-
-            $tentang->delete();
-
-            DB::commit();
-            return back()->with('success', 'Data berhasil dihapus.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()]);
+            return back()->withErrors(['error' => 'Gagal memperbarui data: ' . $e->getMessage()]);
         }
     }
 }

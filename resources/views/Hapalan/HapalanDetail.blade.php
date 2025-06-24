@@ -1,86 +1,103 @@
-@extends('layouts.App')
+@php use Illuminate\Support\Facades\Auth; @endphp
+@extends('layouts/layoutMaster')
 
-@section('title', 'Detail Hapalan')
+@section('title', 'Data Hapalan Santri')
+
+<!-- Vendor Styles -->
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+])
+@endsection
+
+<!-- Vendor Scripts -->
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/jquery/jquery.js',
+    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+])
+@endsection
+
+<!-- Page Scripts -->
+@section('page-script')
+@vite(['resources/assets/js/tables-datatables-hapalan-detail.js'])
+@endsection
 
 @section('content')
+<meta name="flash-success" content="{{ session('success') }}">
+<meta name="flash-error" content="{{ session('error') }}">
+<meta name="user-role" content="{{ Auth::user()->getRoleNames()->first() }}">
 
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Detail Hapalan</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('hapalan.index') }}">Hapalan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="app-content">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-3">
-                        <div class="fw-bold mb-1">Detail Hapalan: {{ $hapalan->santri->nama_lengkap ?? '-' }}</div>
-
-                        <div class="fw-bold mb-1">Guru: {{ $hapalan->guru->nama ?? '-' }}</div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0">Riwayat Detail Hapalan</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h5 class="card-title mb-0">Riwayat Detail Hapalan : {{ $hapalan->santri->nama_lengkap ?? '-' }}</h5>
                         @role('guru')
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createDetailModal">
-                            <i class="fas fa-plus-circle"></i> Tambah Detail
+                            <i class="ri-add-line"></i>Tambah Detail
                         </button>
                         @endrole
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle">
+                        <table class="table table-bordered datatables-basic">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 50%">Keterangan</th>
-                                    <th style="width: 25%">Waktu</th>
-                                    <th style="width: 25%">Aksi</th>
+                                    <th>No</th>
+                                    <th>Keterangan</th>
+                                    <th>Waktu</th>
+                                    @role('guru')
+                                    <th>Aksi</th>
+                                    @endrole
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($hapalan->details as $detail)
+                                @forelse ($hapalan->details as $i => $detail)
                                     <tr>
+                                        <td>{{ $i + 1 }}</td>
                                         <td>{{ $detail->keterangan }}</td>
                                         <td><span class="badge bg-secondary">{{ $detail->created_at->format('d M Y H:i') }}</span></td>
+                                        @role('guru')
                                         <td>
-                                            <div class="btn-group" role="group">
-                                                <button 
-                                                    type="button" 
-                                                    class="btn btn-warning btn-sm me-1 btn-edit-detail"
-                                                    data-id="{{ $detail->id_hapalan_detail }}"
-                                                    data-keterangan="{{ $detail->keterangan }}"
-                                                    data-action="{{ route('hapalan.detail.update', $detail->id_hapalan_detail) }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editDetailModal">
-                                                    <i class="fas fa-edit"></i> edit
-                                                </button>
-
-                                                @role('guru')
-                                                <form action="{{ route('hapalan.detail.destroy', $detail->id_hapalan_detail) }}" method="POST" class="form-hapus d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm btn-delete" data-id="{{ $detail->id_hapalan_detail }}">delete
-                                                        <i class="fas fa-trash-alt"></i>
+                                            <form action="{{ route('hapalan.detail.destroy', $detail->id_hapalan_detail) }}" method="POST" class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="d-flex gap-1">
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-warning btn-sm btn-edit-detail"
+                                                        data-id="{{ $detail->id_hapalan_detail }}"
+                                                        data-keterangan="{{ $detail->keterangan }}"
+                                                        data-action="{{ route('hapalan.detail.update', $detail->id_hapalan_detail) }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editDetailModal">
+                                                        <i class="ri-edit-line"></i>
                                                     </button>
-                                                </form>
-                                                @endrole
-                                            </div>
+                                                    <button class="btn btn-danger btn-sm btn-delete" type="submit">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </td>
+                                        @endrole
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center text-muted">Belum ada detail hapalan.</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -145,77 +162,4 @@
         </form>
     </div>
 </div>
-
-@push('scripts')
-@if(session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    });
-</script>
-@endif
-
-@if(session('error'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal',
-            text: '{{ session('error') }}',
-            showConfirmButton: true
-        });
-    });
-</script>
-@endif
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editButtons = document.querySelectorAll('.btn-edit-detail');
-        const editForm = document.getElementById('formEditDetail');
-        const keteranganInput = document.getElementById('edit_keterangan');
-
-        editButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const keterangan = this.getAttribute('data-keterangan');
-                const action = this.getAttribute('data-action');
-
-                keteranganInput.value = keterangan;
-                editForm.action = action;
-            });
-        });
-    });
-
-    // SweetAlert hapus
-    document.addEventListener('DOMContentLoaded', function () {
-        const forms = document.querySelectorAll('.form-hapus');
-
-        forms.forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                Swal.fire({
-                    title: 'Yakin ingin menghapus?',
-                    text: "Data detail hapalan tidak bisa dikembalikan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    });
-</script>
-@endpush
-
 @endsection

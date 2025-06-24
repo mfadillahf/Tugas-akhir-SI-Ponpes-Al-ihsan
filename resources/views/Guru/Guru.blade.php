@@ -93,9 +93,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>
-                                <td colspan="7" class="text-center">Data guru belum tersedia.</td>
-                            </tr>
                             @endforelse
                         </tbody>
                     </table>

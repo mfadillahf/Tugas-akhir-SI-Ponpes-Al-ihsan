@@ -32,19 +32,20 @@ class DashboardController extends Controller
     }
 
     public function adminDashboard()
-{
-    $jumlahSantri = Santri::count();
-    $jumlahGuru = Guru::count();
-    $jumlahDonatur = Donatur::count();
-    $jumlahPengurus = Kepengurusan::count();
+    {
+        $this->authorizeRole('admin');
+        $jumlahSantri = Santri::count();
+        $jumlahGuru = Guru::count();
+        $jumlahDonatur = Donatur::count();
+        $jumlahPengurus = Kepengurusan::count();
 
-    return view('dashboardadmin', compact(
-        'jumlahSantri',
-        'jumlahGuru',
-        'jumlahDonatur',
-        'jumlahPengurus'
-    ));
-}
+        return view('dashboardadmin', compact(
+            'jumlahSantri',
+            'jumlahGuru',
+            'jumlahDonatur',
+            'jumlahPengurus'
+        ));
+    }
 
     public function santriDashboard()
     {
@@ -93,8 +94,17 @@ class DashboardController extends Controller
     public function guruDashboard()
     {
         $this->authorizeRole('guru');
+        $jumlahSantri = Santri::count();
+        $jumlahGuru = Guru::count();
+        $jumlahDonatur = Donatur::count();
+        $jumlahPengurus = Kepengurusan::count();
 
-        return view('dashboardguru');
+        return view('dashboardguru', compact(
+            'jumlahSantri',
+            'jumlahGuru',
+            'jumlahDonatur',
+            'jumlahPengurus'
+        ));
     }
 
     public function donaturDashboard()

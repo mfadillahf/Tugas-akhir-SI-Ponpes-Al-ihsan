@@ -14,13 +14,14 @@
       "name": "Data Nilai",
       "icon": "menu-icon tf-icons ri-book-open-line",
       "slug": "nilai.index",
-      "roles" : "guru"
+      "roles": ["santri", "guru"]
     },
     {
       "url": "hapalan",
       "name": "Data Hapalan",
       "icon": "menu-icon tf-icons ri-book-open-line",
-      "slug": "hapalan.index"
+      "slug": "hapalan.index",
+      "roles": ["santri", "guru"]
     },
     {
       "menuHeader": "Profil Pengguna"

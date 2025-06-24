@@ -1,28 +1,41 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Tambah Galeri')
+@section('title', 'Edit Berita')
+
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-berita.js'])
+@endsection
 
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Edit Berita</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('berita.index') }}">Berita</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Berita</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width: 980px;">
-        <div class="card card-info card-outline mb-4 rounded-3 shadow-sm">
+    <div class="col-12">
+        <div class="card shadow-sm">
             <div class="card-body">
-                {{-- Tampilkan error validation --}}
+
+                {{-- Error validation --}}
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -33,64 +46,85 @@
                     </div>
                 @endif
 
-                {{-- FORM --}}
-                <form class="needs-validation" action="{{ route('berita.update', $berita->id_berita) }}" method="POST" enctype="multipart/form-data">
-
+                <form id="formBeritaEdit" action="{{ route('berita.update', $berita->id_berita) }}" method="POST" enctype="multipart/form-data" class="row g-4 needs-validation">
                     @csrf
                     @method('PUT')
 
-                    <div class="col-md-12 mb-3">
-                        <label for="id_jenis_berita" class="form-label">Pilih Jenis Berita</label>
-                        <select name="id_jenis_berita" id="id_jenis_berita" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Jenis Berita --</option>
-                            @foreach ($jenisBerita as $jb)
-                                <option value="{{ $jb->id_jenis_berita }}" {{ old('id_jenis_berita', $berita->id_jenis_berita) == $jb->id_jenis_berita ? 'selected' : '' }}>
-                                    {{ $jb->kategori }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="col-12">
+                        <h4 class="fw-bold">Edit Berita</h4>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="judul" class="form-label">Judul</label>
-                            <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul', $berita->judul) }}" required>
+                    {{-- 1. Kategori Berita --}}
+                    <div class="col-12">
+                        <h6>1. Kategori Berita</h6>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <select name="id_jenis_berita" id="id_jenis_berita" class="form-select" required>
+                                <option value="" disabled>-- Pilih Jenis Berita --</option>
+                                @foreach ($jenisBerita as $jb)
+                                    <option value="{{ $jb->id_jenis_berita }}" {{ old('id_jenis_berita', $berita->id_jenis_berita) == $jb->id_jenis_berita ? 'selected' : '' }}>
+                                        {{ $jb->kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="isi" class="form-label">Isi</label>
-                            <textarea class="form-control" name="isi" id="isi" rows="3" required>{{ old('isi', $berita->isi) }}</textarea>
+                    {{-- 2. Isi Berita --}}
+                    <div class="col-12">
+                        <h6 class="mt-2">2. Isi Berita</h6>
+                        <hr />
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="judul" name="judul" class="form-control" placeholder="Judul" value="{{ old('judul', $berita->judul) }}" required>
+                            <label for="judul">Judul</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="isi" class="form-label">Isi</label>
+                        <textarea class="form-control" name="isi" id="isi" rows="5" required>{{ old('isi', $berita->isi) }}</textarea>
+                    </div>
+
+                    {{-- 3. Informasi Tambahan --}}
+                    <div class="col-12">
+                        <h6 class="mt-2">3. Informasi Tambahan</h6>
+                        <hr />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ old('tanggal', $berita->tanggal) }}" required>
+                            <label for="tanggal">Tanggal</label>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal" class="form-label">Tanggal</label>
-                            <input type="date" class="form-control" name="tanggal" id="tanggal" value="{{ old('tanggal', $berita->tanggal) }}" required>
+                    {{-- 4. Foto --}}
+                    <div class="col-12">
+                        <h6 class="mt-2">4. Foto</h6>
+                        <hr />
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating form-floating-outline">
+                            <input type="file" id="foto" name="foto" class="form-control" accept="image/*">
+                            <label for="foto">Ganti Foto (Opsional)</label>
                         </div>
+                        @if ($berita->foto)
+                            <div class="mt-2">
+                                <p class="mb-1">Foto Saat Ini:</p>
+                                <img src="{{ asset('storage/berita/' . $berita->foto) }}" alt="Foto Berita" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                        @endif
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="foto" class="form-label">Ganti Foto (Opsional)</label>
-                            <input type="file" class="form-control" name="foto" id="foto" accept="image/*">
-                            @if ($berita->foto)
-                                <div class="mt-2">
-                                    <p>Foto Sekarang:</p>
-                                    <img src="{{ asset('storage/berita/' . $berita->foto) }}" alt="Foto Galeri" class="img-fluid" style="max-width: 200px;">
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <div class="d-flex justify-content-end gap-2 mt-3">
+                    {{-- Tombol Aksi --}}
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('berita.index') }}" class="btn btn-secondary">← Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

@@ -99,9 +99,6 @@
                     </td>
                 </tr>
                 @empty
-                <tr>
-                    <td colspan="7" class="text-center">Data Kepengurusan belum tersedia.</td>
-                </tr>
                 @endforelse
                 </tbody>
             </table>

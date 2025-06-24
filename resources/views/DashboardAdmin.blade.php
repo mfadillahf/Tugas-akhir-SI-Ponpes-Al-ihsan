@@ -1,3 +1,6 @@
+@php
+    $configData = Helper::appClasses();
+@endphp
 @extends('layouts/layoutMaster')
 
 @section('title', 'Dashboard - Admin')
@@ -27,12 +30,24 @@
 @endsection
 
 @section('content')
-
-<div class="row mb-4">
-    <div class="col-12">
-        <h4 class="fw-bold">Selamat datang, {{ auth()->user()->username }}</h4>
+<div class="row g-6">
+    <!-- Welcome Card -->
+    <div class="col-md-12 col-xxl-8">
+        <div class="card">
+        <div class="d-flex align-items-start row">
+            <div class="col-md-6 order-2 order-md-1">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Selamat Datang, <span class="fw-bold">{{ auth()->user()->username }}</span> 👋</h4>
+            </div>
+            </div>
+            <div class="col-md-6 text-center text-md-end order-1 order-md-2">
+            <div class="card-body pb-0 px-0 pt-2">
+                <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}" height="186" class="scaleX-n1-rtl" alt="Welcome" data-app-light-img="illustrations/illustration-john-light.png" data-app-dark-img="illustrations/illustration-john-dark.png">
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
-</div>
 
 <!-- Statistik Cards -->
 <div class="row g-4">
@@ -91,6 +106,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 <!-- /Statistik Cards -->
 

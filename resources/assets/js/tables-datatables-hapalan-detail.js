@@ -3,7 +3,7 @@
 let fv, offCanvasEl;
 
 document.addEventListener('DOMContentLoaded', function () {
-  // SweetAlert2: Notifikasi sukses/gagal dari session
+  // --- SweetAlert2: Notifikasi flash ---
   const flashSuccess = document.querySelector('meta[name="flash-success"]');
   const flashError = document.querySelector('meta[name="flash-error"]');
   if (flashSuccess?.content) {
@@ -24,10 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // SweetAlert2: Konfirmasi hapus data
+  // --- SweetAlert2: Konfirmasi hapus ---
   $(document).on('click', '.btn-delete', function (e) {
     e.preventDefault();
     const form = $(this).closest('form');
+
     Swal.fire({
       title: 'Yakin ingin menghapus?',
       text: 'Data tidak bisa dikembalikan!',
@@ -57,49 +58,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Detail Guru via AJAX
-  $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-            const agendaId = $(this).data('id');
-      $('#modalBody').html('<p class="text-center">Memuat...</p>');
-            $.ajax({
-                url: '/agenda/' + agendaId + '/detail',
-                type: 'GET',
-                success: function (response) {
-                    var modalContent = `
-                        <table class="table table-sm table-bordered">
-                            <tbody>
-                                <tr>
-                                    <th>Judul</th>
-                                    <td>${response.judul}</td>
-                                </tr>
-                                <tr>
-                                    <th>Jenis agenda</th>
-                                    <td>${response.kategori}</td>
-                                </tr>
-                                <tr>
-                                    <th>Deskripsi</th>
-                                    <td>${response.deskripsi}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <td>${response.tanggal_mulai}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tanggal Akhir</th>
-                                    <td>${response.tanggal_akhir}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-                    $('#modalBody').html(modalContent);
-                },
-                error: function () {
-                    alert('Gagal mengambil data detail agenda.');
-                }
-            });
-        });
+  // --- Modal Edit Detail: isi otomatis data dari tombol ---
+  const editButtons = document.querySelectorAll('.btn-edit-detail');
+  const editForm = document.getElementById('formEditDetail');
+  const keteranganInput = document.getElementById('edit_keterangan');
 
-  // Inisialisasi DataTables
+  editButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const keterangan = this.getAttribute('data-keterangan');
+      const action = this.getAttribute('data-action');
+      keteranganInput.value = keterangan;
+      editForm.action = action;
+    });
+  });
+
+  // --- Ambil role dari meta tag ---
+  const roleName = document.querySelector('meta[name="user-role"]')?.content;
+  const isGuru = roleName === 'guru';
+
+  // --- DataTables konfigurasi ---
   const dt_basic_table = $('.datatables-basic');
   if (dt_basic_table.length) {
     const table = dt_basic_table.DataTable({
@@ -111,30 +88,13 @@ document.addEventListener('DOMContentLoaded', function () {
       responsive: true,
       pageLength: 10,
       lengthMenu: [10, 25, 50, 100],
-      columnDefs: [
-        {
-          targets: 0,
-          orderable: false,
-          className: 'dt-checkboxes-cell',
-          checkboxes: {
-            selectRow: true
-          },
-          render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-          }
-        }
-      ],
-      select: {
-        style: 'multi',
-        selector: 'td:first-child'
-      },
       language: {
         paginate: {
           next: '<i class="ri-arrow-right-s-line"></i>',
           previous: '<i class="ri-arrow-left-s-line"></i>'
         }
       },
-      buttons: [
+      buttons: isGuru ? [
         {
           extend: 'collection',
           className: 'btn btn-label-primary dropdown-toggle me-4 waves-effect waves-light',
@@ -144,37 +104,38 @@ document.addEventListener('DOMContentLoaded', function () {
               extend: 'print',
               text: '<i class="ri-printer-line me-1"></i>Print',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [0, 1, 2] }
             },
             {
               extend: 'csv',
-              text: '<i class="ri-file-text-line me-1"></i>Csv',
+              text: '<i class="ri-file-text-line me-1"></i>CSV',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [0, 1, 2] }
             },
             {
               extend: 'excel',
               text: '<i class="ri-file-excel-line me-1"></i>Excel',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [0, 1, 2] }
             },
             {
               extend: 'pdf',
-              text: '<i class="ri-file-pdf-line me-1"></i>Pdf',
+              text: '<i class="ri-file-pdf-line me-1"></i>PDF',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [0, 1, 2] }
             },
             {
               extend: 'copy',
               text: '<i class="ri-file-copy-line me-1"></i>Copy',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [0, 1, 2] }
             }
           ]
         }
-      ]
+      ] : []
     });
 
+    // --- Highlight pencarian ---
     table.on('draw', function () {
       const body = $(table.table().body());
       body.unhighlight();

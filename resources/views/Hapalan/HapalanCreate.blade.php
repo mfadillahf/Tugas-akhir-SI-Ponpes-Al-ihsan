@@ -1,102 +1,129 @@
-@extends('layouts.App')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Tambah Hapalan')
+@section('title', 'Tambah Hapalan Santri')
+
+@section('vendor-style')
+@vite([
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/tagify/tagify.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+])
+@endsection
+
+@section('vendor-script')
+@vite([
+    'resources/assets/vendor/libs/select2/select2.js',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+    'resources/assets/vendor/libs/moment/moment.js',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+    'resources/assets/vendor/libs/tagify/tagify.js',
+    'resources/assets/vendor/libs/@form-validation/popular.js',
+    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+])
+@endsection
+
+@section('page-script')
+@vite(['resources/assets/js/form-validation-hapalan.js'])
+@endsection
 
 @section('content')
 <main class="app-main">
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Tambah Hapalan Santri</h3></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.guru') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('hapalan.index') }}">Hapalan</a></li>
-                        <li class="breadcrumb-item active">Tambah</li>
-                    </ol>
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                @if (session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+        {{-- Form filter kelas --}}
+        <h5 class="my-4">Pilih Kelas</h5>
+        <form method="GET" action="{{ route('hapalan.create') }}" class="row g-4 mb-4">
+            <div class="col-sm-10 col-8">
+                <div class="form-floating form-floating-outline position-relative">
+                <select name="id_kelas" id="id_kelas" class="form-select select2" required>
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach($kelasList as $kelas)
+                    <option value="{{ $kelas->id_kelas }}" {{ $id_kelas == $kelas->id_kelas ? 'selected' : '' }}>
+                        {{ $kelas->nama_kelas }}
+                    </option>
+                    @endforeach
+                </select>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="col-sm-2 col-4 d-grid">
+                <button type="submit" class="btn btn-primary">Tampilkan</button>
+            </div>
+        </form>
 
-    <div class="app-content">
-        <div class="container-fluid">
-
-            {{-- Error session atau validasi --}}
-            @if(session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            {{-- Filter kelas --}}
-            <form method="GET" action="{{ route('hapalan.create') }}" class="card p-3 mb-4">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label for="id_kelas" class="form-label">Pilih Kelas</label>
-                        <select name="id_kelas" id="id_kelas" class="form-control" required>
-                            <option value="">-- Pilih Kelas --</option>
-                            @foreach($kelasList as $kelas)
-                                <option value="{{ $kelas->id_kelas }}" {{ $id_kelas == $kelas->id_kelas ? 'selected' : '' }}>
-                                    {{ $kelas->nama_kelas }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2 d-grid">
-                        <button type="submit" class="btn btn-secondary">Tampilkan</button>
-                    </div>
-                </div>
-            </form>
-
-            {{-- Form hapalan dengan tabel santri --}}
-            @if($santris->count() > 0)
-                <form method="POST" action="{{ route('hapalan.store') }}" class="card p-3">
+                {{-- Form hapalan --}}
+                @if($santris->count() > 0)
+                <form id="formHapalanCreate" class="row g-4 needs-validation" method="POST" action="{{ route('hapalan.store') }}">
                     @csrf
+
                     <input type="hidden" name="id_guru" value="{{ $guru->id_guru }}">
                     <input type="hidden" name="id_kelas" value="{{ $id_kelas }}">
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Pilih</th>
-                                    <th>Nama Santri</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($santris as $santri)
+                    <div class="col-12">
+                        <h4 class="fw-bold">Tambah Hapalan Santri</h4>
+                    </div>
+
+                    {{-- Tabel Santri --}}
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
                                     <tr>
-                                        <td>
-                                            <input type="radio" name="id_santri" value="{{ $santri->id_santri }}" required>
-                                        </td>
-                                        <td>{{ $santri->nama_lengkap }}</td>
+                                        <th>Pilih</th>
+                                        <th>Nama Santri</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach($santris as $santri)
+                                        <tr>
+                                            <td style="width: 70px;">
+                                                <input type="radio" name="id_santri" value="{{ $santri->id_santri }}" required>
+                                            </td>
+                                            <td>{{ $santri->nama_lengkap }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="guru">Guru</label>
-                        <input type="text" class="form-control" value="{{ $guru->nama }}" readonly>
-                    </div>
+                    {{-- Guru --}}
+                    <input type="hidden" name="id_guru" value="{{ $guru->id_guru }}">
 
-                    <div class="text-end">
-                        <a href="{{ route('hapalan.index') }}" class="btn btn-secondary">Batal</a>
+                    {{-- <div class="col-md-6">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" class="form-control" value="{{ $guru->nama }}" readonly disabled>
+                            <label>Guru</label>
+                        </div>
+                    </div> --}}
+
+                    {{-- Tombol --}}
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                        <a href="{{ route('hapalan.index') }}" class="btn btn-secondary">← Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan Hapalan</button>
                     </div>
                 </form>
-            @endif
+                @endif
 
+            </div>
         </div>
     </div>
 </main>
