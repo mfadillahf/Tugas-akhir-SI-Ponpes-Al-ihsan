@@ -70,7 +70,7 @@
                                 <td>{{ $ad->tanggal_akhir }}</td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $ad->id_agenda }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                        <i class="ri-eye-line"></i>
+                                        <i class="ri-information-line"></i>
                                     </button>
                                     <a href="{{ route('agenda.edit', $ad->id_agenda) }}" class="btn btn-warning btn-sm">
                                         <i class="ri-edit-line"></i>

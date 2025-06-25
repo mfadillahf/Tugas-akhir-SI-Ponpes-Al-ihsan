@@ -86,7 +86,7 @@
                     </td>
                     <td>
                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $s->id_santri }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                        <i class="ri-eye-line"></i></button>
+                        <i class="ri-information-line"></i></button>
                     @role('admin')
                     <a href="{{ route('santri.edit', $s->id_santri) }}" class="btn btn-warning btn-sm">
                         <i class="ri-edit-line"></i></a>

@@ -12,7 +12,8 @@ class LoginController extends Controller
 {
     //
     public function showLogin(){
-        return view('auth.login');
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('auth.login', compact('pageConfigs'));
     }
 
     public function login(Request $request){

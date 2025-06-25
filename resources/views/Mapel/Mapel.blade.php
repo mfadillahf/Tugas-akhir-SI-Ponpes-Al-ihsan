@@ -72,7 +72,7 @@
                                 <td>{{ $m->deskripsi }}</td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $m->id_mapel }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                        <i class="ri-eye-line"></i>
+                                        <i class="ri-information-line"></i>
                                     </button>
                                     @role('admin')
                                     <a href="{{ route('mapel.edit', $m->id_mapel) }}" class="btn btn-warning btn-sm">
@@ -139,4 +139,3 @@
     </div>
 </div>
 @endsection
-

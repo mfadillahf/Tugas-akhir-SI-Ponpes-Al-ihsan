@@ -82,7 +82,7 @@
                                 <td>{{ $ga->tanggal }}</td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $ga->id_galeri }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                        <i class="ri-eye-line"></i>
+                                        <i class="ri-information-line"></i>
                                     </button>
                                     @role('admin')
                                     <a href="{{ route('galeri.edit', $ga->id_galeri) }}" class="btn btn-warning btn-sm">

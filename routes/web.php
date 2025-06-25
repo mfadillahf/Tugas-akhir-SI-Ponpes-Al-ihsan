@@ -38,7 +38,8 @@ Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 // Route Login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 // callback midtrans
 Route::post('/midtrans/callback', [InfaqController::class, 'callback'])->name('midtrans.callback');

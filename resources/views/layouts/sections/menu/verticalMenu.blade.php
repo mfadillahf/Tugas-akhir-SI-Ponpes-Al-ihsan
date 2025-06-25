@@ -1,8 +1,17 @@
 @php
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 $configData = Helper::appClasses();
-$currentRole = Auth::user()->getRoleNames()->first();
+$user = auth()->user();
+  $dashboardUrl = '/';
+  if ($user->hasRole('admin')) {
+    $dashboardUrl = '/admin/dashboard';
+  } elseif ($user->hasRole('santri')) {
+    $dashboardUrl = '/santri/dashboard';
+  } elseif ($user->hasRole('guru')) {
+    $dashboardUrl = '/guru/dashboard';
+  } elseif ($user->hasRole('donatur')) {
+    $dashboardUrl = '/donatur/dashboard';
+  }
 @endphp
 
 
@@ -11,9 +20,9 @@ $currentRole = Auth::user()->getRoleNames()->first();
   <!-- ! Hide app brand if navbar-full -->
   @if(!isset($navbarFull))
   <div class="app-brand demo">
-    <a href="{{url('/')}}" class="app-brand-link">
+    <a href="{{ url($dashboardUrl) }}" class="app-brand-link">
       <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
-      <span class="app-brand-text demo menu-text fw-semibold ms-2">{{config('variables.templateName')}}</span>
+      <span class="app-brand-text demo menu-text fw-semibold ms-1">{{config('variables.templateName')}}</span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -29,7 +38,6 @@ $currentRole = Auth::user()->getRoleNames()->first();
 
   <ul class="menu-inner py-1">
     @foreach ($menuData[0]->menu as $menu)
-      @if (!isset($menu->roles) || in_array($currentRole, (array) $menu->roles))
       {{-- adding active and open class if child is active --}}
 
       {{-- menu headers --}}
@@ -80,7 +88,6 @@ $currentRole = Auth::user()->getRoleNames()->first();
           @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
         @endisset
       </li>
-      @endif
     @endif
     @endforeach
   </ul>

@@ -82,7 +82,7 @@
                     <td>{{ $k->akhir }}</td>
                     <td>
                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                        <i class="ri-eye-line"></i>
+                        <i class="ri-information-line"></i>
                     </button>
                     @role('admin')
                     <a href="{{ route('kepengurusan.edit', $k->id_kepengurusan) }}" class="btn btn-warning btn-sm">

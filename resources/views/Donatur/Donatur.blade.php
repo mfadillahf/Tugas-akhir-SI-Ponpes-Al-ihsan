@@ -74,7 +74,7 @@
                                 <td>{{ $d->email ?? '-' }}</td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $d->id_donatur }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                        <i class="ri-eye-line"></i>
+                                        <i class="ri-information-line"></i>
                                     </button>
                                     @role('admin')
                                     <a href="{{ route('donatur.edit', $d->id_donatur) }}" class="btn btn-warning btn-sm">
@@ -94,10 +94,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <div class="card-footer clearfix">
-                    {{ $donatur->links() }}
                 </div>
             </div>
         </div>

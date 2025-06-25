@@ -76,7 +76,7 @@
                                 <td>{{ $g->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $g->id_guru }}" data-bs-toggle="modal" data-bs-target="#detailModal">
-                                        <i class="ri-eye-line"></i>
+                                        <i class="ri-information-line"></i>
                                     </button>
                                     @role('admin')
                                     <a href="{{ route('guru.edit', $g->id_guru) }}" class="btn btn-warning btn-sm">
