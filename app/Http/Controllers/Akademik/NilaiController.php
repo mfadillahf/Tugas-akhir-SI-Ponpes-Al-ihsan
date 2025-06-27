@@ -15,8 +15,8 @@ class NilaiController extends Controller
 {
     public function __construct()
     {
-    $this->middleware('role:guru|santri')->only(['index', 'show']);
-    $this->middleware('role:guru')->except(['index', 'show']);
+        $this->middleware('role:guru|santri')->only(['index', 'show']);
+        $this->middleware('role:guru')->except(['index', 'show']);
     }
 
     public function index(Request $request)
@@ -46,7 +46,6 @@ class NilaiController extends Controller
             $guru = Auth::user()->guru;
             $mapelIds = $guru ? $guru->mapel->pluck('id_mapel')->toArray() : [];
 
-            // Batasi nilai hanya pada mapel yang dia ajar
             $query->whereIn('id_mapel', $mapelIds);
 
             if ($request->filled('id_kelas')) {
@@ -56,11 +55,9 @@ class NilaiController extends Controller
             }
 
             if ($request->filled('id_mapel')) {
-                // Filter mapel harus tetap di mapel yg dia ajar juga
                 if (in_array($request->id_mapel, $mapelIds)) {
                     $query->where('id_mapel', $request->id_mapel);
                 } else {
-                    // Kalau filter mapel yg bukan dia ajar, hasil kosong
                     $query->whereRaw('0=1');
                 }
             }
@@ -84,13 +81,13 @@ class NilaiController extends Controller
     {
         $id_kelas = $request->id_kelas;
         $id_mapel = $request->id_mapel;
-        $tahun_ajaran = $request->tahun_ajaran;
+        $tahun_ajaran = $request->tahun_ajaran ?? '';
         $santris = collect();
 
-        if ($id_kelas && $id_mapel && $tahun_ajaran) {
-        $santris = Santri::where('id_kelas', $id_kelas)
-                    ->where('status', '!=', 'calon')
-                    ->get();
+        if ($id_kelas && $id_mapel) {
+            $santris = Santri::where('id_kelas', $id_kelas)
+                        ->where('status', '!=', 'calon')
+                        ->get();
         }
 
         $guru = Auth::user()->guru;

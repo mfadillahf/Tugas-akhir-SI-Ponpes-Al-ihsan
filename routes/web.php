@@ -67,6 +67,8 @@ Route::get('/kalender', [LandingPageController::class, 'kalender'])->name('landi
 
 
 
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -126,10 +128,10 @@ Route::middleware(['auth'])->group(function () {
     // sistem
     Route::resource('berita', BeritaController::class);
     Route::get('berita/{id}/detail', [BeritaController::class, 'showDetail'])->name('berita.showDetail');
-    
+    // Galeri
     Route::resource('galeri', GaleriController::class);
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
-
+    // Tentang Ponpes
     Route::resource('tentang', TentangController::class);
 
     // profile
