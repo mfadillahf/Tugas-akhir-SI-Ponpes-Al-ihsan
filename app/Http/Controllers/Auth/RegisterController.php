@@ -9,12 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
     public function showSantriForm()
     {
-        return view('Auth.RegisterSantri');
+        return view('Auth.registerSantri');
     }
 
     public function showDonaturForm()
@@ -52,7 +53,8 @@ class RegisterController extends Controller
 
             Santri::create([
                 'id_user' => $user->id_user,
-                'id_kelas' => 1, // default kelas atau isi dari inputan kalau ada
+                'id_kelas' => 11, // default kelas atau isi dari inputan kalau ada
+				'id_tahun_ajaran' => 1, // default kelas atau isi dari inputan kalau ada
                 'nama_lengkap' => $request->nama_lengkap,
                 'nama_panggil' => $request->nama_panggil,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -73,7 +75,8 @@ class RegisterController extends Controller
             return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Silakan login.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+			Log::error('Gagal register santri: ' . $e->getMessage());
+    		return back()->with('error', 'Terjadi kesalahan saat pendaftaran. Silakan coba lagi atau hubungi admin.');
         }
     }
 

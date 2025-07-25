@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+Disallow: /*
+Disallow: index.php
+Disallow: index.html
+Disallow: /$
+Disallow:

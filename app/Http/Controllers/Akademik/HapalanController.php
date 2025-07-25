@@ -8,6 +8,7 @@ use App\Models\Santri;
 use App\Models\Hapalan;
 use Illuminate\Http\Request;
 use App\Models\HapalanDetail;
+use App\Models\LevelHapalan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,13 +32,13 @@ class HapalanController extends Controller
                 abort(403, 'Santri tidak ditemukan.');
             }
 
-            $hapalans = Hapalan::with(['santri', 'guru'])
+            $hapalans = Hapalan::with(['santri', 'guru', 'levelHapalan'])
                 ->where('id_santri', $santri->id_santri)
                 ->latest()
                 ->paginate(10);
         } elseif ($user->hasRole('guru')) {
             $guru = $user->guru;
-            $hapalans = Hapalan::with(['santri', 'guru'])
+            $hapalans = Hapalan::with(['santri', 'guru', 'levelHapalan'])
                 ->where('id_guru', $guru->id_guru)
                 ->latest()
                 ->paginate(10);
@@ -45,8 +46,8 @@ class HapalanController extends Controller
             // admin tidak boleh akses
             abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
         }
-
-        return view('hapalan.hapalan', compact('hapalans'));
+		$levelHapalan = LevelHapalan::all();
+        return view('hapalan.hapalan', compact('hapalans', 'levelHapalan'));
     }
 
     public function create(Request $request)
@@ -66,24 +67,45 @@ class HapalanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'id_santri' => 'required|exists:santris,id_santri',
-            'id_guru' => 'required|exists:gurus,id_guru',
-            // 'keterangan' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'id_santri' => 'required|exists:santris,id_santri',
+        'id_guru' => 'required|exists:gurus,id_guru',
+    ]);
 
-        Hapalan::create($request->all());
+    // Buat hapalan dengan nilai default untuk kolom tambahan
+    Hapalan::create([
+        'id_santri' => $request->id_santri,
+        'id_guru' => $request->id_guru,
+        'juz' => null,
+        'id_level_hapalan' => 6, // misal ini adalah default
+    ]);
 
-        return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil ditambahkan.');
-    }
+    return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil ditambahkan.');
+}
 
+	public function updateJuzLevel(Request $request, $id)
+		{
+			$request->validate([
+				'juz' => 'nullable|string|min:1|max:20',
+				'id_level_hapalan' => 'nullable|exists:level_hapalans,id_level_hapalan',
+			]);
+
+			$hapalan = Hapalan::findOrFail($id);
+			$hapalan->update([
+				'juz' => $request->juz,
+				'id_level_hapalan' => $request->id_level_hapalan,
+			]);
+			return redirect()->route('hapalan.index')->with('success', 'Juz dan level hafalan berhasil diperbarui.');
+		}
+	
     public function edit($id)
     {
         $hapalan = Hapalan::findOrFail($id);
         $santris = Santri::where('status', '!=', 'calon')->get();
         $gurus = Guru::all();
-        return view('hapalan.hapalanedit', compact('hapalan', 'santris', 'gurus'));
+		$levelHapalan = LevelHapalan::all();
+        return view('hapalan.hapalanedit', compact('hapalan', 'santris', 'gurus', 'levelHapalan'));
     }
 
     public function update(Request $request, $id)
@@ -91,6 +113,8 @@ class HapalanController extends Controller
         $request->validate([
             'id_santri' => 'required|exists:santris,id_santri',
             'id_guru' => 'required|exists:gurus,id_guru',
+			'juz' => 'required|integer|min:1|max:20',
+        	'id_level_hapalan' => 'required|exists:level_hapalans,id_level_hapalan',
             // 'keterangan' => 'required|string',
         ]);
 

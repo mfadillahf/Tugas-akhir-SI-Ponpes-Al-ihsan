@@ -25,7 +25,6 @@
 @section('content')
 <meta name="flash-success" content="{{ session('success') }}">
 <meta name="flash-error" content="{{ session('error') }}">
-
 <div class="row">
     <div class="col-12">
         <div class="card shadow-sm">
@@ -45,7 +44,7 @@
             <h4 class="fw-bold mb-4">Edit Tentang Pondok Pesantren</h4>
 
             <img
-                src="{{ $tentang && $tentang->gambar ? asset('storage/tentang/' . $tentang->gambar) : asset('assets/img/placeholders/placeholder.png') }}"
+                src="{{ $tentang && $tentang->gambar ? asset('storage/app/public/tentang/' . $tentang->gambar) : asset('assets/img/placeholders/placeholder.png') }}"
                 alt="Foto Pesantren"
                 class="rounded-3 mb-3 mx-auto d-block"
                 id="previewTentangImg"

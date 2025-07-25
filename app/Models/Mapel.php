@@ -12,6 +12,6 @@ class Mapel extends Model
     protected $primaryKey = 'id_mapel';
     protected $fillable = ['id_guru', 'mapel', 'deskripsi'];
 
-    public function guru() { return $this->belongsTo(guru::class, 'id_guru'); }
-    public function nilai() { return $this->hasMany(nilai::class, 'id_mapel'); }
+    public function guru() { return $this->belongsTo(Guru::class, 'id_guru'); }
+    public function nilai() { return $this->hasMany(Nilai::class, 'id_mapel'); }
 }

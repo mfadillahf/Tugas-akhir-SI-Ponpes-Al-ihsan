@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Santri;
 
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\TahunAjaran;
 use App\Models\Santri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,18 +20,21 @@ class SantriController extends Controller
     
     public function index(Request $request)
     {
-        $query = Santri::with(['user', 'kelas']);
+        $query = Santri::with(['user', 'kelas', 'tahunAjaran']);
 
         if ($request->filled('search')) {
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
-                $q->where('nama_lengkap', 'like', "%$search%")
-                    ->orWhereHas('kelas', function ($kelasQuery) use ($search) {
-                    $kelasQuery->where('nama_kelas', 'like', "%$search%");
-                })
-                    ->orWhere('status', 'like', "%$search%");
-            });
+    			$q->where('nama_lengkap', 'like', "%$search%")
+      				->orWhereHas('kelas', function ($kelasQuery) use ($search) {
+          				$kelasQuery->where('nama_kelas', 'like', "%$search%");
+      				})
+      				->orWhereHas('tahunAjaran', function ($taQuery) use ($search) {
+          			$taQuery->where('tahun_ajaran', 'like', "%$search%");
+      				})
+     				 ->orWhere('status', 'like', "%$search%");
+			});
         }
 
         $santri = $query->paginate(10)->withQueryString();
@@ -40,7 +44,8 @@ class SantriController extends Controller
     public function create()
     {
         $kelas = Kelas::all();
-        return view('Santri.SantriCreate', compact('kelas'));
+		$tahunAjaran = TahunAjaran::all();
+        return view('Santri.SantriCreate', compact('kelas', 'tahunAjaran'));
     }
 
     public function store(Request $request)
@@ -54,7 +59,7 @@ class SantriController extends Controller
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required',
             'no_telepon' => 'required|string|max:14|regex:/^08\d{8,13}$/',
-            'email' => 'required|email|unique:santris,email',
+            // 'email' => 'required|email|unique:santris,email',
             'jenis_kelamin' => 'required',
             'pendidikan_asal' => 'required',
             'nama_ayah' => 'required',
@@ -81,6 +86,7 @@ class SantriController extends Controller
             Santri::create([
                 'id_user' => $user->id_user,
                 'id_kelas' => $request->id_kelas,
+				'id_tahun_ajaran' => $request->id_tahun_ajaran, // default kelas atau isi dari inputan kalau ada
                 'nama_lengkap' => $request->nama_lengkap,
                 'nama_panggil' => $request->nama_panggil,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -110,7 +116,8 @@ class SantriController extends Controller
     {
         $santri = Santri::with('user')->findOrFail($id);
         $kelas = Kelas::all();
-        return view('Santri.SantriEdit', compact('santri', 'kelas'));
+		$tahunAjaran = TahunAjaran::all();
+        return view('Santri.SantriEdit', compact('santri', 'kelas', 'tahunAjaran'));
     }
 
     public function update(Request $request, $id)
@@ -149,12 +156,13 @@ class SantriController extends Controller
 
             $santri->update([
                 'id_kelas' => $request->id_kelas,
+				'id_tahun_ajaran' => $request->id_tahun_ajaran,
                 'nama_lengkap' => $request->nama_lengkap,
                 'nama_panggil' => $request->nama_panggil,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'alamat' => $request->alamat,
                 'no_telepon' => $request->no_telepon,
-                'email' => $request->email,
+                // 'email' => $request->email,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'status' => $request->status,
                 'pendidikan_asal' => $request->pendidikan_asal,
@@ -189,7 +197,7 @@ class SantriController extends Controller
 // menampilkan detail santri
     public function showDetail($id)
     {
-        $santri = Santri::with('kelas')->findOrFail($id);
+        $santri = Santri::with('kelas', 'tahunAjaran')->findOrFail($id);
 
         return response()->json([
             'nama_lengkap'     => $santri->nama_lengkap,
@@ -208,6 +216,7 @@ class SantriController extends Controller
             'pekerjaan_ibu'    => $santri->pekerjaan_ibu,
             'no_hp_ibu'        => $santri->no_hp_ibu,
             'kelas'            => $santri->kelas->nama_kelas ?? '-',
+			'tahun_ajaran'     => $santri->tahunAjaran->tahun_ajaran ?? '-',
         ]);
     }
 }

@@ -108,7 +108,7 @@
 
                     @if ($kepengurusan->foto)
                         <div class="mt-2">
-                            <img src="{{ asset('storage/kepengurusan/' . $kepengurusan->foto) }}" alt="Foto Lama" width="120" class="img-thumbnail">
+                            <img src="{{ asset('storage/app/public/kepengurusan/' . $kepengurusan->foto) }}" alt="Foto Lama" width="120" class="img-thumbnail">
                         </div>
                     @endif
                 </div>

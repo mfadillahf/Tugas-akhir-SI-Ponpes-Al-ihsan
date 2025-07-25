@@ -74,12 +74,16 @@
                                 <td>{{ Str::limit(strip_tags($be->isi), 100) }}</td>
                                 <td>
                                     @if($be->foto)
-                                        <img src="{{ asset('storage/berita/' . $be->foto) }}" alt="Foto berita" class="img-thumbnail" style="max-width: 100px; height: auto;">
+									
+                                        <img src="{{ asset('storage/app/public/berita/' . $be->foto) }}" alt="Foto berita" class="img-thumbnail" style="max-width: 100px; height: auto;">
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>{{ $be->tanggal }}</td>
+                                <td>
+    							{{ \Carbon\Carbon::parse($be->tanggal)->locale('id')->translatedFormat('d F Y') }}
+								</td>
+
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $be->id_berita }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                                         <i class="ri-information-line"></i>

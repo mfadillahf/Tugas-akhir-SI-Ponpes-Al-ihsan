@@ -108,7 +108,7 @@
                         @if ($galeri->foto)
                             <div class="mt-3">
                                 <p>Foto Saat Ini:</p>
-                                <img src="{{ asset('storage/galeri/' . $galeri->foto) }}" alt="Foto Galeri" class="img-fluid" style="max-width: 200px;">
+                                <img src="{{ asset('storage/app/public/galeri/' . $galeri->foto) }}" alt="Foto Galeri" class="img-fluid" style="max-width: 200px;">
                             </div>
                         @endif
                     </div>

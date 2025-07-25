@@ -12,6 +12,6 @@ class Nilai extends Model
     protected $primaryKey = 'id_nilai';
     protected $fillable = ['id_mapel', 'id_santri', 'nilai', 'tahun_ajaran'];
 
-    public function mapel() { return $this->belongsTo(mapel::class, 'id_mapel'); }
-    public function santri() { return $this->belongsTo(santri::class, 'id_santri'); }
+    public function mapel() { return $this->belongsTo(Mapel::class, 'id_mapel'); }
+    public function santri() { return $this->belongsTo(Santri::class, 'id_santri'); }
 }

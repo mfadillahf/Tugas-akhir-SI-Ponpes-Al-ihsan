@@ -9,23 +9,19 @@
         <div class="container pt-50 pb-50">
             <div class="section-content">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="row align-items-center">
-                            <div class="col-md-6 text-center text-md-start">
-                            <h2 class="title">Form Pendaftaran Santri</h2>
-                            </div>
-                            <div class="col-md-6 text-end">
-                            <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
-                                <div class="breadcrumbs">
-                                <span><a href="{{ route('landing') }}">Beranda</a></span>
-                                <span><i class="fa fa-angle-right mx-2"></i></span>
-                                <span class="active">Register Santri</span>
-                                </div>
-                            </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				  <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+					<h2 class="title mb-2">Form Pendaftaran Santri</h2>
+				  </div>
+				  <div class="col-12 col-md-6 text-center text-md-end">
+					<nav class="breadcrumbs d-inline-block" role="navigation" aria-label="Breadcrumbs">
+					  <div class="breadcrumbs">
+						<span><a href="{{ route('landing') }}">Beranda</a></span>
+						<span><i class="fa fa-angle-right mx-2"></i></span>
+						<span class="active">Pendaftaran Santri</span>
+					  </div>
+					</nav>
+				  </div>
+				</div>
             </div>
         </div>
     </section>
@@ -57,16 +53,13 @@
                     <input name="username" class="form-control" type="text" value="{{ old('username') }}" required>
                     </div>
                     <div class="mb-3 col-md-6">
-                    <label>Email</label>
-                    <input name="email" class="form-control" type="email" value="{{ old('email') }}" required>
+                    <label>Password</label>
+                    <input name="password" class="form-control" type="password" required>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="mb-3 col-md-6">
-                    <label>Password</label>
-                    <input name="password" class="form-control" type="password" required>
-                    </div>
+              
                     <div class="mb-3 col-md-6">
                     <label>Konfirmasi Password</label>
                     <input name="password_confirmation" class="form-control" type="password" required>
@@ -103,7 +96,7 @@
 
                 <div class="row">
                     <div class="mb-3 col-md-6">
-                    <label>Pendidikan Asal</label>
+                    <label>Pendidikan Terakhir</label>
                     <input name="pendidikan_asal" class="form-control" type="text" value="{{ old('pendidikan_asal') }}" required>
                     </div>
                     <div class="mb-3 col-md-6">

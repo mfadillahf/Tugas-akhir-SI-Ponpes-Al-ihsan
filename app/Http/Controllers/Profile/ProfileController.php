@@ -43,17 +43,17 @@ class ProfileController extends Controller
         }
         if (user()->hasRole('santri')) {
             $profile = user()->santri;
-            return view('Profile.ProfileSantriEdit', compact('profile'));
+            return view('profile.profilesantriedit', compact('profile'));
         }
 
         if (user()->hasRole('guru')) {
             $profile = user()->guru;
-            return view('Profile.ProfileGuruEdit', compact('profile'));
+            return view('profile.profileguruedit', compact('profile'));
         }
 
         if (user()->hasRole('donatur')) {
             $profile = user()->donatur;
-            return view('Profile.ProfileDonaturEdit', compact('profile'));
+            return view('profile.profiledonaturedit', compact('profile'));
         }
 
         abort(403, 'Role tidak dikenali');

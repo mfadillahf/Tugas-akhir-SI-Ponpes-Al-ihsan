@@ -41,7 +41,7 @@
                                                 <div class="tm-gallery-inner">
                                                     <div class="thumb">
                                                         <a href="#">
-                                                            <img width="672" height="448" src="{{ asset('storage/galeri/' . $item->foto) }}" alt="{{ $item->judul }}" />
+                                                            <img width="672" height="448" src="{{ asset('storage/app/public/galeri/' . $item->foto) }}" alt="{{ $item->judul }}" />
                                                         </a>
                                                     </div>
                                                     <div class="tm-gallery-content-wrapper">
@@ -50,10 +50,10 @@
                                                                 <div class="icons-holder-inner">
                                                                     <div class="styled-icons icon-dark icon-circled icon-theme-colored1">
                                                                         <a class="lightgallery-trigger styled-icons-item"
-                                                                            data-exthumbimage="{{ asset('storage/galeri/' . $item->foto) }}"
-                                                                            data-src="{{ asset('storage/galeri/' . $item->foto) }}"
+                                                                            data-exthumbimage="{{ asset('storage/app/public/galeri/' . $item->foto) }}"
+                                                                            data-src="{{ asset('storage/app/public/galeri/' . $item->foto) }}"
                                                                             title="{{ $item->judul }}"
-                                                                            href="{{ asset('storage/galeri/' . $item->foto) }}"><i class="fa fa-plus"></i></a>
+                                                                            href="{{ asset('storage/app/public/galeri/' . $item->foto) }}"><i class="fa fa-plus"></i></a>
                                                                     </div>
                                                                 </div>
                                                                 <div class="title-holder">

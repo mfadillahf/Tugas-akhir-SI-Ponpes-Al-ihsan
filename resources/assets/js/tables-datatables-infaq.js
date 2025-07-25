@@ -57,42 +57,67 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Show Detail Modal Infaq
-  $(document).on('click', 'button[data-bs-toggle="modal"]', function () {
-    const infaqId = $(this).data('id');
-    $.ajax({
-      url: '/infaq/' + infaqId + '/detail',
-      type: 'GET',
-      success: function (response) {
-        const modalContent = `
-          <table class="table table-sm table-bordered">
-            <tbody>
-              <tr>
-                <th>Nominal</th>
-                <td>Rp ${parseInt(response.nominal).toLocaleString('id-ID')}</td>
-              </tr>
-              <tr>
-                <th>Tanggal</th>
-                <td>${response.tanggal}</td>
-              </tr>
-              <tr>
-                <th>Keterangan</th>
-                <td>${response.keterangan}</td>
-              </tr>
-            </tbody>
-          </table>
-        `;
-        $('#modalBody').html(modalContent);
+  // SweetAlert2: Konfirmasi Terima Infaq
+$(document).on('click', '.btn-terima', function (e) {
+  e.preventDefault();
+  const form = $(this).closest('form');
+  Swal.fire({
+    title: 'Konfirmasi Terima Infaq',
+    text: 'Status akan diubah menjadi "Diterima". Lanjutkan?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, Terima',
+    cancelButtonText: 'Batal',
+    customClass: {
+      confirmButton: 'btn btn-success me-3 waves-effect waves-light',
+      cancelButton: 'btn btn-outline-secondary waves-effect'
+    },
+    buttonsStyling: false
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit();
+    }
+  });
+});
+
+// SweetAlert2: Konfirmasi Tolak Infaq
+  $(document).on('click', '.btn-tolak', function (e) {
+    e.preventDefault();
+    const form = $(this).closest('form');
+    Swal.fire({
+      title: 'Konfirmasi Tolak Infaq',
+      text: 'Status akan diubah menjadi "Ditolak". Lanjutkan?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Tolak',
+      cancelButtonText: 'Batal',
+      customClass: {
+        confirmButton: 'btn btn-danger me-3 waves-effect waves-light',
+        cancelButton: 'btn btn-outline-secondary waves-effect'
       },
-      error: function () {
-        $('#modalBody').html('<p class="text-danger">Gagal memuat detail infaq.</p>');
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit();
       }
     });
   });
 
+
+
   // Ambil role user dari meta tag
   const userRole = document.querySelector('meta[name="user-role"]')?.content;
   const isAdmin = userRole === 'admin';
+
+   // Modal Bukti Pembayaran (untuk admin)
+  $(document).on('click', '.btn-lihat-bukti', function () {
+    const imageUrl = $(this).data('bukti');
+    const keterangan = $(this).data('keterangan');
+
+    // Reset isi modal
+    $('#buktiImage').attr('src', imageUrl);
+    $('#buktiKeterangan').text(keterangan);
+  });
 
   // Inisialisasi DataTables
   const dt_basic_table = $('.datatables-basic');

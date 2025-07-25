@@ -43,7 +43,7 @@
         </div>
         <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img">
+            <img src="{{ asset('public/assets/img/avatars/1.png') }}" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img">
             </div>
             <div class="flex-grow-1 mt-4 mt-sm-12">
             <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
@@ -84,12 +84,15 @@
 
             <div class="col-md-6 d-flex align-items-center">
                 <i class="ri-calendar-line ri-24px me-2 text-muted"></i>
-                <span><strong>Tanggal Lahir:</strong> {{ $profile->tanggal_lahir }}</span>
+                <span><strong>Tanggal Lahir:</strong></span> <span>{{ \Carbon\Carbon::parse($profile->tanggal_lahir)->locale('id')->translatedFormat('d F Y') }}</span>
+
             </div>
 
             <div class="col-md-6 d-flex align-items-center">
                 <i class="ri-user-line ri-24px me-2 text-muted"></i>
-                <span><strong>Jenis Kelamin:</strong> {{ $profile->jenis_kelamin }}</span>
+                <span><strong>Jenis Kelamin:</strong>
+  {{ $profile->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+</span>
             </div>
 
             <div class="col-md-6 d-flex align-items-center">

@@ -5,36 +5,36 @@
 <!-- Vendor Styles -->
 @section('vendor-style')
 @vite([
-    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
-    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
-    'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
-    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
+'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+'resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.scss',
+'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+'resources/assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.scss',
+'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss'
 ])
 @endsection
 
 <!-- Vendor Scripts -->
 @section('vendor-script')
 @vite([
-    'resources/assets/vendor/libs/jquery/jquery.js',
-    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
-    'resources/assets/vendor/libs/moment/moment.js',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
-    'resources/assets/vendor/libs/@form-validation/popular.js',
-    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
-    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
+'resources/assets/vendor/libs/jquery/jquery.js',
+'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
+'resources/assets/vendor/libs/moment/moment.js',
+'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+'resources/assets/vendor/libs/@form-validation/popular.js',
+'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+'resources/assets/vendor/libs/sweetalert2/sweetalert2.js'
 ])
 @endsection
 
 @section('page-script')
 <!-- Midtrans Snap SDK -->
-  <script src="https://app.sandbox.midtrans.com/snap/snap.js" 
+<script src="https://app.sandbox.midtrans.com/snap/snap.js"
   data-client-key="{{ config('services.midtrans.client_key') }}">
-  </script>
+</script>
 
 @vite(['resources/assets/js/front-page-payment-infaq.js'])
 
@@ -86,10 +86,10 @@
             <h2 class="fw-bold mb-4">Rp {{ number_format($infaq->nominal, 0, ',', '.') }}</h2>
 
             <button id="pay-button"
-                  class="btn btn-success btn-lg w-100"
-                  data-snap-token="{{ $snapToken }}"
-                  data-redirect-url="{{ route('infaq.index') }}">
-                  Bayar Sekarang
+              class="btn btn-success btn-lg w-100"
+              data-snap-token="{{ $snapToken }}"
+              data-redirect-url="{{ route('infaq.index') }}">
+              Bayar Sekarang
             </button>
 
 

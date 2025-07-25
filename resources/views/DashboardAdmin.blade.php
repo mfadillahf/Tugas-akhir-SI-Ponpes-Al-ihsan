@@ -41,8 +41,11 @@
             </div>
             </div>
             <div class="col-md-6 text-center text-md-end order-1 order-md-2">
-            <div class="card-body pb-0 px-0 pt-2">
-                <img src="{{ asset('assets/img/illustrations/illustration-john-' . $configData['style'] . '.png') }}" height="186" class="scaleX-n1-rtl" alt="Welcome" data-app-light-img="illustrations/illustration-john-light.png" data-app-dark-img="illustrations/illustration-john-dark.png">
+            <div class="card-body pb-0 px-0 pt-2 me-4">
+                <img src="{{ asset('public/assets/img/illustrations/logo_ponpes.png') }}" 
+					 height="186" 
+					 class="scaleX-n1-rtl" 
+					 alt="Welcome">
             </div>
             </div>
         </div>

@@ -58,14 +58,28 @@
     <script src="{{ asset('studypress/js/lightgallery.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
-        $('#top-primary-nav .menuzord-menu li a, #top-primary-nav-clone .menuzord-menu li a').on('click', function () {
-            if ($(window).width() <= 1199) {
-            $('.menuzord-responsive .showhide').trigger('click');
-            }
-        });
-        });
-    </script>
-    @stack('scripts')
+  $(document).ready(function () {
+	// Toggle dropdown di mobile saat klik parent menu
+	  $('.menuzord-menu > li > a').on('click', function (e) {
+		var submenu = $(this).next('ul');
+		if ($(window).width() <= 991 && submenu.length) {
+		  e.preventDefault(); // Jangan lanjut ke href
+		  submenu.slideToggle(); // Tampilkan submenu
+		  $(this).parent().toggleClass('open'); // Tambahkan class .open
+		  return false;
+		}
+	  });
+
+	  // Hanya tutup menu jika klik ke link yang bukan dropdown parent
+	  $('.menuzord-menu li a').on('click', function () {
+		var hasSubmenu = $(this).next('ul').length > 0;
+		if ($(window).width() <= 1199 && !hasSubmenu) {
+		  $('.menuzord-responsive .showhide').trigger('click');
+		}
+	  });
+  });
+
+</script>
+ @stack('scripts')
 </body>
 </html>

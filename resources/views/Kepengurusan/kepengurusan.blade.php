@@ -71,15 +71,15 @@
                     <td>{{ $key + 1 }}</td>
                     <td>
                     @if($k->foto)
-                        <img src="{{ asset('storage/kepengurusan/' . $k->foto) }}" alt="Foto Kepengurusan" class="img-thumbnail" style="max-width: 80px; height: auto;">
+                        <img src="{{ asset('storage/app/public/kepengurusan/' . $k->foto) }}" alt="Foto Kepengurusan" class="img-thumbnail" style="max-width: 80px; height: auto;">
                     @else
                         <span class="text-muted">-</span>
                     @endif
                     </td>
                     <td>{{ $k->nama }}</td>
                     <td>{{ $k->jabatan }}</td>
-                    <td>{{ $k->mulai }}</td>
-                    <td>{{ $k->akhir }}</td>
+                    <td>{{ \Carbon\Carbon::parse($k->mulai)->locale('id')->translatedFormat('d F Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($k->akhir)->locale('id')->translatedFormat('d F Y') }}</td>
                     <td>
                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $k->id_kepengurusan }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                         <i class="ri-information-line"></i>

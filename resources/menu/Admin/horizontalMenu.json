@@ -52,6 +52,12 @@
       "icon": "menu-icon tf-icons ri-book-open-line",
       "slug": "mapel.index"
     },
+	  {
+      "url": "tahun-ajaran",
+      "name": "Data Tahun Ajaran",
+      "icon": "menu-icon tf-icons ri-building-line",
+      "slug": "tahunajaran.index"
+    },
     {
       "menuHeader": "Agenda & Kegiatan"
     },
@@ -69,6 +75,12 @@
       "name": "Data Infaq",
       "icon": "menu-icon tf-icons ri-wallet-3-line",
       "slug": "infaq.index"
+    },
+	  {
+      "url": "pengeluaran",
+      "name": "Data Pengeluaran",
+      "icon": "menu-icon tf-icons ri-wallet-3-line",
+      "slug": "pengeluaran.index"
     },
     {
       "menuHeader": "Sistem Informasi"

@@ -131,7 +131,7 @@
             <div class="col-md-6">
                 <div class="form-floating form-floating-outline">
                 <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
-                <label for="email">Email</label>
+                <label for="email">Email (Opsional)</label>
                 </div>
             </div>
 
@@ -162,6 +162,17 @@
                     @endforeach
                 </select>
                 <label for="id_kelas">Kelas</label>
+                </div>
+            </div>
+			<div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                <select class="form-select" id="id_tahun_ajaran" name="id_tahun_ajaran" required>
+                    <option value="" disabled selected>-- Pilih Tahun Ajaran --</option>
+                    @foreach($tahunAjaran as $ta)
+                    <option value="{{ $ta->id_tahun_ajaran }}" {{ old('id_tahun_ajaran') == $ta->id_tahun_ajaran ? 'selected' : '' }}>{{ $ta->tahun_ajaran }}</option>
+                    @endforeach
+                </select>
+                <label for="id_tahun_ajaran">Tahun Ajaran</label>
                 </div>
             </div>
             <!--  Status -->

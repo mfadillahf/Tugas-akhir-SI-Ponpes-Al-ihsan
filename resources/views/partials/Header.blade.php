@@ -7,10 +7,9 @@
                         <div class="header-nav-container-inner">
                             <div class="row header-nav-col-row">
                             <div class="col-sm-auto align-self-center">
-                                <a class="menuzord-brand site-brand" href="{{ route('landing') }}">
-                                <img class="logo-default logo-1x" src="{{ asset('studypress/images/logo-wide.png')}}" alt="Logo">
-                                <img class="logo-default logo-2x retina" src="{{ asset('studypress/images/logo-wide@2x.png')}}" alt="Logo">
-                                </a>
+                                <a class="menuzord-brand site-brand" href="{{ route('landing') }}" style="font-weight: bold;  margin-left: -10px;">
+									<span style="color: #0d6efd;">PONPES</span> <span style="color: #dc3545;">Al-IHSAN</span>
+								</a>
                             </div>
                             <div class="col-sm-auto ms-auto pr-0 align-self-center">
                                 <nav id="top-primary-nav" class="menuzord theme-color2" data-effect="slide" data-animation="none" data-align="right">
@@ -23,7 +22,7 @@
                                         <a href="#">Profil Ponpes</a>
                                         <ul class="dropdown">
                                             <li><a href="{{ route('landing.tentang') }}">Tentang</a></li>
-                                            <li><a href="{{ route('landing') }}#teachers">Kepengurusan</a></li>
+                                            <li><a href="{{ route('landing.kepengurusan') }}">Kepengurusan</a></li>
                                         </ul>
                                     </li>
 
@@ -37,9 +36,17 @@
 
                                     <li><a href="{{ route('landing.kalender') }}#calender">Kalender</a></li>
                                     <li><a href="{{ route('landing.galeri')}}">Galeri</a></li>
+									
+									<li class="menu-item">
+                                        <a href="#">Laporan</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{{ route('laporan.infaq')}}">Infaq</a></li>
+											<li><a href="{{ route('laporan.pengeluaran')}}">Pengeluaran</a></li>
+                                        </ul>
+                                    </li>
 
                                     <li><a href="{{ route('landing') }}#contact">Kontak</a></li>
-                                    <li class="hidden-mobile-mode">
+                                    <li>
                                         <a href="{{ route('login') }}">
                                         Login
                                         </a>
@@ -49,7 +56,7 @@
                             </div>
                             <div class="col-sm-auto align-self-center nav-side-icon-parent">
                                 <ul class="list-inline nav-side-icon-list">
-                                <li class="hidden-mobile-mode">
+                                <li>
                                     <div id="side-panel-trigger" class="side-panel-trigger">
                                     <a href="#">
                                         <div class="hamburger-inner"></div>

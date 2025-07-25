@@ -44,10 +44,12 @@ $customizerHidden = 'customizer-hide';
 
     <div class="authentication-inner row m-0">
     <!-- Ilustrasi kiri -->
-    <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center justify-content-center p-12 pb-2">
-        <img src="{{ asset('assets/img/illustrations/auth-login-illustration-' . $configData['style'] . '.png') }}" class="auth-cover-illustration w-100" alt="auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.png" />
-        <img src="{{ asset('assets/img/illustrations/auth-cover-login-mask-' . $configData['style'] . '.png') }}" class="authentication-image" alt="mask" data-app-light-img="illustrations/auth-cover-login-mask-light.png" data-app-dark-img="illustrations/auth-cover-login-mask-dark.png" />
-    </div>
+    <div class="d-none d-lg-flex col-lg-7 col-xl-8 p-0" style="height: 100vh; overflow: hidden;">
+		<img src="{{ asset('assets/img/illustrations/ponpes.jpg') }}" 
+			 class="w-100 h-100" 
+			 alt="Ponpes" 
+			 style="object-fit: cover;" />
+	</div>
     <!-- /Ilustrasi -->
 
     <!-- Form Login -->

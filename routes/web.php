@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guru\GuruController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Infaq\InfaqController;
+use App\Http\Controllers\Infaq\PengeluaranController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Agenda\AgendaController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Santri\SantriController;
 use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
 use App\Http\Controllers\Akademik\KelasController;
+use App\Http\Controllers\Akademik\TahunAjaranController;
 use App\Http\Controllers\Akademik\MapelController;
 use App\Http\Controllers\Akademik\NilaiController;
 use App\Http\Controllers\Sistem\TentangController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\Donatur\DonaturController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Akademik\HapalanController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
+
 
 
 
@@ -58,12 +61,20 @@ Route::get('berita/{id}/baca', [LandingPageController::class, 'beritaDetail'])->
 // Galeri All
 Route::get('/galeri/index', [LandingPageController::class, 'galeri'])->name('landing.galeri');
 
+//kepengurusan all
+Route::get('/kepengurusan/index', [LandingPageController::class, 'kepengurusan'])->name('landing.kepengurusan');
+
+//laporan infaq
+Route::get('/laporan-infaq', [LandingPageController::class, 'laporanInfaq'])->name('laporan.infaq');
+
+//laporan pengeluaran
+Route::get('/laporan-pengeluaran', [LandingPageController::class, 'laporanPengeluaran'])->name('laporan.pengeluaran');
+
 // tetang ponpes
 Route::get('/tentang/ponpes', [LandingPageController::class, 'tentangponpes'])->name('landing.tentang');
 
 // Kalender
 Route::get('/kalender', [LandingPageController::class, 'kalender'])->name('landing.kalender');
-
 
 
 
@@ -79,30 +90,46 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:donatur')->get('/donatur/dashboard', [DashboardController::class, 'donaturDashboard'])->name('dashboard.donatur');
 
     // santri
+	Route::middleware('role:admin')->group(function () {
     Route::resource('santri', SantriController::class);
     Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
-
+	});
+	
     // guru
+	Route::middleware('role:admin')->group(function () {
     Route::resource('guru', GuruController::class)->except(['show']);
     Route::get('guru/{id}/detail', [GuruController::class, 'showDetail'])->name('guru.showDetail');
-
+	});
+	
     // kepengurusan
+	Route::middleware('role:admin')->group(function () {
     Route::resource('kepengurusan', KepengurusanController::class);
     Route::get('kepengurusan/{id}/detail', [KepengurusanController::class, 'showDetail'])->name('kepengurusan.showDetail');
-
+	});
+	
     // donatur
+	Route::middleware('role:admin')->group(function () {
     Route::resource('donatur', DonaturController::class)->except(['show']);;
     Route::get('donatur/{id}/detail', [DonaturController::class, 'showDetail'])->name('donatur.showDetail');
-
+	});
+	
     // akademik
+	Route::middleware('role:admin')->group(function () {
     Route::resource('kelas', KelasController::class)->parameters([
-    'kelas' => 'kelas'
+        'kelas' => 'kelas'
     ]);;
-    
+	});
+	
+	// tahun ajaran
+	Route::middleware('role:admin')->group(function () {
+	Route::resource('tahun-ajaran', TahunAjaranController::class);
+	});
+	
     // mapel
+	Route::middleware('role:admin')->group(function () {
     Route::resource('mapel', MapelController::class);
     Route::get('mapel/{id}/detail', [MapelController::class, 'showDetail'])->name('mapel.showDetail');
-
+	});
     // nilai
     Route::resource('nilai', NilaiController::class);
 
@@ -114,18 +141,34 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hapalan/detail/{id}/edit', [HapalanController::class, 'editDetail'])->name('hapalan.detail.edit');
     Route::put('/hapalan/detail/{id}', [HapalanController::class, 'updateDetail'])->name('hapalan.detail.update');
     Route::delete('/hapalan/detail/{id}', [HapalanController::class, 'destroyDetail'])->name('hapalan.detail.destroy');
+	Route::put('/hapalan/{id}/update-juz-level', [HapalanController::class, 'updateJuzLevel'])->name('hapalan.updateJuzLevel');
 
     // agenda
+	Route::middleware('role:admin')->group(function () {
     Route::resource('agenda', AgendaController::class);
     Route::get('agenda/{id}/detail', [AgendaController::class, 'showDetail'])->name('agenda.showDetail');
-
+	});
+	
     // infaq
     Route::post('/infaq/pay', [InfaqController::class, 'pay'])->name('infaq.pay');
-    
+
     Route::resource('infaq', InfaqController::class);
     Route::get('infaq/{id}/detail', [InfaqController::class, 'showDetail'])->name('infaq.showDetail');
+	Route::put('/infaq/{id}/update-nominal', [InfaqController::class, 'updateNominal'])->name('infaq.updateNominal');
+	
+	// pengeluaran
+	Route::middleware('role:admin')->group(function () {
+    Route::resource('pengeluaran', PengeluaranController::class);
+	});
+
+    // terima dan tolak infaq
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/infaq/{id}/terima', [InfaqController::class, 'terima'])->name('infaq.terima');
+        Route::post('/infaq/{id}/tolak', [InfaqController::class, 'tolak'])->name('infaq.tolak');
+    });
 
     // sistem
+	Route::middleware('role:admin')->group(function () {
     Route::resource('berita', BeritaController::class);
     Route::get('berita/{id}/detail', [BeritaController::class, 'showDetail'])->name('berita.showDetail');
     // Galeri
@@ -133,11 +176,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
     // Tentang Ponpes
     Route::resource('tentang', TentangController::class);
-
+	});
     // profile
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    
-
 });

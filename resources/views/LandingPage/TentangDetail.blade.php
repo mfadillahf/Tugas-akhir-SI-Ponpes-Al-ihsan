@@ -7,24 +7,20 @@
 <section class="page-title layer-overlay overlay-dark-9 section-typo-light bg-img-center" style="padding-top: 120px;" data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg1.jpg') }}">
     <div class="container pt-50 pb-50">
         <div class="section-content">
-        <div class="row">
-          <div class="col-md-12">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start">
-                    <h2 class="title">Tentang Pesantren Al-Ihsan</h2>
-                    </div>
-                    <div class="col-md-6 text-end">
-                    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
-                        <div class="breadcrumbs">
-                        <span><a href="{{ route('landing') }}">Beranda</a></span>
-                        <span><i class="fa fa-angle-right mx-2"></i></span>
-                        <span class="active">Tentang</span>
-                        </div>
-                    </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="row">
+			  <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+				<h2 class="title mb-2">Tentang Pesantren Al-Ihsan</h2>
+			  </div>
+			  <div class="col-12 col-md-6 text-center text-md-end">
+				<nav class="breadcrumbs d-inline-block" role="navigation" aria-label="Breadcrumbs">
+				  <div class="breadcrumbs">
+					<span><a href="{{ route('landing') }}">Beranda</a></span>
+					<span><i class="fa fa-angle-right mx-2"></i></span>
+					<span class="active">Tentang</span>
+				  </div>
+				</nav>
+			  </div>
+			</div>
         </div>
     </div>
 </section>
@@ -41,7 +37,7 @@
             <div class="entry-header">
               @if($tentang->gambar)
               <div class="post-thumb thumb mb-3">
-                <img src="{{ asset('storage/tentang/' . $tentang->gambar) }}" alt="{{ $tentang->judul }}" class="img-responsive img-fullwidth rounded shadow">
+                <img src="{{ asset('storage/app/public/tentang/' . $tentang->gambar) }}" alt="{{ $tentang->judul }}" class="img-responsive img-fullwidth rounded shadow">
               </div>
               @endif
             </div>
@@ -71,7 +67,7 @@
               @foreach ($beritaLain as $item)
               <article class="post clearfix pb-0 mb-20">
                 <a class="post-thumb" href="{{ route('berita.detail', $item->id_berita) }}">
-                  <img src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded shadow-sm">
+                  <img src="{{ asset('storage/app/public/berita/' . $item->foto) }}" alt="{{ $item->judul }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded shadow-sm">
                 </a>
                 <div class="post-right">
                   <h5 class="post-title mt-0 mb-1">

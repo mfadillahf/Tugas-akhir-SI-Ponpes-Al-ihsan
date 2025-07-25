@@ -61,6 +61,7 @@
                     <th>Email</th>
                     <th>No HP</th>
                     <th>Kelas</th>
+					<th>Tahun Ajaran</th>
                     <th>Jenis Kelamin</th>
                     <th>Status</th>
                     <th>Aksi</th>
@@ -73,7 +74,9 @@
                     <td>{{ $s->nama_lengkap }}</td>
                     <td>{{ $s->email ?? '-' }}</td>
                     <td>{{ $s->no_telepon }}</td>
-                    <td>{{ $s->kelas->nama_kelas ?? '-' }}</td>
+                    <td>{{ $s->status === 'calon' ? '-' : ($s->kelas->nama_kelas ?? '-') }}</td>
+					<td>{{ $s->status === 'calon' ? '-' : ($s->tahunAjaran->tahun_ajaran ?? '-') }}</td>
+
                     <td>{{ $s->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                     <td>
                     @if($s->status == 'santri')

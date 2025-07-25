@@ -4,24 +4,24 @@
 
 @section('vendor-style')
 @vite([
-    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-    'resources/assets/vendor/libs/select2/select2.scss',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
-    'resources/assets/vendor/libs/tagify/tagify.scss',
-    'resources/assets/vendor/libs/@form-validation/form-validation.scss'
+'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+'resources/assets/vendor/libs/select2/select2.scss',
+'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+'resources/assets/vendor/libs/tagify/tagify.scss',
+'resources/assets/vendor/libs/@form-validation/form-validation.scss'
 ])
 @endsection
 
 @section('vendor-script')
 @vite([
-    'resources/assets/vendor/libs/select2/select2.js',
-    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
-    'resources/assets/vendor/libs/moment/moment.js',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
-    'resources/assets/vendor/libs/tagify/tagify.js',
-    'resources/assets/vendor/libs/@form-validation/popular.js',
-    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
-    'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+'resources/assets/vendor/libs/select2/select2.js',
+'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+'resources/assets/vendor/libs/moment/moment.js',
+'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+'resources/assets/vendor/libs/tagify/tagify.js',
+'resources/assets/vendor/libs/@form-validation/popular.js',
+'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+'resources/assets/vendor/libs/@form-validation/auto-focus.js'
 ])
 @endsection
 
@@ -45,7 +45,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('infaq.pay') }}" method="POST" class="row g-4 needs-validation">
+                <form action="{{ route('infaq.store') }}" method="POST" class="row g-4 needs-validation" enctype="multipart/form-data">
                     @csrf
 
                     <div class="col-12">
@@ -79,6 +79,22 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12 mb-3">
+                        <label for="foto" class="form-label">Foto Bukti Transfer</label>
+                        <input type="file" class="form-control" name="foto" accept="image/*">
+                    </div>
+
+                    <!-- Tampilan gambar QRIS yang bisa diklik -->
+                    <div class="mb-3 text-center">
+                        <label class="form-label d-block">Scan QRIS untuk Infaq</label>
+                        <img src="{{ asset('images/qris.jpg') }}"
+                            alt="QRIS Infaq"
+                            style="max-width: 300px; cursor: pointer;"
+                            class="img-fluid rounded shadow-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#qrisModal">
+                    </div>
+
                     {{-- Tombol --}}
                     <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                         <a href="{{ route('infaq.index') }}" class="btn btn-secondary">← Kembali</a>
@@ -89,4 +105,19 @@
         </div>
     </div>
 </main>
+
+<!-- Modal Bootstrap untuk menampilkan QRIS besar -->
+<div class="modal fade" id="qrisModal" tabindex="-1" aria-labelledby="qrisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-light">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="qrisModalLabel">QRIS Infaq</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="{{ asset('images/qris.jpg') }}" alt="QRIS Besar" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

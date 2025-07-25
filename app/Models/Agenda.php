@@ -12,5 +12,5 @@ class Agenda extends Model
     protected $primaryKey = 'id_agenda';
     protected $fillable = ['id_jenis_agenda', 'judul', 'tanggal_mulai','tanggal_akhir', 'deskripsi'];
 
-    public function jenisAgenda() { return $this->belongsTo(jenisAgenda::class, 'id_jenis_agenda'); }
+    public function jenisAgenda() { return $this->belongsTo(JenisAgenda::class, 'id_jenis_agenda'); }
 }

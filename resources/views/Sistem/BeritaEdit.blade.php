@@ -113,7 +113,7 @@
                         @if ($berita->foto)
                             <div class="mt-2">
                                 <p class="mb-1">Foto Saat Ini:</p>
-                                <img src="{{ asset('storage/berita/' . $berita->foto) }}" alt="Foto Berita" class="img-thumbnail" style="max-width: 200px;">
+                                <img src="{{ asset('storage/app/public/berita/' . $berita->foto) }}" alt="Foto Berita" class="img-thumbnail" style="max-width: 200px;">
                             </div>
                         @endif
                     </div>

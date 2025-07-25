@@ -10,7 +10,7 @@ class Hapalan extends Model
     use HasFactory;
     protected $table = 'hapalans';
     protected $primaryKey = 'id_hapalan';
-    protected $fillable = ['id_santri', 'id_guru', 'keterangan'];
+    protected $fillable = ['id_santri', 'id_guru', 'keterangan', 'juz', 'id_level_hapalan'];
 
     public function santri() { return $this->belongsTo(Santri::class, 'id_santri'); }
     public function guru() { return $this->belongsTo(Guru::class, 'id_guru'); }
@@ -19,5 +19,10 @@ class Hapalan extends Model
     {
         return $this->hasMany(HapalanDetail::class, 'id_hapalan');
     }
+	
+	public function levelHapalan()
+{
+    return $this->belongsTo(LevelHapalan::class, 'id_level_hapalan');
+}
 
 }

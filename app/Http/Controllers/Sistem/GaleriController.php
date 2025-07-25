@@ -129,7 +129,7 @@ class GaleriController extends Controller
 
         return response()->json([
             'deskripsi' => $galeri->deskripsi,
-            'foto' => asset('storage/galeri/' . $galeri->foto),
+            'foto' => asset('storage/app/public/galeri/' . $galeri->foto),
             'tanggal' => \Carbon\Carbon::parse($galeri->tanggal)->translatedFormat('d F Y'),
         ]);
     }

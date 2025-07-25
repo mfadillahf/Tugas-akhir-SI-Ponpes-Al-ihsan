@@ -62,6 +62,8 @@
                                 <th>No</th>
                                 <th>Santri</th>
                                 <th>Guru</th>
+								<th>Juz</th>
+        						<th>Level Hafalan</th>
                                 <th>Keterangan</th>
                                 @role('guru')
                                 <th>Aksi</th>
@@ -74,15 +76,19 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $h->santri->nama_lengkap ?? '-' }}</td>
                                 <td>{{ $h->guru->nama ?? '-' }}</td>
+								<td>
+   		 							{{ $h->juz ? 'Juz ' . $h->juz : '-' }}
+								</td>
+								<td>{{ $h->levelHapalan->nama_level ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('hapalan.showDetail', $h->id_hapalan) }}" class="btn btn-info btn-sm">
                                         <i class="ri-information-line"></i></a>
                                 </td>
                                 @role('guru')
                                 <td>
-                                    {{-- <a href="{{ route('hapalan.edit', $h->id_hapalan) }}" class="btn btn-warning btn-sm">
-                                        <i class="ri-edit-line"></i>
-                                    </a> --}}
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ 									$h->id_hapalan }}">
+   					 				<i class="ri-edit-line"></i>
+									</button>
                                     <form action="{{ route('hapalan.destroy', $h->id_hapalan) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
@@ -93,6 +99,42 @@
                                 </td>
                                 @endrole
                             </tr>
+							<!-- Modal -->
+<div class="modal fade" id="editModal{{ $h->id_hapalan }}" tabindex="-1" aria-labelledby="editModalLabel{{ $h->id_hapalan }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('hapalan.updateJuzLevel', $h->id_hapalan) }}">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel{{ $h->id_hapalan }}">Edit Juz & Level Hafalan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="juz{{ $h->id_hapalan }}" class="form-label">Juz</label>
+                        <input type="text" class="form-control" name="juz" id="juz{{ $h->id_hapalan }}" value="{{ $h->juz }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="level{{ $h->id_hapalan }}" class="form-label">Level Hafalan</label>
+                        <select class="form-select" name="id_level_hapalan" id="level{{ $h->id_hapalan }}">
+                            <option value="">-- Pilih Level --</option>
+                            @foreach ($levelHapalan as $level)
+                                <option value="{{ $level->id_level_hapalan }}" {{ $h->id_level_hapalan == $level->id_level_hapalan ? 'selected' : '' }}>
+                                    {{ $level->nama_level }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
                             @empty
                             @endforelse
                         </tbody>
@@ -102,4 +144,6 @@
         </div>
     </div>
 </main>
+
+
 @endsection

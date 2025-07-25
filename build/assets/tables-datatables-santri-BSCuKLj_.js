@@ -1,0 +1,22 @@
+document.addEventListener("DOMContentLoaded",function(){const n=document.querySelector('meta[name="flash-success"]'),i=document.querySelector('meta[name="flash-error"]');n!=null&&n.content&&Swal.fire({icon:"success",title:"Berhasil",text:n.content,timer:2e3,showConfirmButton:!1}),i!=null&&i.content&&Swal.fire({icon:"error",title:"Gagal",text:i.content,showConfirmButton:!0}),$(document).on("click",".btn-delete",function(e){e.preventDefault();const t=$(this).closest("form");Swal.fire({title:"Yakin ingin menghapus?",text:"Data tidak bisa dikembalikan!",icon:"warning",showCancelButton:!0,confirmButtonText:"Ya, hapus!",cancelButtonText:"Batal",customClass:{confirmButton:"btn btn-danger me-3 waves-effect waves-light",cancelButton:"btn btn-outline-secondary waves-effect"},buttonsStyling:!1}).then(a=>{a.isConfirmed?t.submit():a.dismiss===Swal.DismissReason.cancel&&Swal.fire({title:"Dibatalkan",text:"Data tidak jadi dihapus.",icon:"info",customClass:{confirmButton:"btn btn-primary waves-effect"},buttonsStyling:!1})})}),$(document).on("click",'[data-bs-target="#detailModal"]',function(){const e=$(this).data("id");$("#modalBody").html('<p class="text-center">Memuat...</p>'),$.ajax({url:"/santri/"+e+"/detail",type:"GET",success:function(t){const a=(t.jenis_kelamin||"").toString().toUpperCase(),o=a==="L"?"Laki-laki":a==="P"?"Perempuan":"-",s=`
+          <table class="table table-sm table-bordered">
+            <tbody>
+              <tr><th>Nama Lengkap</th><td>${t.nama_lengkap}</td></tr>
+              <tr><th>Email</th><td>${t.email??"-"}</td></tr>
+              <tr><th>No Telepon</th><td>${t.no_telepon}</td></tr>
+              <tr><th>Jenis Kelamin</th><td>${o}</td></tr>
+              <tr><th>Status</th><td>${t.status}</td></tr>
+              <tr><th>Alamat</th><td>${t.alamat}</td></tr>
+              <tr><th>Tanggal Lahir</th><td>${t.tanggal_lahir}</td></tr>
+              <tr><th>Nama Panggil</th><td>${t.nama_panggil}</td></tr>
+              <tr><th>Pendidikan Asal</th><td>${t.pendidikan_asal}</td></tr>
+              <tr><th>Nama Ayah</th><td>${t.nama_ayah}</td></tr>
+              <tr><th>Pekerjaan Ayah</th><td>${t.pekerjaan_ayah}</td></tr>
+              <tr><th>No HP Ayah</th><td>${t.no_hp_ayah}</td></tr>
+              <tr><th>Nama Ibu</th><td>${t.nama_ibu}</td></tr>
+              <tr><th>Pekerjaan Ibu</th><td>${t.pekerjaan_ibu}</td></tr>
+              <tr><th>No HP Ibu</th><td>${t.no_hp_ibu}</td></tr>
+              <tr><th>Kelas</th><td>${t.kelas}</td></tr>
+            </tbody>
+          </table>
+        `;$("#modalBody").html(s)},error:function(){$("#modalBody").html('<p class="text-danger">Gagal mengambil data detail santri.</p>')}})});const l=$(".datatables-basic");if(l.length){const e=l.DataTable({dom:'<"card-header flex-column flex-md-row border-bottom py-2 px-3"<"head-label"><"dt-action-buttons text-end pt-2 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',responsive:!0,pageLength:10,lengthMenu:[10,25,50,100],columnDefs:[{targets:0,orderable:!1,className:"dt-checkboxes-cell",checkboxes:{selectRow:!0},render:function(){return'<input type="checkbox" class="dt-checkboxes form-check-input">'}}],select:{style:"multi",selector:"td:first-child"},language:{paginate:{next:'<i class="ri-arrow-right-s-line"></i>',previous:'<i class="ri-arrow-left-s-line"></i>'}},buttons:[{extend:"collection",className:"btn btn-label-primary dropdown-toggle me-4 waves-effect waves-light",text:'<i class="ri-external-link-line me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',buttons:[{extend:"print",text:'<i class="ri-printer-line me-1"></i>Print',className:"dropdown-item",exportOptions:{columns:[1,2,3,4,5,6]}},{extend:"csv",text:'<i class="ri-file-text-line me-1"></i>Csv',className:"dropdown-item",exportOptions:{columns:[1,2,3,4,5,6]}},{extend:"excel",text:'<i class="ri-file-excel-line me-1"></i>Excel',className:"dropdown-item",exportOptions:{columns:[1,2,3,4,5,6]}},{extend:"pdf",text:'<i class="ri-file-pdf-line me-1"></i>Pdf',className:"dropdown-item",exportOptions:{columns:[1,2,3,4,5,6]}},{extend:"copy",text:'<i class="ri-file-copy-line me-1"></i>Copy',className:"dropdown-item",exportOptions:{columns:[1,2,3,4,5,6]}}]}]});e.on("draw",function(){const t=$(e.table().body());t.unhighlight(),e.search()&&t.highlight(e.search())})}});

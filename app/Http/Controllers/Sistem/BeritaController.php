@@ -30,7 +30,7 @@ class BeritaController extends Controller
     {
         $request->validate([
             'id_jenis_berita' => 'required|exists:jenis_beritas,id_jenis_berita',
-            'judul' => 'required|max:50',
+            'judul' => 'required|max:100',
             'isi' => 'required',
             'tanggal' => 'required|date',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -52,6 +52,16 @@ class BeritaController extends Controller
                 $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/berita', $filename);
                 $data['foto'] = $filename;
+				
+				// Tambahan: salin file ke public/storage/berita agar bisa diakses browser
+				$source = storage_path('app/public/berita/' . $filename);
+				$destination = public_path('storage/berita/' . $filename);
+				
+				// Pastikan folder tujuan ada
+if (!file_exists(dirname($destination))) {
+    mkdir(dirname($destination), 0755, true);
+}
+copy($source, $destination);
             }
 
             Berita::create($data);
@@ -75,7 +85,7 @@ class BeritaController extends Controller
     {
         $request->validate([
             'id_jenis_berita' => 'required|exists:jenis_beritas,id_jenis_berita',
-            'judul' => 'required|max:50',
+            'judul' => 'required|max:100',
             'isi' => 'required',
             'tanggal' => 'required|date',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -103,6 +113,15 @@ class BeritaController extends Controller
                 $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/berita', $filename);
                 $data['foto'] = $filename;
+				// Tambahan: salin file ke public/storage/berita agar bisa diakses browser
+				$source = storage_path('app/public/berita/' . $filename);
+				$destination = public_path('storage/berita/' . $filename);
+				
+				// Pastikan folder tujuan ada
+if (!file_exists(dirname($destination))) {
+    mkdir(dirname($destination), 0755, true);
+}
+copy($source, $destination);
             }
 
             $berita->update($data);
@@ -144,7 +163,7 @@ class BeritaController extends Controller
             'isi' => $berita->isi,
             'kategori' => optional($berita->jenisBerita)->kategori,
             'tanggal' => \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d F Y'),
-            'foto' => asset('storage/berita/' . $berita->foto),
+            'foto' => asset('storage/app/public/berita/' . $berita->foto),
             'penulis' => optional($berita->user)->username,
         ]);
     }

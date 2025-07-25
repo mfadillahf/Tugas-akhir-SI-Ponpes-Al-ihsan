@@ -7,24 +7,20 @@
     <section class="page-title layer-overlay overlay-dark-9 section-typo-light bg-img-center" style="padding-top: 120px;" data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg1.jpg') }}">
         <div class="container pt-50 pb-50">
             <div class="section-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row align-items-center">
-                            <div class="col-md-6 text-center text-md-start">
-                            <h2 class="title">Galeri Ponpes Al-Ihsan </h2>
-                            </div>
-                            <div class="col-md-6 text-end">
-                            <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
-                                <div class="breadcrumbs">
-                                <span><a href="{{ route('landing') }}">Beranda</a></span>
-                                <span><i class="fa fa-angle-right mx-2"></i></span>
-                                <span class="active">Galeri</span>
-                                </div>
-                            </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<div class="row">
+				  <div class="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
+					<h2 class="title mb-2">Galeri Pesantren Al-Ihsan</h2>
+				  </div>
+				  <div class="col-12 col-md-6 text-center text-md-end">
+					<nav class="breadcrumbs d-inline-block" role="navigation" aria-label="Breadcrumbs">
+					  <div class="breadcrumbs">
+						<span><a href="{{ route('landing') }}">Beranda</a></span>
+						<span><i class="fa fa-angle-right mx-2"></i></span>
+						<span class="active">Galeri</span>
+					  </div>
+					</nav>
+				  </div>
+				</div>
             </div>
         </div>
     </section>
@@ -56,7 +52,7 @@
                                                     <div class="tm-gallery-inner">
                                                         <div class="thumb">
                                                             <a href="#">
-                                                                <img width="672" height="448" src="{{ asset('storage/galeri/' . $item->foto) }}" alt="{{ $item->judul }}" />
+                                                                <img width="672" height="448" src="{{ asset('storage/app/public/galeri/' . $item->foto) }}" alt="{{ $item->judul }}" />
                                                             </a>
                                                         </div>
                                                         <div class="tm-gallery-content-wrapper">
@@ -65,10 +61,10 @@
                                                                     <div class="icons-holder-inner">
                                                                         <div class="styled-icons icon-dark icon-circled icon-theme-colored1">
                                                                             <a class="lightgallery-trigger styled-icons-item"
-                                                                                data-exthumbimage="{{ asset('storage/galeri/' . $item->foto) }}"
-                                                                                data-src="{{ asset('storage/galeri/' . $item->foto) }}"
+                                                                                data-exthumbimage="{{ asset('storage/app/public/galeri/' . $item->foto) }}"
+                                                                                data-src="{{ asset('storage/app/public/galeri/' . $item->foto) }}"
                                                                                 title="{{ $item->judul }}"
-                                                                                href="{{ asset('storage/galeri/' . $item->foto) }}">
+                                                                                href="{{ asset('storage/app/public/galeri/' . $item->foto) }}">
                                                                                 <i class="fa fa-plus"></i>
                                                                             </a>
                                                                         </div>

@@ -76,18 +76,17 @@ class DashboardController extends Controller
         $jumlahSurah = $surahUnik->count();
 
         // Mapel yang sudah ada nilainya
-        $mapelList = Nilai::with('mapel')
-            ->where('id_santri', $santri->id_santri)
-            ->get()
-            ->pluck('mapel.nama_mapel')
-            ->unique()
-            ->values();
+        $mapelCounts = Nilai::with('mapel')
+    ->where('id_santri', $santri->id_santri)
+    ->get()
+    ->pluck('mapel.nama_mapel')
+    ->countBy(); // <--- ini kuncinya
 
         return view('dashboardsantri', compact(
             'santri',
             'rataRataNilai',
             'jumlahSurah',
-            'mapelList',
+            'mapelCounts',
         ));
     }
 
@@ -112,16 +111,20 @@ class DashboardController extends Controller
         $this->authorizeRole('donatur');
 
         $donatur = Donatur::where('id_user', Auth::id())->first();
-        $totalDonasi = $donatur ? 
-        Infaq::where('id_donatur', $donatur->id_donatur)->sum('nominal') : 0;
+        $totalDonasi = $donatur ?
+            Infaq::where('id_donatur', $donatur->id_donatur)
+            ->where('status', 'paid')
+            ->sum('nominal') : 0;
 
         // Donasi per bulan (12 bulan terakhir)
         $infaqPerBulan = Infaq::selectRaw('MONTH(created_at) as bulan, SUM(nominal) as total')
             ->where('id_donatur', $donatur->id_donatur)
+            ->where('status', 'paid')
             ->whereYear('created_at', now()->year)
             ->groupByRaw('MONTH(created_at)')
             ->orderBy('bulan')
             ->pluck('total', 'bulan');
+
 
         // Inisialisasi 12 bulan
         $bulanLabels = [];

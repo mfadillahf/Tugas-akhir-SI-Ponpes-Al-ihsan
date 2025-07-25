@@ -40,7 +40,7 @@
             <article class="post clearfix mb-0">
                 <div class="entry-header">
                 <div class="post-thumb thumb mb-3">
-                    <img src="{{ asset('storage/berita/' . $berita->foto) }}" alt="{{ $berita->judul }}" class="img-responsive img-fullwidth rounded shadow">
+                    <img src="{{ asset('storage/app/public/berita/' . $berita->foto) }}" alt="{{ $berita->judul }}" class="img-responsive img-fullwidth rounded shadow">
                 </div>
                 </div>
                 <div class="entry-content">
@@ -72,7 +72,7 @@
                 @foreach ($beritaLain as $item)
                 <article class="post clearfix pb-0 mb-20">
                     <a class="post-thumb" href="{{ route('berita.detail', $item->id_berita) }}">
-                    <img src="{{ asset('storage/berita/' . $item->foto) }}" alt="{{ $item->judul }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded shadow-sm">
+                    <img src="{{ asset('storage/app/public/berita/' . $item->foto) }}" alt="{{ $item->judul }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded shadow-sm">
                     </a>
                     <div class="post-right">
                     <h5 class="post-title mt-0 mb-1"><a href="{{ route('berita.detail', $item->id_berita) }}">{{ $item->judul }}</a></h5>

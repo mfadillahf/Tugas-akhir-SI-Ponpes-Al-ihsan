@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Donatur;
+use Illuminate\Support\Str;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
+use Illuminate\Support\Facades\Storage;
 
 class InfaqController extends Controller
 {
@@ -53,11 +56,14 @@ class InfaqController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nominal' => 'required|integer|min:1000',
+        $request->validate([
+            'nominal' => 'required|integer',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string|max:50',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        DB::beginTransaction();
 
         $donatur = Auth::user()->donatur;
 
@@ -65,17 +71,54 @@ class InfaqController extends Controller
             return back()->with('error', 'Akun ini belum terhubung dengan data donatur.');
         }
 
-        Infaq::create([
-            'id_donatur' => $donatur->id_donatur,
-            'nominal' => $validated['nominal'],
-            'tanggal' => $validated['tanggal'],
-            'keterangan' => $validated['keterangan'] ?? '',
-            'status' => 'pending',
-        ]);
+        try {
+            $data = [
+                'id_donatur' => $donatur->id_donatur,
+                'nominal' => $request->nominal,
+                'tanggal' => $request->tanggal,
+                'keterangan' => $request->keterangan,
 
-        return redirect()->route('infaq.index')->with('success', 'Data infaq berhasil disimpan.');
+                'status' => 'pending',
+            ];
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/infaq', $filename);
+                $data['foto'] = $filename;
+            }
+
+            Infaq::create($data);
+
+            DB::commit();
+            return redirect()->route('infaq.index')->with('success', 'Data Infaq berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+        }
     }
+	
+	public function updateNominal(Request $request, $id)
+		{
+			$request->validate([
+				'nominal' => 'required|integer',
+			]);
 
+			$infaq = Infaq::findOrFail($id);
+
+			if ($infaq->status !== 'pending') {
+				return back()->with('error', 'Hanya infaq dengan status pending yang bisa diubah nominalnya.');
+			}
+
+			try {
+				$infaq->nominal = $request->nominal;
+				$infaq->save();
+
+				return redirect()->route('infaq.index')->with('success', 'Nominal infaq berhasil diperbarui.');
+			} catch (\Exception $e) {
+				return back()->withErrors(['error' => 'Gagal memperbarui nominal: ' . $e->getMessage()]);
+			}
+		}
 
     public function pay(Request $request)
     {
@@ -132,11 +175,12 @@ class InfaqController extends Controller
         }
 
         // Validasi signature key
-        $expectedSignature = hash('sha512',
+        $expectedSignature = hash(
+            'sha512',
             $json->order_id .
-            $json->status_code .
-            $json->gross_amount .
-            config('services.midtrans.server_key')
+                $json->status_code .
+                $json->gross_amount .
+                config('services.midtrans.server_key')
         );
 
         if ($json->signature_key !== $expectedSignature) {
@@ -184,4 +228,42 @@ class InfaqController extends Controller
         return response()->json(['message' => 'Callback diproses'], 200);
     }
 
+    public function terima($id)
+    {
+        $infaq = Infaq::findOrFail($id);
+        $infaq->status = 'paid';
+        $infaq->save();
+
+        return back()->with('success', 'Status infaq berhasil diubah menjadi Diterima.');
+    }
+
+    public function tolak($id)
+    {
+        $infaq = Infaq::findOrFail($id);
+        $infaq->status = 'failed';
+        $infaq->save();
+
+        return back()->with('success', 'Status infaq berhasil diubah menjadi Ditolak.');
+    }
+	
+	public function destroy($id)
+    {
+        $infaq = Infaq::findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            if ($infaq->foto && Storage::exists('public/infaq/' . $infaq->foto)) {
+                Storage::delete('public/infaq/' . $infaq->foto);
+            }
+
+            $infaq->delete();
+
+            DB::commit();
+            return redirect()->route('infaq.index')->with('success', 'Infaq berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()]);
+        }
+    }
 }

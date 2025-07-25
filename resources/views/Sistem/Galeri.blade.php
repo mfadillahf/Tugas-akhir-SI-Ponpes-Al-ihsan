@@ -74,12 +74,15 @@
                                 <td>{{ Str::limit(strip_tags($ga->deskripsi), 100) }}</td>
                                 <td>
                                     @if($ga->foto)
-                                        <img src="{{ asset('storage/galeri/' . $ga->foto) }}" alt="Foto Galeri" class="img-thumbnail" style="max-width: 100px; height: auto;">
+                                        <img src="{{ asset('storage/app/public/galeri/' . $ga->foto) }}" alt="Foto Galeri" class="img-thumbnail" style="max-width: 100px; height: auto;">
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span class="text-muted">foto tidak ada</span>
                                     @endif
                                 </td>
-                                <td>{{ $ga->tanggal }}</td>
+                                <td>
+									{{ \Carbon\Carbon::parse($ga->tanggal)->locale('id')->translatedFormat('d F Y') }}
+								</td>
+
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm" data-id="{{ $ga->id_galeri }}" data-bs-toggle="modal" data-bs-target="#detailModal">
                                         <i class="ri-information-line"></i>

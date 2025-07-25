@@ -1,0 +1,1 @@
+$(".select2").each(function(){$(this).wrap('<div class="position-relative"></div>').select2({dropdownParent:$(this).parent()})});const i=document.querySelectorAll('input[type="number"][name^="nilai"]');i.forEach(t=>{t.addEventListener("input",function(){let e=parseInt(this.value,10);e>100?this.value=100:e<0&&(this.value=0)})});
