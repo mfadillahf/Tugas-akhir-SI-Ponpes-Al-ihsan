@@ -107,6 +107,12 @@
           "name": "Tentang Ponpes",
           "icon": "ri-information-line",
           "slug": "tentang.index"
+        },
+        {
+          "url": "kontak",
+          "name": "Kontak Ponpes",
+          "icon": "ri-contacts-line",
+          "slug": "kontak.index"
         }
       ]
     },

@@ -13,7 +13,7 @@ class TentangController extends Controller
 {
  public function index()
     {
-        $tentang = Tentang::first(); // Ambil data pertama (anggap hanya ada satu)
+        $tentang = Tentang::first();
         return view('sistem.tentang', compact('tentang'));
     }
 

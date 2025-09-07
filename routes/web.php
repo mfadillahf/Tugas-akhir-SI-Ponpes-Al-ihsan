@@ -6,21 +6,22 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guru\GuruController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Infaq\InfaqController;
-use App\Http\Controllers\Infaq\PengeluaranController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Agenda\AgendaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Santri\SantriController;
 use App\Http\Controllers\Sistem\BeritaController;
 use App\Http\Controllers\Sistem\GaleriController;
+use App\Http\Controllers\Sistem\KontakController;
 use App\Http\Controllers\Akademik\KelasController;
-use App\Http\Controllers\Akademik\TahunAjaranController;
 use App\Http\Controllers\Akademik\MapelController;
 use App\Http\Controllers\Akademik\NilaiController;
 use App\Http\Controllers\Sistem\TentangController;
 use App\Http\Controllers\Donatur\DonaturController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Akademik\HapalanController;
+use App\Http\Controllers\Infaq\PengeluaranController;
+use App\Http\Controllers\Akademik\TahunAjaranController;
 use App\Http\Controllers\Kepengurusan\KepengurusanController;
 
 
@@ -176,7 +177,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
     // Tentang Ponpes
     Route::resource('tentang', TentangController::class);
+    // Kontak
+    Route::resource('kontak', KontakController::class)->only(['index', 'update']);
 	});
+    
     // profile
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
