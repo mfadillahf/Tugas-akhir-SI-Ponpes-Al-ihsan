@@ -13,6 +13,7 @@ use App\Models\Santri;
 use App\Models\Guru;
 use App\Models\Infaq;
 use App\Models\Pengeluaran;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -28,6 +29,7 @@ class LandingPageController extends Controller
 		$totalSantri = Santri::where('status', 'Santri')->count();
 		$totalGuru = Guru::count();
 		$totalKepengurusan = Kepengurusan::count();
+		$setting = Setting::first();
 
 
 		$laporanInfaq = Infaq::select([
@@ -66,7 +68,7 @@ class LandingPageController extends Controller
 		return view('landingpage.landingpage', compact(
 			'berita', 'galeri', 'kepengurusan', 'tentang', 'kategoriGaleri',
 			'totalGuru', 'totalSantri', 'laporanInfaq', 'laporanPengeluaran',
-			'totalKepengurusan', 'totalInfaq', 'totalPengeluaran'
+			'totalKepengurusan', 'totalInfaq', 'totalPengeluaran', 'setting'
 		));
 	}	
 	//infaq masuk

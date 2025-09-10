@@ -10,6 +10,7 @@ use App\Models\Donatur;
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 use App\Models\HapalanDetail;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -38,13 +39,26 @@ class DashboardController extends Controller
         $jumlahGuru = Guru::count();
         $jumlahDonatur = Donatur::count();
         $jumlahPengurus = Kepengurusan::count();
+        $setting = Setting::first();
 
         return view('dashboardadmin', compact(
             'jumlahSantri',
             'jumlahGuru',
             'jumlahDonatur',
-            'jumlahPengurus'
+            'jumlahPengurus',
+            'setting'
         ));
+    }
+    public function toggleLaporan(Request $request)
+    {
+        $setting = Setting::firstOrCreate([]);
+
+        $field = $request->input('field');
+        $setting->update([
+            $field => !$setting->$field
+        ]);
+
+        return response()->json(['success' => true, 'value' => $setting->$field]);
     }
 
     public function santriDashboard()
@@ -75,12 +89,12 @@ class DashboardController extends Controller
         $surahUnik = collect($surahList)->unique()->values();
         $jumlahSurah = $surahUnik->count();
 
-        // Mapel yang sudah ada nilainya
+    
         $mapelCounts = Nilai::with('mapel')
     ->where('id_santri', $santri->id_santri)
     ->get()
     ->pluck('mapel.nama_mapel')
-    ->countBy(); // <--- ini kuncinya
+    ->countBy();
 
         return view('dashboardsantri', compact(
             'santri',

@@ -90,6 +90,10 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:guru')->get('/guru/dashboard', [DashboardController::class, 'guruDashboard'])->name('dashboard.guru');
     Route::middleware('role:donatur')->get('/donatur/dashboard', [DashboardController::class, 'donaturDashboard'])->name('dashboard.donatur');
 
+    //  Route toggle laporan 
+    Route::middleware(['role:admin'])->post('/admin/setting/toggle', [DashboardController::class, 'toggleLaporan'])
+        ->name('admin.setting.toggle');
+
     // santri
 	Route::middleware('role:admin')->group(function () {
     Route::resource('santri', SantriController::class);

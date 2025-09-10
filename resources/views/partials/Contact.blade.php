@@ -36,7 +36,7 @@
                 </div>
                 </div>
 
-                <div class="info-item d-flex align-items-start mb-4">
+                {{-- <div class="info-item d-flex align-items-start mb-4">
                 <div class="icon-box">
                     <i class="fa fa-envelope"></i>
                 </div>
@@ -44,9 +44,9 @@
                     <strong>Email:</strong><br>
                     xxxxxxxxxxxx@gmail.com
                 </div>
-                </div>
+                </div> --}}
 
-                <div class="info-item d-flex align-items-start mb-4">
+                {{-- <div class="info-item d-flex align-items-start mb-4">
                 <div class="icon-box">
                     <i class="fa fa-phone"></i>
                 </div>
@@ -54,7 +54,7 @@
                     <strong>Telp/WA:</strong><br>
                     +6281315330847
                 </div>
-                </div>
+                </div> --}}
             </div>
             </div>
         </div>

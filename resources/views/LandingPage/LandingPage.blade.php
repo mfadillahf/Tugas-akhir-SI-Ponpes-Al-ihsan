@@ -203,6 +203,7 @@
     </section>
 	
 <!-- Section: Laporan Infaq -->
+@if($setting?->show_laporan_infaq)
 <section id="laporan" class="layer-overlay overlay-theme-colored1-9 bg-no-repeat bg-pos-center-center"
          data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg2.jpg') }}">
   <div class="container pt-100 pb-100">
@@ -264,9 +265,10 @@
     </div>
   </div>
 </section>
-	
+@endif
 	
 <!-- Section: Laporan Pengeluaran -->
+@if($setting?->show_laporan_pengeluaran)
 <section id="pengeluaran" class="layer-overlay overlay-theme-colored2-9 bg-no-repeat bg-pos-center-center"
          data-tm-bg-img="{{ asset('LandingPage/studypress/images/bg/bg3.jpg') }}">
   <div class="container pt-100 pb-100">
@@ -328,6 +330,7 @@
     </div>
   </div>
 </section>
+@endif
     @include('partials.contact')
 </div>
 </body>

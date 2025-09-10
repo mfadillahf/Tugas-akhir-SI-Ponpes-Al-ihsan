@@ -26,6 +26,20 @@
 @endsection
 
 @section('page-script')
+<script>
+document.querySelectorAll('.toggle-laporan').forEach(toggle => {
+    toggle.addEventListener('change', function() {
+        fetch("{{ route('admin.setting.toggle') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ field: this.dataset.field })
+        });
+    });
+});
+</script>
 @vite('resources/assets/js/app-logistics-dashboard.js')
 @endsection
 
@@ -110,7 +124,26 @@
     </div>
   </div>
 </div>
-</div>
 <!-- /Statistik Cards -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Pengaturan Laporan</h5>
+        <div class="form-check form-switch">
+            <input class="form-check-input toggle-laporan"
+                    type="checkbox"
+                    data-field="show_laporan_infaq"
+                    {{ $setting?->show_laporan_infaq ? 'checked' : '' }}>
+            <label class="form-check-label">Tampilkan Laporan Infaq</label>
+        </div>
 
+        <div class="form-check form-switch mt-2">
+            <input class="form-check-input toggle-laporan"
+                    type="checkbox"
+                    data-field="show_laporan_pengeluaran"
+                    {{ $setting?->show_laporan_pengeluaran ? 'checked' : '' }}>
+            <label class="form-check-label">Tampilkan Laporan Pengeluaran</label>
+        </div>
+    </div>
+</div>
+</div>
 @endsection
