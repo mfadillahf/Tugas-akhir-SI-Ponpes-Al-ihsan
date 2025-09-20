@@ -35,6 +35,8 @@ class KepengurusanController extends Controller
         $request->validate([
             'nama' => 'required',
             'jabatan' => 'required',
+            'pendidikan' => 'nullable|string|max:255',
+            'profil_singkat' => 'nullable|string',
             'mulai' => 'required|date',
             'akhir' => 'required|date|after_or_equal:mulai',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -46,6 +48,8 @@ class KepengurusanController extends Controller
             $data = [
                 'nama' => $request->nama,
                 'jabatan' => $request->jabatan,
+                'pendidikan' => $request->pendidikan,
+                'profil_singkat' => $request->profil_singkat,
                 'mulai' => $request->mulai,
                 'akhir' => $request->akhir,
             ];
@@ -66,6 +70,7 @@ class KepengurusanController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
         }
     }
+
     public function edit($id)
     {
         $kepengurusan = Kepengurusan::findOrFail($id);
@@ -79,6 +84,8 @@ class KepengurusanController extends Controller
         $request->validate([
             'nama' => 'required',
             'jabatan' => 'required',
+            'pendidikan' => 'nullable|string|max:255',
+            'profil_singkat' => 'nullable|string',
             'mulai' => 'required|date',
             'akhir' => 'required|date|after_or_equal:mulai',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -90,18 +97,18 @@ class KepengurusanController extends Controller
             $data = [
                 'nama' => $request->nama,
                 'jabatan' => $request->jabatan,
+                'pendidikan' => $request->pendidikan,
+                'profil_singkat' => $request->profil_singkat,
                 'mulai' => $request->mulai,
                 'akhir' => $request->akhir,
             ];
 
             if ($request->hasFile('foto')) {
-                // Simpan file baru
                 $file = $request->file('foto');
-               $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs('public/kepengurusan', $filename);
                 $data['foto'] = $filename;
 
-                
                 if ($kepengurusan->foto && Storage::exists('public/kepengurusan/' . $kepengurusan->foto)) {
                     Storage::delete('public/kepengurusan/' . $kepengurusan->foto);
                 }
@@ -139,11 +146,13 @@ class KepengurusanController extends Controller
         $kepengurusan = Kepengurusan::findOrFail($id);
 
         return response()->json([
-            'nama'     => $kepengurusan->nama,
-            'jabatan'  => $kepengurusan->jabatan,
-            'foto'     => $kepengurusan->foto ? Storage::url('kepengurusan/' . $kepengurusan->foto) : null,
-            'mulai'    => $kepengurusan->mulai,
-            'akhir'    => $kepengurusan->akhir,
+            'nama'           => $kepengurusan->nama,
+            'jabatan'        => $kepengurusan->jabatan,
+            'pendidikan'     => $kepengurusan->pendidikan,
+            'profil_singkat' => $kepengurusan->profil_singkat,
+            'foto'           => $kepengurusan->foto ? Storage::url('kepengurusan/' . $kepengurusan->foto) : null,
+            'mulai'          => $kepengurusan->mulai,
+            'akhir'          => $kepengurusan->akhir,
         ]);
     }
 }

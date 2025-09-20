@@ -102,16 +102,13 @@
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
             <div class="staff-item mb-lg-40">
               <div class="staff-thumb">
-                <img alt="{{ $item->nama }}" src="{{ asset('storage/app/public/kepengurusan/' . $item->foto) }}" class="w-100" style="height: 					300px; object-fit: cover;">
+                <a href="{{ route('landing.kepengurusan.detail', $item->id_kepengurusan) }}">
+                  <img alt="{{ $item->nama }}" src="{{ asset('storage/app/public/kepengurusan/' . $item->foto) }}" 
+                      class="w-100" style="height: 300px; object-fit: cover;">
+                </a>
               </div>
               <div class="staff-content">
                 <h4 class="staff-name text-theme-colored1 mt-0">{{ $item->nama }}<small> - {{ $item->jabatan }}</small></h4>
-                <p class="mb-2">Periode:</p>
-                <p class="mb-20">
-                  {{ \Carbon\Carbon::parse($item->mulai)->locale('id')->translatedFormat('d F Y') }}
-                  s.d
-                  {{ \Carbon\Carbon::parse($item->akhir)->locale('id')->translatedFormat('d F Y') }}
-                </p>
               </div>
             </div>
           </div>

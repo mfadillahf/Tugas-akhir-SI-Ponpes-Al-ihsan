@@ -155,6 +155,12 @@ class LandingPageController extends Controller
         return view('landingpage.kepengurusanIndex', compact('kepengurusan'));
     }
 
+	public function kepengurusanDetail($id)
+	{
+		$kepengurusan = Kepengurusan::findOrFail($id);
+		return view('landingpage.kepengurusanDetail', compact('kepengurusan'));
+	}
+
 
     // tentang ponpes
     public function tentangponpes()

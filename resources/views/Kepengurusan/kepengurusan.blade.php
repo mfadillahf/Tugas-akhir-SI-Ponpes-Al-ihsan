@@ -60,6 +60,8 @@
                     <th>Foto</th>
                     <th>Nama</th>
                     <th>Jabatan</th>
+                    <th>Pendidikan</th>
+                    <th>Profil Singkat</th>
                     <th>Mulai</th>
                     <th>Akhir</th>
                     <th>Aksi</th>
@@ -78,6 +80,8 @@
                     </td>
                     <td>{{ $k->nama }}</td>
                     <td>{{ $k->jabatan }}</td>
+                    <td>{{ $k->pendidikan ?? '-' }}</td>
+                    <td>{{ \Illuminate\Support\Str::limit($k->profil_singkat, 30, '...') }}</td>
                     <td>{{ \Carbon\Carbon::parse($k->mulai)->locale('id')->translatedFormat('d F Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($k->akhir)->locale('id')->translatedFormat('d F Y') }}</td>
                     <td>

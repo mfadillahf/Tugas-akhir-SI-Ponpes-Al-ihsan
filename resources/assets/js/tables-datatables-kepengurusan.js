@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${fotoRow}
                             <tr><th>Nama</th><td>${response.nama}</td></tr>
                             <tr><th>Jabatan</th><td>${response.jabatan}</td></tr>
+                            <tr><th>Pendidikan</th><td>${response.pendidikan ?? '-'}</td></tr>
+                            <tr><th>Profil Singkat</th><td>${response.profil_singkat ?? '-'}</td></tr>
                             <tr><th>Mulai Jabatan</th><td>${response.mulai}</td></tr>
                             <tr><th>Akhir Jabatan</th><td>${response.akhir}</td></tr>
                           </tbody>

@@ -106,6 +106,32 @@
                 </div>
             </div>
 
+            {{-- 4. Pendidikan --}}
+            <div class="col-12">
+                <h6 class="mt-2">4. Pendidikan</h6>
+                <hr />
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" id="pendidikan" name="pendidikan" class="form-control" placeholder="Pendidikan terakhir" value="{{ old('pendidikan') }}">
+                    <label for="pendidikan">Pendidikan</label>
+                </div>
+            </div>
+
+            {{-- 5. Profil Singkat --}}
+            <div class="col-12">
+                <h6 class="mt-2">5. Profil Singkat</h6>
+                <hr />
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating form-floating-outline">
+                    <textarea id="profil_singkat" name="profil_singkat" class="form-control" placeholder="Tulis profil singkat" style="height: 120px;">{{ old('profil_singkat') }}</textarea>
+                    <label for="profil_singkat">Profil Singkat</label>
+                </div>
+            </div>
+
             {{-- Tombol Aksi --}}
             <div class="col-12 d-flex justify-content-end gap-2 mt-3">
                 <a href="{{ route('kepengurusan.index') }}" class="btn btn-secondary">← Kembali</a>

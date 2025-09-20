@@ -10,14 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('hapalans', function (Blueprint $table) {
-            $table->id('id_hapalan');
+        Schema::create('spps', function (Blueprint $table) {
+            $table->id('id_spp');
             $table->unsignedBigInteger('id_santri');
-            $table->unsignedBigInteger('id_guru');
+            $table->char('bulan', 10);
+            $table->char('tahun', 10);
+            $table->char('status', 10);
             $table->timestamps();
 
             $table->foreign('id_santri')->references('id_santri')->on('santris')->onDelete('cascade');
-            $table->foreign('id_guru')->references('id_guru')->on('gurus')->onDelete('cascade');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('hapalans');
+        Schema::dropIfExists('spps');
     }
 };

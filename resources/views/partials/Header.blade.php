@@ -37,13 +37,13 @@
                                     <li><a href="{{ route('landing.kalender') }}#calender">Kalender</a></li>
                                     <li><a href="{{ route('landing.galeri')}}">Galeri</a></li>
 									
-									<li class="menu-item">
+									{{-- <li class="menu-item">
                                         <a href="#">Laporan</a>
                                         <ul class="dropdown">
                                             <li><a href="{{ route('laporan.infaq')}}">Infaq</a></li>
 											<li><a href="{{ route('laporan.pengeluaran')}}">Pengeluaran</a></li>
                                         </ul>
-                                    </li>
+                                    </li> --}}
 
                                     <li><a href="{{ route('landing') }}#contact">Kontak</a></li>
                                     <li>

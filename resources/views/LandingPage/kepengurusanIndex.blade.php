@@ -33,7 +33,9 @@
             <div class="col-xs-12 col-sm-6 col-md-3 sm-text-center mb-30 mb-sm-30">
             <div class="team-members maxwidth400">
                 <div class="team-thumb">
+                  <a href="{{ route('landing.kepengurusan.detail', $item->id_kepengurusan) }}">
                 <img class="img-fullwidth" alt="{{ $item->nama }}" src="{{ asset('storage/app/public/kepengurusan/' . $item->foto) }}" style="height: 270px; object-fit: cover;">
+                  </a>
             </div>
             <div class="team-bottom-part border-bottom-theme-color-2-2px bg-lighter border-1px text-center p-10 pt-20 pb-10">
                 <h4 class="text-uppercase font-raleway font-weight-600 m-0">
