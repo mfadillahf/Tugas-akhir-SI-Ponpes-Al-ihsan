@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('spps', function (Blueprint $table) {
             $table->id('id_spp');
             $table->unsignedBigInteger('id_santri');
-            $table->char('bulan', 10);
-            $table->char('tahun', 10);
-            $table->char('status', 10);
+            $table->char('bulan', 10)->nullable();
+            $table->char('tahun', 10)->nullable();
+            $table->char('status', 10)->default('belum');
             $table->timestamps();
 
             $table->foreign('id_santri')->references('id_santri')->on('santris')->onDelete('cascade');

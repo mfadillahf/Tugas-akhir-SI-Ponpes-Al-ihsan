@@ -17,8 +17,8 @@ class HapalanController extends Controller
 
     public function __construct()
     {
-    $this->middleware('role:guru|santri')->only(['index', 'show', 'showDetail']);
-    $this->middleware('role:guru')->except(['index', 'show', 'showDetail']);
+        $this->middleware('role:guru|santri')->only(['index', 'show', 'showDetail']);
+        $this->middleware('role:guru')->except(['index', 'show', 'showDetail']);
     }
 
     public function index()
@@ -46,7 +46,7 @@ class HapalanController extends Controller
             // admin tidak boleh akses
             abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');
         }
-		$levelHapalan = LevelHapalan::all();
+        $levelHapalan = LevelHapalan::all();
         return view('hapalan.hapalan', compact('hapalans', 'levelHapalan'));
     }
 
@@ -67,44 +67,44 @@ class HapalanController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'id_santri' => 'required|exists:santris,id_santri',
-        'id_guru' => 'required|exists:gurus,id_guru',
-    ]);
+    {
+        $request->validate([
+            'id_santri' => 'required|exists:santris,id_santri',
+            'id_guru' => 'required|exists:gurus,id_guru',
+        ]);
 
-    // Buat hapalan dengan nilai default untuk kolom tambahan
-    Hapalan::create([
-        'id_santri' => $request->id_santri,
-        'id_guru' => $request->id_guru,
-        'juz' => null,
-        'id_level_hapalan' => 6, // misal ini adalah default
-    ]);
+        // Buat hapalan dengan nilai default untuk kolom tambahan
+        Hapalan::create([
+            'id_santri' => $request->id_santri,
+            'id_guru' => $request->id_guru,
+            'juz' => null,
+            'id_level_hapalan' => 6, // misal ini adalah default
+        ]);
 
-    return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil ditambahkan.');
-}
+        return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil ditambahkan.');
+    }
 
-	public function updateJuzLevel(Request $request, $id)
-		{
-			$request->validate([
-				'juz' => 'nullable|string|min:1|max:20',
-				'id_level_hapalan' => 'nullable|exists:level_hapalans,id_level_hapalan',
-			]);
+    public function updateJuzLevel(Request $request, $id)
+    {
+        $request->validate([
+            'juz' => 'nullable|string|min:1|max:20',
+            'id_level_hapalan' => 'nullable|exists:level_hapalans,id_level_hapalan',
+        ]);
 
-			$hapalan = Hapalan::findOrFail($id);
-			$hapalan->update([
-				'juz' => $request->juz,
-				'id_level_hapalan' => $request->id_level_hapalan,
-			]);
-			return redirect()->route('hapalan.index')->with('success', 'Juz dan level hafalan berhasil diperbarui.');
-		}
-	
+        $hapalan = Hapalan::findOrFail($id);
+        $hapalan->update([
+            'juz' => $request->juz,
+            'id_level_hapalan' => $request->id_level_hapalan,
+        ]);
+        return redirect()->route('hapalan.index')->with('success', 'Juz dan level hafalan berhasil diperbarui.');
+    }
+
     public function edit($id)
     {
         $hapalan = Hapalan::findOrFail($id);
         $santris = Santri::where('status', '!=', 'calon')->get();
         $gurus = Guru::all();
-		$levelHapalan = LevelHapalan::all();
+        $levelHapalan = LevelHapalan::all();
         return view('hapalan.hapalanedit', compact('hapalan', 'santris', 'gurus', 'levelHapalan'));
     }
 
@@ -113,8 +113,8 @@ class HapalanController extends Controller
         $request->validate([
             'id_santri' => 'required|exists:santris,id_santri',
             'id_guru' => 'required|exists:gurus,id_guru',
-			'juz' => 'required|integer|min:1|max:20',
-        	'id_level_hapalan' => 'required|exists:level_hapalans,id_level_hapalan',
+            'juz' => 'required|integer|min:1|max:20',
+            'id_level_hapalan' => 'required|exists:level_hapalans,id_level_hapalan',
             // 'keterangan' => 'required|string',
         ]);
 
@@ -138,7 +138,7 @@ class HapalanController extends Controller
     {
         $hapalan = Hapalan::with(['santri', 'guru', 'details'])->findOrFail($id);
         if (Auth::user()->hasRole('guru')) {
-        $guru = Auth::user()->guru;
+            $guru = Auth::user()->guru;
         }
         return view('hapalan.hapalanDetail', compact('hapalan'));
     }

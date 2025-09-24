@@ -41,7 +41,6 @@ class NilaiController extends Controller
                 $mapelList = collect();
                 $kelasList = collect();
             }
-
         } else { // role guru
             $guru = Auth::user()->guru;
             $mapelIds = $guru ? $guru->mapel->pluck('id_mapel')->toArray() : [];
@@ -86,8 +85,8 @@ class NilaiController extends Controller
 
         if ($id_kelas && $id_mapel) {
             $santris = Santri::where('id_kelas', $id_kelas)
-                        ->where('status', '!=', 'calon')
-                        ->get();
+                ->where('status', '!=', 'calon')
+                ->get();
         }
 
         $guru = Auth::user()->guru;
@@ -179,5 +178,4 @@ class NilaiController extends Controller
 
         return redirect()->route('nilai.index')->with('success', 'Nilai berhasil dihapus.');
     }
-
 }
