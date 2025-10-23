@@ -19,6 +19,11 @@ class Hapalan extends Model
     {
         return $this->hasMany(HapalanDetail::class, 'id_hapalan');
     }
+
+    public function kitab()
+    {
+        return $this->hasMany(HapalanKitab::class, 'id_hapalan', 'id_hapalan');
+    }
 	
 	public function levelHapalan()
 {

@@ -153,6 +153,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/hapalan/detail/{id}', [HapalanController::class, 'destroyDetail'])->name('hapalan.detail.destroy');
     Route::put('/hapalan/{id}/update-juz-level', [HapalanController::class, 'updateJuzLevel'])->name('hapalan.updateJuzLevel');
 
+    // hapalan kitab
+    Route::get('/hapalan/{id}/kitab', [HapalanController::class, 'showKitab'])->name('hapalan.kitab.show');
+    Route::post('/hapalan/{id}/kitab', [HapalanController::class, 'storeKitab'])->name('hapalan.kitab.store');
+    Route::get('/hapalan/kitab/{id}/edit', [HapalanController::class, 'editKitab'])->name('hapalan.kitab.edit');
+    Route::put('/hapalan/kitab/{id}', [HapalanController::class, 'updateKitab'])->name('hapalan.kitab.update');
+    Route::delete('/hapalan/kitab/{id}', [HapalanController::class, 'destroyKitab'])->name('hapalan.kitab.destroy');
+
     // agenda
     Route::middleware('role:admin')->group(function () {
         Route::resource('agenda', AgendaController::class);
@@ -186,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
         // Tentang Ponpes
         Route::resource('tentang', TentangController::class);
+
         // QRIS
         Route::get('/qris', [\App\Http\Controllers\Sistem\QrisController::class, 'index'])->name('qris.index');
         Route::put('/qris/{tentang}', [\App\Http\Controllers\Sistem\QrisController::class, 'update'])->name('qris.update');

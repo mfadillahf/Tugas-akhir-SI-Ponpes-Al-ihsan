@@ -6,9 +6,10 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Santri;
 use App\Models\Hapalan;
+use App\Models\HapalanKitab;
+use App\Models\LevelHapalan;
 use Illuminate\Http\Request;
 use App\Models\HapalanDetail;
-use App\Models\LevelHapalan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,8 +18,8 @@ class HapalanController extends Controller
 
     public function __construct()
     {
-        $this->middleware('role:guru|santri')->only(['index', 'show', 'showDetail']);
-        $this->middleware('role:guru')->except(['index', 'show', 'showDetail']);
+        $this->middleware('role:guru|santri')->only(['index', 'show', 'showDetail', 'showKitab']);
+        $this->middleware('role:guru')->except(['index', 'show', 'showDetail', 'showKitab']);
     }
 
     public function index()
@@ -182,5 +183,72 @@ class HapalanController extends Controller
         $detail->delete();
 
         return redirect()->route('hapalan.showDetail', $id_hapalan)->with('success', 'Detail hapalan berhasil dihapus.');
+    }
+
+
+    public function showKitab($id)
+    {
+        $hapalan = Hapalan::with(['santri', 'guru', 'kitab'])->findOrFail($id);
+        return view('hapalan.hapalanKitab', compact('hapalan'));
+    }
+
+    public function storeKitab(Request $request, $id)
+    {
+        $hapalan = Hapalan::findOrFail($id);
+
+        $request->validate([
+            'keterangan_1' => 'required|string',
+            'keterangan_2' => 'nullable|string',
+            'keterangan_3' => 'nullable|string',
+            'keterangan_4' => 'nullable|string',
+            'waktu' => 'required|date',
+        ]);
+
+        HapalanKitab::create([
+            'id_hapalan' => $id,
+            'id_santri' => $hapalan->id_santri,
+            'id_guru' => $hapalan->id_guru,
+            'keterangan_1' => $request->keterangan_1,
+            'keterangan_2' => $request->keterangan_2,
+            'keterangan_3' => $request->keterangan_3,
+            'keterangan_4' => $request->keterangan_4,
+            'waktu' => $request->waktu,
+        ]);
+
+        return redirect()->route('hapalan.kitab.show', $id)
+                        ->with('success', 'Hapalan kitab berhasil ditambahkan.');
+    }
+
+    public function editKitab($id)
+    {
+        $kitab = HapalanKitab::findOrFail($id);
+        return view('hapalan.hapalankitabedit', compact('kitab'));
+    }
+
+    public function updateKitab(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan_1' => 'required|string',
+            'keterangan_2' => 'nullable|string',
+            'keterangan_3' => 'nullable|string',
+            'keterangan_4' => 'nullable|string',
+            'waktu' => 'required|date',
+        ]);
+
+        $kitab = HapalanKitab::findOrFail($id);
+        $kitab->update($request->only('keterangan_1', 'keterangan_2', 'keterangan_3', 'keterangan_4', 'waktu'));
+
+        return redirect()->route('hapalan.kitab.show', $kitab->id_hapalan)
+                        ->with('success', 'Hapalan kitab berhasil diperbarui.');
+    }
+
+    public function destroyKitab($id)
+    {
+        $kitab = HapalanKitab::findOrFail($id);
+        $id_hapalan = $kitab->id_hapalan;
+        $kitab->delete();
+
+        return redirect()->route('hapalan.kitab.show', $id_hapalan)
+                        ->with('success', 'Hapalan kitab berhasil dihapus.');
     }
 }
