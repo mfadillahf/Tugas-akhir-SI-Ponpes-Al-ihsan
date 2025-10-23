@@ -186,6 +186,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('galeri/{id}/detail', [GaleriController::class, 'showDetail'])->name('galeri.showDetail');
         // Tentang Ponpes
         Route::resource('tentang', TentangController::class);
+        // QRIS
+        Route::get('/qris', [\App\Http\Controllers\Sistem\QrisController::class, 'index'])->name('qris.index');
+        Route::put('/qris/{tentang}', [\App\Http\Controllers\Sistem\QrisController::class, 'update'])->name('qris.update');
         // Kontak
         Route::resource('kontak', KontakController::class)->only(['index', 'update']);
     });

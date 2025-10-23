@@ -113,6 +113,12 @@
           "name": "Kontak Ponpes",
           "icon": "ri-contacts-line",
           "slug": "kontak.index"
+        },
+        {
+          "url": "qris",
+          "name": "QRIS Donasi",
+          "icon": "ri-qr-code-line",
+          "slug": "qris.index"
         }
       ]
     },

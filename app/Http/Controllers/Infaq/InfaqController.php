@@ -12,6 +12,7 @@ use Midtrans\Snap;
 use Illuminate\Support\Facades\DB;
 use Midtrans\Config;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Tentang;
 
 class InfaqController extends Controller
 {
@@ -51,7 +52,19 @@ class InfaqController extends Controller
 
     public function create()
     {
-        return view('infaq.infaqCreate');
+        // Ambil data QRIS dari tabel 'tentang'
+        $qris = Tentang::find(2);
+
+        // Kalau belum ada datanya, buat otomatis
+        if (!$qris) {
+            $qris = Tentang::create([
+                'judul' => 'QRIS Donasi',
+                'deskripsi' => 'Gambar QRIS Donasi Pondok Pesantren',
+                'gambar' => null,
+            ]);
+        }
+
+        return view('infaq.infaqCreate', compact('qris'));
     }
 
     public function store(Request $request)

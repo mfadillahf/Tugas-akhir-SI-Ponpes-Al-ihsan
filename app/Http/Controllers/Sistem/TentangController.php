@@ -14,7 +14,7 @@ class TentangController extends Controller
     public function index()
     {
         // $tentang = Tentang::first();
-        $tentang = Tentang::findOrFail(4);
+        $tentang = Tentang::findOrFail(1);
         return view('sistem.tentang', compact('tentang'));
     }
 

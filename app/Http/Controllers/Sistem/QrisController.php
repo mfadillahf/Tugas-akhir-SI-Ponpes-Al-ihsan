@@ -13,34 +13,49 @@ class QrisController extends Controller
 {
     public function index()
     {
-        // Hardcode ID khusus record QRIS
-        $qris = Tentang::findOrFail(5);
+        // Ambil data QRIS (misalnya ID 2)
+        $qris = Tentang::find(2);
+
+        // Kalau belum ada, otomatis buat datanya
+        if (!$qris) {
+            $qris = Tentang::create([
+                'judul' => 'QRIS Donasi',
+                'deskripsi' => 'Gambar QRIS Donasi Pondok Pesantren',
+                'gambar' => null,
+            ]);
+        }
+
         return view('sistem.qris', compact('qris'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Tentang $tentang)
     {
         $request->validate([
-            'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         DB::beginTransaction();
-
         try {
-            $qris = Tentang::findOrFail(5); // ambil record id=2
+            $data = [
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+            ];
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/tentang', $filename);
+                $file->storeAs('public/qris', $filename);
 
-                // Hapus gambar lama
-                if ($qris->gambar && Storage::exists('public/tentang/' . $qris->gambar)) {
-                    Storage::delete('public/tentang/' . $qris->gambar);
+                if ($tentang->gambar && Storage::exists('public/qris/' . $tentang->gambar)) {
+                    Storage::delete('public/qris/' . $tentang->gambar);
                 }
 
-                $qris->update(['gambar' => $filename]);
+                $data['gambar'] = $filename;
             }
+
+            $tentang->update($data);
 
             DB::commit();
             return redirect()->route('qris.index')->with('success', 'QRIS berhasil diperbarui.');

@@ -87,12 +87,13 @@
                     <!-- Tampilan gambar QRIS yang bisa diklik -->
                     <div class="mb-3 text-center">
                         <label class="form-label d-block">Scan QRIS untuk Infaq</label>
-                        <img src="{{ asset('images/qris.jpg') }}"
-                            alt="QRIS Infaq"
-                            style="max-width: 300px; cursor: pointer;"
-                            class="img-fluid rounded shadow-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#qrisModal">
+                        <img
+                        src="{{ $qris && $qris->gambar ? asset('storage/qris/' . $qris->gambar) : asset('assets/img/placeholders/placeholder.png') }}"
+                        alt="QRIS Infaq"
+                        style="max-width: 300px; cursor: pointer;"
+                        class="img-fluid rounded shadow-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#qrisModal">
                     </div>
 
                     {{-- Tombol --}}
@@ -115,7 +116,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body text-center">
-                <img src="{{ asset('images/qris.jpg') }}" alt="QRIS Besar" class="img-fluid rounded shadow">
+                <img
+                src="{{ $qris && $qris->gambar ? asset('storage/qris/' . $qris->gambar) : asset('assets/img/placeholders/placeholder.png') }}"
+                alt="QRIS Besar"
+                class="img-fluid rounded shadow">
             </div>
         </div>
     </div>
