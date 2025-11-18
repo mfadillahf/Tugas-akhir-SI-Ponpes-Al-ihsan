@@ -102,6 +102,13 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('santri', SantriController::class);
         Route::get('santri/{id}/detail', [SantriController::class, 'showDetail'])->name('santri.showDetail');
     });
+    
+    // SPP
+    Route::middleware('role:admin')->group(function () {
+        Route::get('spp', [\App\Http\Controllers\Santri\SppController::class, 'index'])->name('spp.index');
+        Route::get('spp/{id}/edit', [\App\Http\Controllers\Santri\SppController::class, 'edit'])->name('spp.edit');
+        Route::put('spp/{id}', [\App\Http\Controllers\Santri\SppController::class, 'update'])->name('spp.update');
+    });
 
     // guru
     Route::middleware('role:admin')->group(function () {

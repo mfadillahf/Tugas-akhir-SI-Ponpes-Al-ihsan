@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Spp;
 use App\Models\Guru;
 use App\Models\Infaq;
 use App\Models\Nilai;
 use App\Models\Santri;
 use App\Models\Donatur;
+use App\Models\Setting;
 use App\Models\Kepengurusan;
 use Illuminate\Http\Request;
 use App\Models\HapalanDetail;
-use App\Models\Setting;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -77,7 +79,6 @@ class DashboardController extends Controller
                 ->where('id_santri', $santri->id_santri);
         })->pluck('keterangan');
 
-        // Ekstrak nama surah dari keterangan
         $surahList = [];
         foreach ($keteranganList as $keterangan) {
             if (preg_match('/surah\s+([a-zA-Z\-]+)/i', $keterangan, $match)) {
@@ -85,22 +86,30 @@ class DashboardController extends Controller
                 $surahList[] = $surahName;
             }
         }
-
         $surahUnik = collect($surahList)->unique()->values();
         $jumlahSurah = $surahUnik->count();
 
-    
         $mapelCounts = Nilai::with('mapel')
-    ->where('id_santri', $santri->id_santri)
-    ->get()
-    ->pluck('mapel.nama_mapel')
-    ->countBy();
+            ->where('id_santri', $santri->id_santri)
+            ->get()
+            ->pluck('mapel.nama_mapel')
+            ->countBy();
+
+        // --- Ambil status SPP bulan ini ---
+        $bulanIni = Carbon::now()->month;
+        $tahunIni = Carbon::now()->year;
+
+        $sppBulanIni = Spp::where('id_santri', $santri->id_santri)
+                            ->where('bulan', $bulanIni)
+                            ->where('tahun', $tahunIni)
+                            ->first();
 
         return view('dashboardsantri', compact(
             'santri',
             'rataRataNilai',
             'jumlahSurah',
             'mapelCounts',
+            'sppBulanIni'
         ));
     }
 

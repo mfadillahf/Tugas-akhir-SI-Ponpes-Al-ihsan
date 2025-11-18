@@ -64,7 +64,8 @@
                                 <th>Guru</th>
 								<th>Juz</th>
         						<th>Level Hafalan</th>
-                                <th>Keterangan</th>
+                                <th>Keterangan Surah</th>
+                                <th>Keterangan Kitab</th>
                                 @role('guru')
                                 <th>Aksi</th>
                                 @endrole
@@ -84,6 +85,10 @@
                                     <a href="{{ route('hapalan.showDetail', $h->id_hapalan) }}" class="btn btn-info btn-sm">
                                         <i class="ri-information-line"></i></a>
                                 </td>
+                                <td>
+                                    <a href="{{ route('hapalan.kitab.show', $h->id_hapalan) }}" class="btn btn-info btn-sm">
+                                        <i class="ri-information-line"></i></a>
+                                </td>
                                 @role('guru')
                                 <td>
                                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ 									$h->id_hapalan }}">
@@ -99,42 +104,42 @@
                                 </td>
                                 @endrole
                             </tr>
-							<!-- Modal -->
-<div class="modal fade" id="editModal{{ $h->id_hapalan }}" tabindex="-1" aria-labelledby="editModalLabel{{ $h->id_hapalan }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" action="{{ route('hapalan.updateJuzLevel', $h->id_hapalan) }}">
-            @csrf
-            @method('PUT')
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel{{ $h->id_hapalan }}">Edit Juz & Level Hafalan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="juz{{ $h->id_hapalan }}" class="form-label">Juz</label>
-                        <input type="text" class="form-control" name="juz" id="juz{{ $h->id_hapalan }}" value="{{ $h->juz }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="level{{ $h->id_hapalan }}" class="form-label">Level Hafalan</label>
-                        <select class="form-select" name="id_level_hapalan" id="level{{ $h->id_hapalan }}">
-                            <option value="">-- Pilih Level --</option>
-                            @foreach ($levelHapalan as $level)
-                                <option value="{{ $level->id_level_hapalan }}" {{ $h->id_level_hapalan == $level->id_level_hapalan ? 'selected' : '' }}>
-                                    {{ $level->nama_level }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="editModal{{ $h->id_hapalan }}" tabindex="-1" aria-labelledby="editModalLabel{{ $h->id_hapalan }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form method="POST" action="{{ route('hapalan.updateJuzLevel', $h->id_hapalan) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel{{ $h->id_hapalan }}">Edit Juz & Level Hafalan</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="juz{{ $h->id_hapalan }}" class="form-label">Juz</label>
+                                                    <input type="text" class="form-control" name="juz" id="juz{{ $h->id_hapalan }}" value="{{ $h->juz }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="level{{ $h->id_hapalan }}" class="form-label">Level Hafalan</label>
+                                                    <select class="form-select" name="id_level_hapalan" id="level{{ $h->id_hapalan }}">
+                                                        <option value="">-- Pilih Level --</option>
+                                                        @foreach ($levelHapalan as $level)
+                                                            <option value="{{ $level->id_level_hapalan }}" {{ $h->id_level_hapalan == $level->id_level_hapalan ? 'selected' : '' }}>
+                                                                {{ $level->nama_level }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             @empty
                             @endforelse
                         </tbody>

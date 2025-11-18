@@ -32,4 +32,9 @@ class Santri extends Model
     {
         return $this->hasMany(Nilai::class, 'id_santri');
     }
+
+    public function spp()
+    {
+        return $this->hasMany(Spp::class, 'id_santri');
+    }
 }

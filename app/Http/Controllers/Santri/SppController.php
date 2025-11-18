@@ -2,104 +2,124 @@
 
 namespace App\Http\Controllers\Santri;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Santri;
 use App\Models\Spp;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Kelas;
+use App\Models\Santri;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SppController extends Controller
 {
-    //
-    public function __construct()
+        public function __construct()
     {
-        $this->middleware('role:admin|santri')->only(['index', 'show', 'showDetail']);
-        $this->middleware('role:admin')->except(['index', 'show', 'showDetail']);
+        $this->middleware('role:admin')->only(['index', 'edit', 'update']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
+
+        $query = Spp::with('santri.kelas');
+
+        // FILTER NAMA
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('santri', function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%$search%");
+            });
+        }
+
+        // FILTER KELAS
+        if ($request->filled('kelas')) {
+            $query->whereHas('santri', function($q) use ($request) {
+                $q->where('id_kelas', $request->kelas);
+            });
+        }
+
+        // FILTER BULAN
+        if ($request->filled('bulan')) {
+            $query->where('bulan', $request->bulan);
+        }
+
+        // FILTER TAHUN
+        if ($request->filled('tahun')) {
+            $query->where('tahun', $request->tahun);
+        }
 
 
-        if ($user->hasRole('santri')) {
-            $santri = $user->santri;
+    if ($request->filled('kelas') && $request->filled('bulan') && $request->filled('tahun')) {
 
-            if (!$santri) {
-                abort(403, 'Santri tidak ditemukan.');
-            }
+        // Ambil hanya santri aktif, bukan calon
+        $santriKelas = Santri::where('id_kelas', $request->kelas)
+                            ->where('status', 'santri')
+                            ->get();
 
-            $spp = Spp::with(['santri'])
-                ->where('id_santri', $santri->id_santri)
-                ->latest()
-                ->paginate(10);
-        } elseif ($user->hasRole('admin')) {
+        foreach ($santriKelas as $santri) {
+
+            Spp::firstOrCreate(
+                [
+                    'id_santri' => $santri->id_santri,
+                    'bulan' => $request->bulan,
+                    'tahun' => $request->tahun
+                ],
+                [
+                    'status' => 'belum'
+                ]
+            );
         }
     }
 
-    public function create(Request $request)
-    {
-        $user = Auth::user();
-        $admin = $user->admin;
+        $spp = $query->orderBy('tahun', 'desc')
+                    ->orderBy('bulan', 'desc')
+                    ->paginate(12)
+                    ->withQueryString();
 
-        $kelasList = Kelas::all();
-        $id_kelas = $request->input('id_kelas');
 
-        $santris = collect(); // default kosong
-        if ($id_kelas) {
-            $santris = Santri::where('id_kelas', $id_kelas)->where('status', '!=', 'calon')->get();
-        }
-        // $santris = Santri::where('status', '!=', 'calon')->get();
-        return view('spp.sppcreate', compact('santris', 'kelasList', 'id_kelas'));
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_santri' => 'required|exists:santris,id_santri',
-        ]);
-
-        // Buat Spp dengan nilai default untuk kolom tambahan
-        Spp::create([
-            'id_santri' => $request->id_santri,
-            'bulan' => null,
-            'tahun' => null,
-            'status' => "Belum", // misal ini adalah default
-        ]);
-
-        return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil ditambahkan.');
+        return view('Santri.spp', compact('spp', 'kelas'));
     }
 
     public function edit($id)
     {
-        $spp = Spp::findOrFail($id);
-        $santris = Santri::where('status', '!=', 'calon')->get();
-        return view('hapalan.hapalanedit', compact('hapalan', 'santris', 'gurus', 'levelHapalan'));
+        $spp = Spp::with('santri')->findOrFail($id);
+
+        return view('Santri.sppedit', compact('spp'));
     }
 
-    public function updateStatus(Request $request, $id)
+    public function update(Request $request, $id)
     {
+        $spp = Spp::findOrFail($id);
+
         $request->validate([
-            'bulan' => 'nullable|string|min:1|max:10',
-            'tahun' => 'nullable|string|min:1|max:10',
-            'status' => 'nullable|string|min:1|max:10',
+            'status' => 'required|in:lunas,belum',
         ]);
 
-        $spp = Spp::findOrFail($id);
-        $spp->update([
-            'bulan' => $request->bulan,
-            'tahun' => $request->tahun,
-            'status' => $request->status,
-        ]);
-        return redirect()->route('hapalan.index')->with('success', 'Juz dan level hafalan berhasil diperbarui.');
+        DB::beginTransaction();
+        try {
+            $spp->update([
+                'status' => $request->status,
+            ]);
+
+            DB::commit();
+            return redirect()
+            ->route('spp.index', [
+                'kelas' => $request->filter_kelas,
+                'bulan' => $request->filter_bulan,
+                'tahun' => $request->filter_tahun,
+                'status' => $request->filter_status,
+            ])
+            ->with('success', 'Data SPP berhasil diperbarui');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal update SPP: ' . $e->getMessage()]);
+        }
     }
 
-    public function destroy($id)
+    public function showDetail($id)
     {
-        $spp = Spp::findOrFail($id);
-        $spp->delete();
+        $spp = Spp::with('santri.kelas')->findOrFail($id);
 
-        return redirect()->route('hapalan.index')->with('success', 'Data hapalan berhasil dihapus.');
+        return view('Santri.sppdetail', compact('spp'));
     }
 }

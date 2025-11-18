@@ -18,6 +18,12 @@
           "slug": "santri.index"
         },
         {
+          "url": "spp",
+          "name": "Status SPP Santri",
+          "icon": "ri-money-dollar-circle-line",
+          "slug": "spp.index"
+        },
+        {
           "url": "guru",
           "name": "Data Guru",
           "icon": "ri-user-voice-line",

@@ -22,68 +22,88 @@ Dashboard Santri
 
 @section('content')
 <div class="card">
-  <div class="card-body">
-    <div class="d-flex align-items-start row">
-      <!-- Kiri: Sambutan -->
-      <div class="col-md-8 order-2 order-md-1">
-        <h5 class="mb-2">Selamat Datang,
-          <span class="h4 fw-semibold">{{ auth()->user()->username }} 👋🏻</span>
-        </h5>
+    <div class="card-body">
+        <div class="d-flex align-items-start row">
 
-        {{-- Cek status santri --}}
-        @if ($santri->status === 'santri')
-          <p class="mb-4 text-muted">Berikut Informasi Data Akademik Anda</p>
-          <div class="row g-4">
-            {{-- Rata-rata nilai --}}
-            <div class="col-sm-6 col-lg-6">
-              <div class="d-flex align-items-center">
-                <div class="avatar avatar-lg me-3">
-                  <div class="avatar-initial bg-label-primary rounded-3">
-                    <img src="{{ asset('assets/svg/icons/laptop.svg') }}" alt="laptop" class="img-fluid" />
-                  </div>
-                </div>
-                <div>
-                  <p class="mb-1 fw-medium">Rata-Rata Nilai</p>
-                  <h5 class="mb-0 text-primary">{{ $rataRataNilai }}</h5>
-                </div>
-              </div>
+            <!-- Kiri: Sambutan dan Info Akademik -->
+            <div class="col-md-8 order-2 order-md-1">
+                <h5 class="mb-2">
+                    Selamat Datang, <span class="h4 fw-semibold">{{ auth()->user()->username }} 👋🏻</span>
+                </h5>
+
+                {{-- Cek status santri --}}
+                @if ($santri->status === 'santri')
+                    <p class="mb-4 text-muted">Berikut Informasi Data Akademik Anda</p>
+
+                    <div class="row g-4">
+                        {{-- Rata-rata Nilai --}}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg me-3">
+                                    <div class="avatar-initial bg-label-primary rounded-3">
+                                        <img src="{{ asset('assets/svg/icons/laptop.svg') }}" alt="laptop" class="img-fluid" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="mb-1 fw-medium">Rata-Rata Nilai</p>
+                                    <h5 class="mb-0 text-primary">{{ $rataRataNilai }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Jumlah Mata Pelajaran Dinilai --}}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-lg me-3">
+                                    <div class="avatar-initial bg-label-info rounded-3">
+                                        <img src="{{ asset('assets/svg/icons/lightbulb.svg') }}" alt="lightbulb" class="img-fluid" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="mb-1 fw-medium">Jumlah Mata Pelajaran Dinilai</p>
+                                    <h5 class="mb-0 text-info">{{ $jumlahSurah }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Status SPP Bulan Ini --}}
+                        <div class="col-sm-6 col-lg-4">
+                            @if($sppBulanIni)
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-lg me-3">
+                                        <div class="avatar-initial bg-label-warning rounded-3">
+                                            <img src="{{ asset('assets/svg/icons/credit-card.svg') }}" alt="spp" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 fw-medium">
+                                            Status SPP Bulan Ini ({{ \Carbon\Carbon::create()->month($sppBulanIni->bulan)->format('F') }})
+                                        </p>
+                                        @if($sppBulanIni->status == 'lunas')
+                                            <h5 class="mb-0 text-success">Lunas</h5>
+                                        @else
+                                            <h5 class="mb-0 text-danger">Belum</h5>
+                                        @endif
+                                    </div>
+                                </div>
+                            @else
+                                <div class="alert alert-warning mb-0">
+                                    Data SPP bulan ini belum tersedia.
+                                </div>
+                            @endif
+                        </div>
+                    </div> >
+                @endif 
             </div>
 
-            {{-- Jumlah Surah --}}
-            <div class="col-sm-6 col-lg-6">
-              <div class="d-flex align-items-center">
-                <div class="avatar avatar-lg me-3">
-                  <div class="avatar-initial bg-label-info rounded-3">
-                    <img src="{{ asset('assets/svg/icons/lightbulb.svg') }}" alt="lightbulb" class="img-fluid" />
-                  </div>
+            <!-- Kanan: Logo Ponpes -->
+            <div class="col-md-4 text-center text-md-end order-1 order-md-2">
+                <div class="pe-md-4 pt-2">
+                    <img src="{{ asset('public/assets/img/illustrations/logo_ponpes.png') }}" height="150" alt="Logo Ponpes" class="scaleX-n1-rtl">
                 </div>
-                <div>
-                  <p class="mb-1 fw-medium">Jumlah Mata Pelajaran Dinilai</p>
-                  <h5 class="mb-0 text-info">{{ $jumlahSurah }}</h5>
-                </div>
-              </div>
             </div>
-          </div>
-        @else
-          {{-- Tampilan untuk calon santri --}}
-          <p class="text-muted mb-4">Status kamu saat ini <strong>{{ ucfirst($santri->status) }} Santri</strong>.</p>
-          <div class="alert alert-info">
-            Data akademik hanya dapat diakses setelah status kamu resmi menjadi <strong>santri aktif</strong>.
-            Tunggu informasi lebih lanjut.
-          </div>
-        @endif
-      </div>
 
-      <!-- Kanan: Logo -->
-      <div class="col-md-4 text-center text-md-end order-1 order-md-2">
-        <div class="pe-md-4 pt-2">
-          <img src="{{ asset('public/assets/img/illustrations/logo_ponpes.png') }}"
-               height="150"
-               alt="Logo Ponpes"
-               class="scaleX-n1-rtl">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </div> <!-- Tutup d-flex align-items-start row -->
+    </div> <!-- Tutup card-body -->
+</div> <!-- Tutup card -->
 @endsection
